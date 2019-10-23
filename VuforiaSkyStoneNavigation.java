@@ -113,10 +113,10 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         while(rotation.thirdAngle > heading + angleTolerance || rotation.thirdAngle < heading - angleTolerance){
             if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
                 //turn left
-                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES)
+                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             } else
             //turn right
-                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES)
+                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         }
     }
     public void goForward (double distance) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
