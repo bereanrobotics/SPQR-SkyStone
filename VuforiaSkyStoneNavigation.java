@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.SPQR;
 
 /* BASICALLY: USE CAMERA TO FIND POSITION AND REPORT IT FOR USE IN OTHER THINGS
 Shamelessly borrowed and improved upon from FTC examples. In theory, it might work.
@@ -113,10 +113,10 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         while(rotation.thirdAngle > heading + angleTolerance || rotation.thirdAngle < heading - angleTolerance){
             if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
                 //turn left
-                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES)
+                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             } else
             //turn right
-                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES)
+                rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         }
     }
     public void goForward (double distance) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
@@ -225,19 +225,19 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
         //Set the position of the bridge support targets with relation to origin (center of field)
         blueFrontBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, bridgeY, bridgeZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, bridgeRotZ)));
+                .translation(0, 0, 8)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, 0)));
 
         blueRearBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, bridgeY, bridgeZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, bridgeRotZ)));
+                .translation(0, 0, 3.5f)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, 0)));
 
         redFrontBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, -bridgeY, bridgeZ)
+                .translation(0, 0, 17.5f)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, 0)));
 
         redRearBridge.setLocation(OpenGLMatrix
-                .translation(bridgeX, -bridgeY, bridgeZ)
+                .translation(0, 0, 13)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, 0)));
 
         //Set the position of the perimeter targets with relation to origin (center of field)
