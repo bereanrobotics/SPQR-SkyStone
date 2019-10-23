@@ -44,8 +44,7 @@ public class HardwareSPQR {
         this.rightBackDrive.setPower(0);
         this.leftIntake.setPower(0);
         this.rightIntake.setPower(0);
-
-
+        
         //Set all motors to use encoders
         this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
