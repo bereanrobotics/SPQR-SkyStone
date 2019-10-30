@@ -46,6 +46,14 @@ public class MainOpMode extends OpMode {
         this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        //Sets motor direction
+        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
+        this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
+
         /* Initialize servos */
 
         //Define servos
