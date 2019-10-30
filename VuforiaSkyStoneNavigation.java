@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SPQR;
+package org.firstinspires.ftc.teamcode;
 
 /* BASICALLY: USE CAMERA TO FIND POSITION AND REPORT IT FOR USE IN OTHER THINGS
 Shamelessly borrowed and improved upon from FTC examples. In theory, it might work.
