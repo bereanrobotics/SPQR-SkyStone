@@ -229,11 +229,11 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
         blueRearBridge.setLocation(OpenGLMatrix
                 .translation(0, 0, 3.5f)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, 0)));
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, 0)));
 
         redFrontBridge.setLocation(OpenGLMatrix
                 .translation(0, 0, 17.5f)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, 0)));
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, 0)));
 
         redRearBridge.setLocation(OpenGLMatrix
                 .translation(0, 0, 13)
