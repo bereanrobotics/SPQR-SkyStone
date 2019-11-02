@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -69,6 +70,33 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightBackDrive = null;
+    private DcMotor rightIntake = null;
+    private DcMotor leftIntake = null;
+
+    public void initiate() {
+
+        //Initializes motor
+        this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
+        this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
+        this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        this.leftIntake = hardwareMap.get(DcMotor.class, "left_intake");
+        this.rightIntake = hardwareMap.get(DcMotor.class, "right_intake");
+
+        //Sets motor direction
+        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
+        this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
 
@@ -118,11 +146,14 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                 rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         }
     }
-    public void goForward (double distance) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
+    public void goForward () { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         VectorF translation = lastLocation.getTranslation();
         while (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false) {
-            //move forward
-             translation = lastLocation.getTranslation();
+            this.leftFrontDrive.setPower(1);
+            this.leftBackDrive.setPower(1);
+            this.rightFrontDrive.setPower(1);
+            this.rightBackDrive.setPower(1);
+            translation = lastLocation.getTranslation();
         }
     }
 
@@ -140,7 +171,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             } else{ //Rotate to face point
                 setHeading(desiredRadian);
             }
-            goForward (tan(yLength/xLength)); //go straight tan(yLength/xLength)
+            goForward (); //go straight tan(yLength/xLength)
         }
 
     }
