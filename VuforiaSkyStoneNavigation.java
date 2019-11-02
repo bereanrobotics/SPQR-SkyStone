@@ -177,7 +177,11 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             } else{ //Rotate to face point
                 setHeading(desiredRadian);
             }
-            goForward (); //go straight tan(yLength/xLength)
+            goForward ();//go straight tan(yLength/xLength)
+            this.leftFrontDrive.setPower(0);
+            this.leftBackDrive.setPower(0);
+            this.rightFrontDrive.setPower(0);
+            this.rightBackDrive.setPower(0);
         }
 
     }
