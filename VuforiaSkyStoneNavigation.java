@@ -403,7 +403,4 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     }
 }
 
-
-
-
-
+//I've definitely screwed something up, the problem is, I don't know what. This code feels messy and I don't know enough about Java to clean it up. But the idea looks doable.
