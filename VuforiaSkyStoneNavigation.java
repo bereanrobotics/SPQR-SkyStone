@@ -94,7 +94,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     //Constants for autonomous
     private static final double mmTolerance = 500;
-    private static final double angleTolerance = 1;
+    private static final double radianTolerance = (Math.PI/180);
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
@@ -109,8 +109,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        while(rotation.thirdAngle > heading + angleTolerance || rotation.thirdAngle < heading - angleTolerance){
-            if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
+        while(rotation.thirdAngle > heading + radianTolerance || rotation.thirdAngle < heading - radianTolerance){
+            if (abs(rotation.thirdAngle - heading) > Math.PI + radianTolerance){ //this is to make the turn direction the fastest, may not be functional
                 //turn left
                 rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             } else
@@ -121,7 +121,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     public void goForward (double distance) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         VectorF translation = lastLocation.getTranslation();
         while (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false) {
-
+            //move forward
              translation = lastLocation.getTranslation();
         }
     }
@@ -133,12 +133,12 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         VectorF translation = lastLocation.getTranslation();
         double xLength = (translation.get(0) - TargetXmm);
         double yLength = (translation.get(1) - TargetYmm);
-        double desiredAngle = atan2(yLength, xLength);
+        double desiredRadian = atan2(yLength, xLength);
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         if (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false){ //see if already within target area, if is, then stop
-            if (rotation.thirdAngle == desiredAngle){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
+            if (rotation.thirdAngle == desiredRadian){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
             } else{ //Rotate to face point
-                setHeading(desiredAngle);
+                setHeading(desiredRadian);
             }
             goForward (tan(yLength/xLength)); //go straight tan(yLength/xLength)
         }
