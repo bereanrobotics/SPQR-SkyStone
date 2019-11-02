@@ -184,12 +184,21 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     }
 
-    @Override public void runOpMode() {
+    private Boolean isInitialized = false;
+
+    @Override
+    public void runOpMode() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
+
+        if (!isInitialized){
+            isInitialized = true;
+            initiate();
+        }
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -383,6 +392,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             }
 
             // Provide feedback as to where the robot is located (if we know).
+            telemetry.addData("Target is visible", targetVisible);
             if (targetVisible) {
                 gotoVuforiaPosistion(0,0,0);
                 // express position (translation) of robot in inches.
