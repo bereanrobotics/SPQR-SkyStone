@@ -119,6 +119,13 @@ public class MainOpMode extends OpMode {
         }
 
         /* Intake */
+        if (gamepad2.left_trigger > 0.1){ //Left trigger first so that right trigger overrides
+            leftIntake.setPower(-1);
+            rightIntake.setPower(-1);
+        } else {
+            leftIntake.setPower(0);
+            rightIntake.setPower(0);
+        }
         if (gamepad2.right_trigger > 0.1){
             leftIntake.setPower(1);
             rightIntake.setPower(1);
@@ -132,6 +139,8 @@ public class MainOpMode extends OpMode {
         telemetry.addData("Gamepad 1 left X", gamepad1.left_stick_x);
         telemetry.addData("Gamepad 1 right Y", gamepad1.right_stick_y);
         telemetry.addData("Gamepad 1 right X", gamepad1.right_stick_x);
+        telemetry.addData("Gamepad 2 left trigger", gamepad2.left_trigger > 0.1);
+        telemetry.addData("Gamepad 2 left trigger", gamepad2.right_trigger > 0.1);
         telemetry.addData("Gamepad 2 dpad up", gamepad2.dpad_up);
         telemetry.addData("Gamepad 2 dpad down", gamepad2.dpad_down);
     }
