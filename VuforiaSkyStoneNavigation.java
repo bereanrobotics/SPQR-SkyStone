@@ -163,7 +163,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             translation = lastLocation.getTranslation();
         }
     }
-
     public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
@@ -362,6 +361,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
         targetsSkyStone.activate();
+        gotoVuforiaPosistion(0,0,0);
         while (!isStopRequested()) {
 
             // check all the trackable targets to see which one (if any) is visible.
