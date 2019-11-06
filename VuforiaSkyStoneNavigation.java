@@ -82,16 +82,12 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
         this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        this.leftIntake = hardwareMap.get(DcMotor.class, "left_intake");
-        this.rightIntake = hardwareMap.get(DcMotor.class, "right_intake");
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
-        this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
     }
 
 
