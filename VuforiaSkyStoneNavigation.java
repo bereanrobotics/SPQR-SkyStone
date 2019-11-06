@@ -133,6 +133,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private double TargetYmm = 0;
     private double TargetZmm = 0;
 
+    private VuforiaTrackables targetsSkyStone = null;
+    private List<VuforiaTrackable> allTrackables = null;
+
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         while(rotation.thirdAngle > heading + radianTolerance || rotation.thirdAngle < heading - radianTolerance){
@@ -184,21 +187,44 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     }
 
-    private Boolean isInitialized = false;
+    public void updateLastLocation () {
+        targetVisible = false;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                telemetry.addData("Visible Target", trackable.getName());
+                targetVisible = true;
 
-    @Override
-    public void runOpMode() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
-         * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
-         */
-
-        if (!isInitialized){
-            isInitialized = true;
-            initiate();
+                // getUpdatedRobotLocation() will return null if no new information is available since
+                // the last time that call was made, or if the trackable is not currently visible.
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+                break;
+            }
         }
+    }
 
+    public void updateVuforiaTelemetry (){
+        // Provide feedback as to where the robot is located (if we know).
+        telemetry.addData("Target is visible", targetVisible);
+        if (targetVisible) {
+            // express position (translation) of robot in inches.
+            VectorF translation = lastLocation.getTranslation();
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+
+            // express the rotation of the robot in degrees.
+            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+        }
+        else {
+            telemetry.addData("Visible Target", "none");
+        }
+        telemetry.update();
+    }
+
+    public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -359,6 +385,24 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
         }
+    }
+
+    private Boolean isInitialized = false;
+
+    @Override
+    public void runOpMode() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
+         * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
+         */
+
+        if (!isInitialized){
+            isInitialized = true;
+            initiate();
+        }
+
+        initializeVuforia ();
 
         // WARNING:
         // In this sample, we do not wait for PLAY to be pressed.  Target Tracking is started immediately when INIT is pressed.
@@ -394,7 +438,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             // Provide feedback as to where the robot is located (if we know).
             telemetry.addData("Target is visible", targetVisible);
             if (targetVisible) {
-                gotoVuforiaPosistion(0,0,0);
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
