@@ -74,8 +74,6 @@ public class MainOpMode extends OpMode {
         if (gamepad1.right_bumper) {
             if (gamepad1.left_bumper) return;
             this.strafe(Dir.RIGHT, 1.0);
-
-
         }
 
         /* Tank movement */
