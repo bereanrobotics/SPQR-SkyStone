@@ -137,6 +137,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private List<VuforiaTrackable> allTrackables = null;
 
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
+        updateLastLocation ();
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         while(rotation.thirdAngle > heading + radianTolerance || rotation.thirdAngle < heading - radianTolerance){
             if (abs(rotation.thirdAngle - heading) > Math.PI + radianTolerance){ //this is to make the turn direction the fastest, may not be functional
@@ -151,16 +152,19 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                 this.rightFrontDrive.setPower(-1);
                 this.rightBackDrive.setPower(-1);
         }
+            updateLastLocation ();
             rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         }
     }
     public void goForward () { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
+        updateLastLocation ();
         VectorF translation = lastLocation.getTranslation();
         while (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false) {
             this.leftFrontDrive.setPower(1);
             this.leftBackDrive.setPower(1);
             this.rightFrontDrive.setPower(1);
             this.rightBackDrive.setPower(1);
+            updateLastLocation ();
             translation = lastLocation.getTranslation();
         }
     }
@@ -168,6 +172,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
         TargetZmm = TargetZ * mmPerInch;
+        updateLastLocation ();
         VectorF translation = lastLocation.getTranslation();
         double xLength = (translation.get(0) - TargetXmm);
         double yLength = (translation.get(1) - TargetYmm);
@@ -420,10 +425,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         while (!isStopRequested()) {
 
             // check all the trackable targets to see which one (if any) is visible.
-            updateLastLocation ();
-
-            // Provide feedback as to where the robot is located (if we know).
+            updateLastLocation ();// Provide feedback as to where the robot is located (if we know).
             updateVuforiaTelemetry ();
+            gotoVuforiaPosistion (0,0,0);
         }
 
         // Disable Tracking when we are done;
