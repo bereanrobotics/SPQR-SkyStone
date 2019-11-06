@@ -115,7 +115,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final float quadField  = 36 * mmPerInch;
 
     //Constants for autonomous
-    private static final double mmTolerance = 500;
+    private static final double mmTolerance = 50;
     private static final double radianTolerance = (Math.PI/180);
 
     // Class Members
@@ -581,7 +581,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             // check all the trackable targets to see which one (if any) is visible.
             updateLastLocation ();// Provide feedback as to where the robot is located (if we know).
             updateVuforiaTelemetry ();
-            gotoVuforiaPosistion (0,0,0);
+            if (targetVisible) {
+                gotoVuforiaPosistion(0, 0, 0);
+            }
         }
 
         // Disable Tracking when we are done;
