@@ -72,8 +72,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DcMotor rightIntake = null;
-    private DcMotor leftIntake = null;
+    // private DcMotor rightIntake = null;
+    // private DcMotor leftIntake = null;
 
     public void initiate() {
 
