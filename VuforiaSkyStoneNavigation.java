@@ -47,7 +47,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     // private DcMotor rightIntake = null;
     // private DcMotor leftIntake = null;
 
-    public void initiate() {
+    public void initiate() { //this is bad and should be done in hardware, same with above defining of dcmotor
 
         //Initializes motor
         this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
