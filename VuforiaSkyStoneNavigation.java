@@ -29,7 +29,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 import static org.firstinspires.ftc.teamcode.Constants.mmPerInch;
 import static java.lang.Math.*;
 
-/*see  skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf*/
+/*see  skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
+*/
 
 @Autonomous(name="Vuforia Test")
 public class VuforiaSkyStoneNavigation extends LinearOpMode {
@@ -142,8 +143,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         TargetZmm = TargetZ * mmPerInch;
         updateLastLocation ();
         VectorF translation = lastLocation.getTranslation();
-        double xLength = (translation.get(0) - TargetXmm);
-        double yLength = (translation.get(1) - TargetYmm);
+        double xLength = (translation.get(0) - TargetXmm); //delta x
+        double yLength = (translation.get(1) - TargetYmm); //delta y
         double desiredAngle = toDegrees(atan2(yLength, xLength));
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         if (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false){ //see if already within target area, if is, then stop
@@ -151,13 +152,12 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             } else{ //Rotate to face point
                 setHeading(desiredAngle);
             }
-            goForward ();//go straight tan(yLength/xLength)
+            goForward ();//go straight until in area (not very good but is what we have for now)
             this.leftFrontDrive.setPower(0);
             this.leftBackDrive.setPower(0);
             this.rightFrontDrive.setPower(0);
             this.rightBackDrive.setPower(0);
         }
-
     }
 
     public void updateLastLocation () {
@@ -165,7 +165,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                 telemetry.addData("Visible Target", trackable.getName());
                 targetVisible = true;
-
                 // getUpdatedRobotLocation() will return null if no new information is available since
                 // the last time that call was made, or if the trackable is not currently visible.
                 OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
