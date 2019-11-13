@@ -109,6 +109,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         updateLastLocation ();
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         while((rotation.thirdAngle > (heading + angleTolerance)) || (rotation.thirdAngle < (heading - angleTolerance))){
+            telemetry.addLine("Turning");
+            telemetry.update();
             if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
                 this.leftFrontDrive.setPower(-1);
                 this.leftBackDrive.setPower(-1);
@@ -129,6 +131,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         updateLastLocation ();
         VectorF translation = lastLocation.getTranslation();
         while (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false) {
+            telemetry.addLine("Moving forward");
+            telemetry.update();
             this.leftFrontDrive.setPower(1);
             this.leftBackDrive.setPower(1);
             this.rightFrontDrive.setPower(1);
@@ -147,9 +151,17 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         double yLength = (translation.get(1) - TargetYmm); //delta y
         double desiredAngle = toDegrees(atan2(yLength, xLength));
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+        telemetry.addLine("Checking if within area");
+        telemetry.update();
         if (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false){ //see if already within target area, if is, then stop
+            telemetry.addLine("Not within area, checking if oriented correctly");
+            telemetry.update();
             if (rotation.thirdAngle == desiredAngle){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
+                telemetry.addLine("Oriented correctly, skipping setHeading");
+                telemetry.update();
             } else{ //Rotate to face point
+                telemetry.addLine("Oriented incorrectly, running setHeading");
+                telemetry.update();
                 setHeading(desiredAngle);
             }
             goForward ();//go straight until in area (not very good but is what we have for now)
