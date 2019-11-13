@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Dir;
@@ -20,6 +21,7 @@ public class MainOpMode extends OpMode {
     private DcMotor rightBackDrive = null;
     private DcMotor rightIntake = null;
     private DcMotor leftIntake = null;
+    private DcMotor armMotor = null;
     private Servo blockBeater = null;
 
     //Speed of the robot
@@ -37,6 +39,7 @@ public class MainOpMode extends OpMode {
         this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         this.leftIntake = hardwareMap.get(DcMotor.class, "left_intake");
         this.rightIntake = hardwareMap.get(DcMotor.class, "right_intake");
+        this.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
 
         //Set all motors to use or not use encoders
         this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -45,6 +48,7 @@ public class MainOpMode extends OpMode {
         this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -53,6 +57,7 @@ public class MainOpMode extends OpMode {
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
         this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
+        this.armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         /* Initialize servos */
 
@@ -132,15 +137,11 @@ public class MainOpMode extends OpMode {
             rightIntake.setPower(0);
         }
 
+        /* Arm movement */
+        armMotor.setPower(-gamepad2.right_stick_y / 4);
+
         /* Telementry data */
-        telemetry.addData("Gamepad 1 left Y", gamepad1.left_stick_y);
-        telemetry.addData("Gamepad 1 left X", gamepad1.left_stick_x);
-        telemetry.addData("Gamepad 1 right Y", gamepad1.right_stick_y);
-        telemetry.addData("Gamepad 1 right X", gamepad1.right_stick_x);
-        telemetry.addData("Gamepad 2 left trigger", gamepad2.left_trigger > 0.1);
-        telemetry.addData("Gamepad 2 left trigger", gamepad2.right_trigger > 0.1);
-        telemetry.addData("Gamepad 2 dpad up", gamepad2.dpad_up);
-        telemetry.addData("Gamepad 2 dpad down", gamepad2.dpad_down);
+        telemetry.addData("Arm", this.armMotor.getCurrentPosition());
     }
 
     /* Strafe abstraction */

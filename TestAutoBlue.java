@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * This OpMode will mainly be used in the telemetry portions of competitions
  */
 @Autonomous(name="Test Autonomous (Blue)")
-public class TestAutoBlue extends OpMode {
+public class TestAutoBlue extends LinearOpMode {
 
     //Hardware declaration
     private DcMotor leftFrontDrive = null;
@@ -24,14 +25,14 @@ public class TestAutoBlue extends OpMode {
     private Servo rightDrop = null;
     private ColorSensor lineParkSensor = null;
 
-    //Color of the tape to stop at
-    private int[] tapeColor = {540, 1540, 2430};
+    //Color of the tape to stop at {R, G, B}
+    private int[] tapeColor = {640, 1730, 2230};
 
     //Difference allowed of change
-    private int change = 150;
+    private int change = 650;
 
     @Override
-    public void init() {
+    public void runOpMode() {
 
         /* Initialize motors */
 
@@ -68,11 +69,8 @@ public class TestAutoBlue extends OpMode {
 
         //Turn on led
         this.lineParkSensor.enableLed(true);
-    }
 
-    //Main opmode code
-    @Override
-    public void start() {
+        waitForStart();
 
         //Drop intake
         this.leftDrop.setPosition(-1);
@@ -81,9 +79,9 @@ public class TestAutoBlue extends OpMode {
         //Assuming robot is heading 270deg and moving under the bridge
         //Park over line
 
+        this.forward(0.5);
         boolean isOnLine = false;
-        while (!isOnLine){
-            this.forward(0.5);
+        while (!isOnLine && this.opModeIsActive()) {
             int[] r = this.plusOrMinus(this.lineParkSensor.red(), this.change);
             int[] g = this.plusOrMinus(this.lineParkSensor.green(), this.change);
             int[] b = this.plusOrMinus(this.lineParkSensor.blue(), this.change);
@@ -94,25 +92,9 @@ public class TestAutoBlue extends OpMode {
             isOnLine = (((this.tapeColor[0] > r[0]) && (this.tapeColor[0] < r[1])) && ((this.tapeColor[1] > g[0]) && (this.tapeColor[1] < g[1])) && ((this.tapeColor[2] > b[0]) && (this.tapeColor[2] < b[1])));
         }
         this.lineParkSensor.enableLed(false);
+        this.backward(1.0);
+        this.sleep(100);
         this.stopMoving();
-    }
-
-    @Override
-    public void loop(){
-
-        telemetry.addData("Red", lineParkSensor.red());
-        telemetry.addData("Green", lineParkSensor.green());
-        telemetry.addData("Blue", lineParkSensor.blue());
-        int[] r = this.plusOrMinus(this.lineParkSensor.red(), this.change);
-        int[] g = this.plusOrMinus(this.lineParkSensor.green(), this.change);
-        int[] b = this.plusOrMinus(this.lineParkSensor.blue(), this.change);
-        telemetry.addData("r0", r[0]);
-        telemetry.addData("r1", r[1]);
-        telemetry.addData("g0", g[0]);
-        telemetry.addData("g1", g[1]);
-        telemetry.addData("b0", b[0]);
-        telemetry.addData("b1", b[1]);
-        telemetry.addData("True?", (((this.tapeColor[0] > r[0]) && (this.tapeColor[0] < r[1])) && ((this.tapeColor[1] > g[0]) && (this.tapeColor[1] < g[1])) && ((this.tapeColor[2] > b[0]) && (this.tapeColor[2] < b[1]))));
     }
 
     //Strafe abstraction
