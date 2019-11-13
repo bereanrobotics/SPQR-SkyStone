@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 public class Claw {
-    double Level;
+    double Level ;
     String Id;
     double maxLength;
     double minLength;
@@ -12,7 +12,15 @@ public class Claw {
     public void setMaxLength(double maxLength){
         this.maxLength = maxLength;
     }
-    public void setMinLength(double minLength){
-        this.minLength = minLength;
+    public static void setMinLength(double minLength){
+        //this.minLength = minLength;
     }
+
+    /*public static double getLevel (){
+        return;
+    }
+
+    public void increaseTier (){
+        double currentLevel = Claw.getLevel();
+    }*/
 }
