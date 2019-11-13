@@ -88,7 +88,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final float quadField  = 36 * mmPerInch;
 
     //Constants for autonomous
-    private static final double mmTolerance = 50;
+    private static final double mmTolerance = 0;
     private static final double radianTolerance = (Math.PI/180);
     private static final double angleTolerance = 1;
 
