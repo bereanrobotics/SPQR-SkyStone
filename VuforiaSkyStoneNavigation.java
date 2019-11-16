@@ -94,7 +94,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //Constants for autonomous
     private static final double mmTolerance = 100;
     private static final double radianTolerance = (Math.PI/180);
-    private static final double angleTolerance = 1;
+    private static final double angleTolerance = 3;
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
@@ -142,7 +142,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         boolean returnBoolean;
         if (type == "angle"){
-            returnBoolean = ((TargetAngleorX + angleTolerance) < translation.get(0)) || (translation.get(0) < (TargetAngleorX - angleTolerance));
+            returnBoolean = ((TargetAngleorX + angleTolerance) < rotation.thirdAngle) || (rotation.thirdAngle < (TargetAngleorX - angleTolerance));
         } else {
             returnBoolean = ((TargetAngleorX + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetAngleorX - mmTolerance)) || ((TargetY + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetY - mmTolerance));
         }
