@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -141,6 +142,19 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             translation = lastLocation.getTranslation();
         }
     }
+    public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
+        type = type.toLowerCase(Locale.ENGLISH);
+        updateLastLocation();
+        VectorF translation = lastLocation.getTranslation();
+        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+        boolean returnBoolean;
+        if (type == "angle"){
+            returnBoolean = rotation.thirdAngle == TargetAngleorX;
+        } else {
+            returnBoolean = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance))
+        }
+        return returnBoolean;
+    }
     public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
@@ -150,15 +164,14 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         double xLength = (translation.get(0) - TargetXmm); //delta x
         double yLength = (translation.get(1) - TargetYmm); //delta y
         double desiredAngle = toDegrees(atan2(yLength, xLength));
-        boolean notTranslation = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance));
-
+        boolean notTranslation = checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         telemetry.addData("Checking if within area...Within area", notTranslation);
         telemetry.update();
-        if (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false){ //see if already within target area, if is, then stop
+        if (notTranslation){ //see if already within target area, if is, then stop
             telemetry.addLine("Not within area, checking if oriented correctly");
             telemetry.update();
-            if (rotation.thirdAngle == desiredAngle){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
+            if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
                 telemetry.addLine("Oriented correctly, skipping setHeading");
                 telemetry.update();
             } else{ //Rotate to face point
