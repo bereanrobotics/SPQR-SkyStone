@@ -124,13 +124,11 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                 this.leftBackDrive.setPower(speed);
                 this.rightFrontDrive.setPower(-speed);
                 this.rightBackDrive.setPower(-speed);
-        }
-            updateLastLocation ();
-            rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+            }
         }
     }
-    public void goForward () { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        while (checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm)) {
+    public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
+        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ)) {
             telemetry.addLine("Moving forward");
             telemetry.update();
             this.leftFrontDrive.setPower(speed);
@@ -176,7 +174,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                 telemetry.update();
                 setHeading(desiredAngle);
             }
-            goForward (); //go straight until in area (not very good but is what we have for now)
+            goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
             this.leftFrontDrive.setPower(0);
             this.leftBackDrive.setPower(0);
             this.rightFrontDrive.setPower(0);
