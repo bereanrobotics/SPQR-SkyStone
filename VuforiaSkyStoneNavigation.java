@@ -172,8 +172,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             this.rightFrontDrive.setPower(0);
             this.rightBackDrive.setPower(0);
         }
-        telemetry.addLine("Seems like the right position to me!");
-        telemetry.update();
+        robotActivity = "Robot is in the desired posistion, yay! ;)";
     }
     public void updateLastLocation () {
         for (VuforiaTrackable trackable : allTrackables) {
