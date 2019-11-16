@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.Dir;
 
 /**
  * This OpMode will mainly be used in the telemetry portions of competitions
@@ -11,14 +14,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(name="Main OpMode")
 public class MainOpMode extends OpMode {
 
-    //Hardware
+    //Hardware declaration
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor rightIntake = null;
     private DcMotor leftIntake = null;
-
+    private DcMotor armMotor = null;
+    private Servo blockBeater = null;
 
     //Speed of the robot
     private double speed = 1.0;
@@ -26,13 +30,25 @@ public class MainOpMode extends OpMode {
     @Override
     public void init() {
 
-        //Initializes motor
+        /* Initialize motors*/
+
+        //Define motors
         this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
         this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
         this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         this.leftIntake = hardwareMap.get(DcMotor.class, "left_intake");
         this.rightIntake = hardwareMap.get(DcMotor.class, "right_intake");
+        this.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+
+        //Set all motors to use or not use encoders
+        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -41,6 +57,15 @@ public class MainOpMode extends OpMode {
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
         this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
+        this.armMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        /* Initialize servos */
+
+        //Define servos
+        this.blockBeater = hardwareMap.get(Servo.class, "block_beater");
+
+        //Reset servo positions
+        this.blockBeater.setPosition(1);
     }
 
     @Override
@@ -54,8 +79,6 @@ public class MainOpMode extends OpMode {
         if (gamepad1.right_bumper) {
             if (gamepad1.left_bumper) return;
             this.strafe(Dir.RIGHT, 1.0);
-
-
         }
 
         /* Tank movement */
@@ -90,7 +113,22 @@ public class MainOpMode extends OpMode {
             this.speed = (this.speed > 0.5) ? 0.5 : 1.0;
         }
 
+        /* Move block beater */
+        if (gamepad2.dpad_up) {
+            this.blockBeater.setPosition(-1);
+        }
+        if (gamepad2.dpad_down){
+            this.blockBeater.setPosition(1);
+        }
+
         /* Intake */
+        if (gamepad2.left_trigger > 0.1){ //Left trigger first so that right trigger overrides
+            leftIntake.setPower(-1);
+            rightIntake.setPower(-1);
+        } else {
+            leftIntake.setPower(0);
+            rightIntake.setPower(0);
+        }
         if (gamepad2.right_trigger > 0.1){
             leftIntake.setPower(1);
             rightIntake.setPower(1);
@@ -99,11 +137,11 @@ public class MainOpMode extends OpMode {
             rightIntake.setPower(0);
         }
 
+        /* Arm movement */
+        armMotor.setPower(-gamepad2.right_stick_y / 4);
+
         /* Telementry data */
-        telemetry.addData("Gamepad 1 left Y", gamepad1.left_stick_y);
-        telemetry.addData("Gamepad 1 left X", gamepad1.left_stick_x);
-        telemetry.addData("Gamepad 1 right Y", gamepad1.right_stick_y);
-        telemetry.addData("Gamepad 1 right X", gamepad1.right_stick_x);
+        telemetry.addData("Arm", this.armMotor.getCurrentPosition());
     }
 
     /* Strafe abstraction */
@@ -114,8 +152,4 @@ public class MainOpMode extends OpMode {
         this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power : -power);
         this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power  : power);
     }
-}
-
-enum Dir {
-    LEFT, RIGHT;
 }
