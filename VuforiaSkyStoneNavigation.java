@@ -72,6 +72,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
     private static final double speed = 0.1;
+    private String robotActivity;
 
     //Define constants for conversions
     private static final float mmPerInch        = 25.4f;
@@ -112,8 +113,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         updateLastLocation ();
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         while(checkVuforiaPosistion("angle", heading, 0, 0)){
-            telemetry.addLine("Turning");
-            telemetry.update();
+            robotActivity = "Turning";
             if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
                 this.leftFrontDrive.setPower(-speed);
                 this.leftBackDrive.setPower(-speed);
@@ -129,12 +129,10 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     }
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         while (checkVuforiaPosistion ("position", targetX, targetY, targetZ)) {
-            telemetry.addLine("Moving forward");
-            telemetry.update();
+            robotActivity = "Driving Forward";
             this.leftFrontDrive.setPower(speed);
             this.leftBackDrive.setPower(speed);
             this.rightFrontDrive.setPower(speed);
-            this.rightBackDrive.setPower(speed);
         }
     }
     public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
@@ -161,17 +159,11 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         double desiredAngle = toDegrees(atan2(yLength, xLength));
         boolean notTranslation = checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        telemetry.addData("Checking if within area...Within area", notTranslation);
-        telemetry.update();
+        robotActivity = "Checking if not in area if true, it is not: " + notTranslation;
         if (notTranslation){ //see if already within target area, if is, then stop
-            telemetry.addLine("Not within area, checking if oriented correctly");
-            telemetry.update();
+            robotActivity = "Checking if oriented correctly...";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
-                telemetry.addLine("Oriented correctly, skipping setHeading");
-                telemetry.update();
             } else{ //Rotate to face point
-                telemetry.addLine("Oriented incorrectly, running setHeading");
-                telemetry.update();
                 setHeading(desiredAngle);
             }
             goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
@@ -183,7 +175,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         telemetry.addLine("Seems like the right position to me!");
         telemetry.update();
     }
-
     public void updateLastLocation () {
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -202,7 +193,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         }
         updateVuforiaTelemetry ();
     }
-
     public void updateVuforiaTelemetry (){
         // Provide feedback as to where the robot is located (if we know).
         telemetry.addData("Target is visible", targetVisible);
@@ -215,13 +205,13 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             // express the rotation of the robot in degrees.
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+            telemetry.addData("Robot is...", robotActivity);
         }
         else {
             telemetry.addData("Visible Target", "none");
         }
         telemetry.update();
     }
-
     public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
