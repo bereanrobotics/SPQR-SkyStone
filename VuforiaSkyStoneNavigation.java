@@ -150,7 +150,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         double xLength = (translation.get(0) - TargetXmm); //delta x
         double yLength = (translation.get(1) - TargetYmm); //delta y
         double desiredAngle = toDegrees(atan2(yLength, xLength));
-        boolean notTranslation = TargetXmm + mmTolerance < translation.get(0) || translation.get(0) < TargetXmm - mmTolerance || TargetYmm + mmTolerance > translation.get(1) || translation.get(1) > TargetYmm - mmTolerance;
+        boolean notTranslation = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance));
 
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         telemetry.addLine("Checking if within area");
