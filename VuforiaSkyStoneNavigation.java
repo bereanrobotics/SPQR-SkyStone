@@ -199,8 +199,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         if (targetVisible) {
             // express position (translation) of robot in inches.
             VectorF translation = lastLocation.getTranslation();
-            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+            telemetry.addData("Pos (mm)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / 1, translation.get(1) / 1, translation.get(2) / 1);
 
             // express the rotation of the robot in degrees.
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
