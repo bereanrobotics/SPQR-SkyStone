@@ -153,7 +153,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         boolean notTranslation = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance));
 
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        telemetry.addLine("Checking if within area");
+        telemetry.addData("Checking if within area...Within area", notTranslation);
         telemetry.update();
         if (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false){ //see if already within target area, if is, then stop
             telemetry.addLine("Not within area, checking if oriented correctly");
@@ -166,7 +166,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                 telemetry.update();
                 setHeading(desiredAngle);
             }
-            goForward ();//go straight until in area (not very good but is what we have for now)
+            goForward (); //go straight until in area (not very good but is what we have for now)
             this.leftFrontDrive.setPower(0);
             this.leftBackDrive.setPower(0);
             this.rightFrontDrive.setPower(0);
