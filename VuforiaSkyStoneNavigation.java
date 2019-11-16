@@ -71,6 +71,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
+    private static final double speed = 0.25;
+
     //Define constants for conversions
     private static final float mmPerInch        = 25.4f;
     private static final float mmTargetHeight   = (6) * mmPerInch;          // the height of the center of the target image above the floor
@@ -109,37 +111,32 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        while((rotation.thirdAngle > (heading + angleTolerance)) || (rotation.thirdAngle < (heading - angleTolerance))){
+        while(checkVuforiaPosistion("angle", heading, 0, 0)){
             telemetry.addLine("Turning");
             telemetry.update();
             if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(-1);
-                this.leftBackDrive.setPower(-1);
-                this.rightFrontDrive.setPower(1);
-                this.rightBackDrive.setPower(1);
-
+                this.leftFrontDrive.setPower(-speed);
+                this.leftBackDrive.setPower(-speed);
+                this.rightFrontDrive.setPower(speed);
+                this.rightBackDrive.setPower(speed);
             } else {
-                this.leftFrontDrive.setPower(1);
-                this.leftBackDrive.setPower(1);
-                this.rightFrontDrive.setPower(-1);
-                this.rightBackDrive.setPower(-1);
+                this.leftFrontDrive.setPower(speed);
+                this.leftBackDrive.setPower(speed);
+                this.rightFrontDrive.setPower(-speed);
+                this.rightBackDrive.setPower(-speed);
         }
             updateLastLocation ();
             rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         }
     }
     public void goForward () { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        updateLastLocation ();
-        VectorF translation = lastLocation.getTranslation();
-        while (((TargetXmm + mmTolerance > translation.get(0)) && (translation.get(0) > TargetXmm - mmTolerance)) && ((TargetYmm + mmTolerance > translation.get(1)) && (translation.get(1) > TargetYmm - mmTolerance)) == false) {
+        while (checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm)) {
             telemetry.addLine("Moving forward");
             telemetry.update();
-            this.leftFrontDrive.setPower(1);
-            this.leftBackDrive.setPower(1);
-            this.rightFrontDrive.setPower(1);
-            this.rightBackDrive.setPower(1);
-            updateLastLocation ();
-            translation = lastLocation.getTranslation();
+            this.leftFrontDrive.setPower(speed);
+            this.leftBackDrive.setPower(speed);
+            this.rightFrontDrive.setPower(speed);
+            this.rightBackDrive.setPower(speed);
         }
     }
     public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
@@ -149,9 +146,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         boolean returnBoolean;
         if (type == "angle"){
-            returnBoolean = rotation.thirdAngle == TargetAngleorX;
+            returnBoolean = ((TargetAngleorX + angleTolerance) < translation.get(0)) || (translation.get(0) < (TargetAngleorX - angleTolerance));
         } else {
-            returnBoolean = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance));
+            returnBoolean = ((TargetAngleorX + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetAngleorX - mmTolerance)) || ((TargetY + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetY - mmTolerance));
         }
         return returnBoolean;
     }
