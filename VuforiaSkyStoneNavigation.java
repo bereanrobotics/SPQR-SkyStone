@@ -151,7 +151,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         if (type == "angle"){
             returnBoolean = rotation.thirdAngle == TargetAngleorX;
         } else {
-            returnBoolean = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance))
+            returnBoolean = ((TargetXmm + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetXmm - mmTolerance)) || ((TargetYmm + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetYmm - mmTolerance));
         }
         return returnBoolean;
     }
