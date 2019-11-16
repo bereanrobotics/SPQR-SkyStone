@@ -564,6 +564,15 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
         targetsSkyStone.activate();
+        this.leftFrontDrive.setPower(0.25);
+        this.leftBackDrive.setPower(0.25);
+        this.rightFrontDrive.setPower(0.25);
+        this.rightBackDrive.setPower(0.25);
+
+        this.leftFrontDrive.setPower(0);
+        this.leftBackDrive.setPower(0);
+        this.rightFrontDrive.setPower(0);
+        this.rightBackDrive.setPower(0);
         while (!isStopRequested()) {
 
             // check all the trackable targets to see which one (if any) is visible.
