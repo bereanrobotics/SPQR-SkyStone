@@ -71,7 +71,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
-    private static final double speed = 0.25;
+    private static final double speed = 0.1;
 
     //Define constants for conversions
     private static final float mmPerInch        = 25.4f;
