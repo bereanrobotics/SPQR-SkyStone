@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Dir;
@@ -23,6 +22,8 @@ public class MainOpMode extends OpMode {
     private DcMotor leftIntake = null;
     private DcMotor armMotor = null;
     private Servo blockBeater = null;
+    private Servo blockGrabber = null;
+    private Servo armBalancer = null;
 
     //Speed of the robot
     private double speed = 1.0;
@@ -48,6 +49,7 @@ public class MainOpMode extends OpMode {
         this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Sets motor direction
@@ -63,9 +65,12 @@ public class MainOpMode extends OpMode {
 
         //Define servos
         this.blockBeater = hardwareMap.get(Servo.class, "block_beater");
+        this.blockGrabber = hardwareMap.get(Servo.class, "block_grabber");
+        this.armBalancer = hardwareMap.get(Servo.class, "arm_balancer");
 
         //Reset servo positions
         this.blockBeater.setPosition(1);
+        this.blockGrabber.setPosition(1);
     }
 
     @Override
@@ -123,22 +128,30 @@ public class MainOpMode extends OpMode {
 
         /* Intake */
         if (gamepad2.left_trigger > 0.1){ //Left trigger first so that right trigger overrides
-            leftIntake.setPower(-1);
-            rightIntake.setPower(-1);
+            this.leftIntake.setPower(-1);
+            this.rightIntake.setPower(-1);
         } else {
-            leftIntake.setPower(0);
-            rightIntake.setPower(0);
+            this.leftIntake.setPower(0);
+            this.rightIntake.setPower(0);
         }
         if (gamepad2.right_trigger > 0.1){
-            leftIntake.setPower(1);
-            rightIntake.setPower(1);
+            this.leftIntake.setPower(1);
+            this.rightIntake.setPower(1);
         } else {
-            leftIntake.setPower(0);
-            rightIntake.setPower(0);
+            this.leftIntake.setPower(0);
+            this.rightIntake.setPower(0);
+        }
+
+        /* Grab blocks */
+        if (gamepad2.a){
+            this.blockGrabber.setPosition(-1);
+        }
+        if (gamepad2.b){
+            this.blockGrabber.setPosition(1);
         }
 
         /* Arm movement */
-        armMotor.setPower(-gamepad2.right_stick_y / 4);
+        this.armMotor.setPower(-gamepad2.right_stick_y / 4);
 
         /* Telementry data */
         telemetry.addData("Arm", this.armMotor.getCurrentPosition());
