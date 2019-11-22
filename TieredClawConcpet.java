@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Claw Test")
 public class TieredClawConcpet {
     double Level;
     String Id;
