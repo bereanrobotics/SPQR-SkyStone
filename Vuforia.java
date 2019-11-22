@@ -41,28 +41,6 @@ public class Vuforia extends LinearOpMode {
     //
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
-    // private DcMotor rightIntake = null;
-    // private DcMotor leftIntake = null;
- 
-    public void initiate() { //this is bad and should be done in hardware, same with above defining of dcmotor
- 
-        //Initializes motor
-        this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-        this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
- 
-        //Sets motor direction
-        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-    }
- 
  
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
