@@ -99,33 +99,7 @@ public class Vuforia {
         }
         return returnBoolean;
     }
-    public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
-        TargetXmm = TargetX * mmPerInch;
-        TargetYmm = TargetY * mmPerInch;
-        TargetZmm = TargetZ * mmPerInch;
-        updateLastLocation ();
-        VectorF translation = lastLocation.getTranslation();
-        double xLength = (translation.get(0) - TargetXmm); //delta x
-        double yLength = (translation.get(1) - TargetYmm); //delta y
-        double desiredAngle = toDegrees(atan2(yLength, xLength));
-        boolean notTranslation = checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        robotActivity = "Checking if not in area if true, it is not: " + notTranslation;
-        if (notTranslation){ //see if already within target area, if is, then stop
-            robotActivity = "Checking if oriented correctly...";
-            if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
-            } else{ //Rotate to face point
-                setHeading(desiredAngle);
-            }
-            goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
-            this.leftFrontDrive.setPower(0);
-            this.leftBackDrive.setPower(0);
-            this.rightFrontDrive.setPower(0);
-            this.rightBackDrive.setPower(0);
-        }
-        robotActivity = "Robot is in the desired posistion, yay! ;)";
-    }
-    
+   
 public void updateLastLocation () {
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
