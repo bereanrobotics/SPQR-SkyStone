@@ -86,32 +86,7 @@ public class Vuforia extends LinearOpMode {
  
     List<VuforiaTrackable> allTrackables;
  
-    public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
-        updateLastLocation ();
-        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        while(checkVuforiaPosistion("angle", heading, 0, 0)){
-            robotActivity = "Turning";
-            if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(-speed);
-                this.leftBackDrive.setPower(-speed);
-                this.rightFrontDrive.setPower(speed);
-                this.rightBackDrive.setPower(speed);
-            } else {
-                this.leftFrontDrive.setPower(speed);
-                this.leftBackDrive.setPower(speed);
-                this.rightFrontDrive.setPower(-speed);
-                this.rightBackDrive.setPower(-speed);
-            }
-        }
-    }
-    public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ)) {
-            robotActivity = "Driving Forward";
-            this.leftFrontDrive.setPower(speed);
-            this.leftBackDrive.setPower(speed);
-            this.rightFrontDrive.setPower(speed);
-        }
-    }
+   
     public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
         type = type.toLowerCase(Locale.ENGLISH);
         updateLastLocation();
@@ -151,7 +126,8 @@ public class Vuforia extends LinearOpMode {
         }
         robotActivity = "Robot is in the desired posistion, yay! ;)";
     }
-    public void updateLastLocation () {
+    
+public void updateLastLocation () {
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                 telemetry.addData("Visible Target", trackable.getName());
