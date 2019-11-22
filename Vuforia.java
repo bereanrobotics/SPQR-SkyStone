@@ -137,7 +137,7 @@ public void updateLastLocation () {
         }
         telemetry.update();
     }
-    public void initializeVuforia () {
+    public void initialize () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
  
