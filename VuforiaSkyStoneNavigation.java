@@ -106,6 +106,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private double TargetXmm = 0;
     private double TargetYmm = 0;
     private double TargetZmm = 0;
+    double[] targetCoordsmm = new double[]{TargetXmm, TargetYmm ,TargetZmm};
 
     List<VuforiaTrackable> allTrackables;
 
@@ -152,6 +153,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
         TargetZmm = TargetZ * mmPerInch;
+        targetCoordsmm = new double[]{TargetXmm, TargetYmm, TargetZmm};
         updateLastLocation ();
         VectorF translation = lastLocation.getTranslation();
         double xLength = (translation.get(0) - TargetXmm); //delta x
