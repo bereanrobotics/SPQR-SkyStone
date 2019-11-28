@@ -124,7 +124,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                 this.leftFrontDrive.setPower(speed);
                 this.leftBackDrive.setPower(speed);
                 this.rightFrontDrive.setPower(-speed);
-                this.rightBackDrive.setPower(-speed);
+               this.rightBackDrive.setPower(-speed);
             }
         }
     }
