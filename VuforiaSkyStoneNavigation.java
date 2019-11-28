@@ -208,7 +208,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             telemetry.addData("Robot is...", robotActivity);
 
-telemetry.addData("Targeting ", target
+telemetry.addData("Targeting ", targetCoordsmm[0], targetCoordsmm[1], targetCoordsmm[2]);
         }
         else {
             telemetry.addData("Visible Target", "none");
