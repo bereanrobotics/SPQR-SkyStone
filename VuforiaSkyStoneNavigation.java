@@ -134,6 +134,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             this.leftFrontDrive.setPower(speed);
             this.leftBackDrive.setPower(speed);
             this.rightFrontDrive.setPower(speed);
+
+this.righBackDrive.setPower(speed)
+
         }
     }
     public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
