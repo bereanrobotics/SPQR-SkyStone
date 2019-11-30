@@ -138,7 +138,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             this.leftBackDrive.setPower(speed);
             this.rightFrontDrive.setPower(speed);
             this.rightBackDrive.setPower(speed);
-
         }
     }
     
@@ -147,11 +146,34 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         updateLastLocation();
         VectorF translation = lastLocation.getTranslation();
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+        //splitting the checks into bite size pieces in order to evaluate what is going wrong.
+
+        double anglePlusTolerance = TargetAngleorX + angleTolerance;
+        double angleMinusTolerance = TargetAngleorX - angleTolerance;
+
+        boolean angleOverTolerance = anglePlusTolerance < rotation.thirdAngle;
+        boolean angleUnderTolerance = angleMinusTolerance > rotation.thirdAngle;
+
+        boolean returnAngleB = angleOverTolerance || angleUnderTolerance;
+
+        double xPlusTolerance = TargetAngleorX + mmTolerance;
+        double xMinusTolerance = TargetAngleorX - mmTolerance;
+        double yPlusTolerance = TargetY + mmTolerance;
+        double yMinusTolerance = TargetY - mmTolerance;
+
+        boolean xOverTolerance = xPlusTolerance < translation.get(0);
+        boolean xUnderTolerance = xMinusTolerance > translation.get(0);
+        boolean yOverTolerance = yPlusTolerance < translation.get(1);
+        boolean yUnderTolerance = yMinusTolerance > translation.get(1);
+
+        boolean returnCoordsB = xOverTolerance || xUnderTolerance || yOverTolerance || yUnderTolerance;
+
         boolean returnBoolean;
         if (type == "angle"){
-            returnBoolean = ((TargetAngleorX + angleTolerance) < rotation.thirdAngle) || (rotation.thirdAngle < (TargetAngleorX - angleTolerance));
+                    returnBoolean = (returnAngleB);
         } else {
-            returnBoolean = ((TargetAngleorX + mmTolerance) < translation.get(0)) || (translation.get(0) < (TargetAngleorX - mmTolerance)) || ((TargetY + mmTolerance) > translation.get(1)) || (translation.get(1) > (TargetY - mmTolerance));
+            returnBoolean = (returnCoordsB);
         }
         return returnBoolean;
     }
