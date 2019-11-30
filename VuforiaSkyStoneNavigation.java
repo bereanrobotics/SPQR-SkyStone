@@ -109,6 +109,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private double TargetYmm = 0;
     private double TargetZmm = 0;
     double[] targetCoordsmm = new double[]{TargetXmm, TargetYmm ,TargetZmm};
+    double xDistance = 0;
+    double yDistance = 0;
+    double distance = 0;
 
     List<VuforiaTrackable> allTrackables;
 
@@ -138,6 +141,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             this.leftBackDrive.setPower(speed);
             this.rightFrontDrive.setPower(speed);
             this.rightBackDrive.setPower(speed);
+            howClose(targetX, targetY, targetZ);
         }
     }
     
@@ -238,15 +242,34 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             telemetry.addData("Robot is...", robotActivity);
-
-telemetry.addData("Targeting ", "{X, Y, Z}", targetCoordsmm[0], targetCoordsmm[1], targetCoordsmm[2]);
+            telemetry.addData("Targeting ", "{X, Y, Z} = %.0, %.0, %.0", targetCoordsmm[0], targetCoordsmm[1], targetCoordsmm[2]);
+            telemetry.addData("Distance from target in X/Y/Direct", "{X, Y, Direct} = %.0, %.0, %.0", xDistance, yDistance, distance);
         }
         else {
             telemetry.addData("Visible Target", "none");
         }
         telemetry.update();
     }
-    
+
+    public void howClose (double targetX, double targetY, double targetZ){
+        updateLastLocation();
+        VectorF translation = lastLocation.getTranslation();
+        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+        double deltaX = abs((targetX - translation.get(0)));
+        double deltaY = abs((targetY - translation.get(1)));
+
+        double deltaX2 = pow(deltaX, 2);
+        double deltaY2 = pow(deltaY, 2);
+
+        double crowFlies = sqrt((deltaX2 + deltaY2));
+
+        xDistance = deltaX;
+        yDistance = deltaY;
+        distance = crowFlies;
+        updateLastLocation();
+    }
+
     public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
