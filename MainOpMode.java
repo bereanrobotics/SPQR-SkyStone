@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Dir;
 
 /**
  * This OpMode will mainly be used in the telemetry portions of competitions
+ * @author Arkin Solomon
  */
 @TeleOp(name="Main OpMode")
 public class MainOpMode extends OpMode {
@@ -27,6 +28,12 @@ public class MainOpMode extends OpMode {
 
     //Speed of the robot
     private double speed = 1.0;
+    
+    //TODO: Levels of buildplate
+    private int[] levels = {0, 0, 0, 0};
+    
+    //Level counter
+    private int levlCounter = 0;
 
     @Override
     public void init() {
@@ -151,7 +158,9 @@ public class MainOpMode extends OpMode {
         }
 
         /* Arm movement */
-        this.armMotor.setPower(-gamepad2.right_stick_y / 4);
+        
+        //Adjust minutely
+        this.armMotor.setPower(-gamepad2.right_stick_y / 10);
 
         /* Telementry data */
         telemetry.addData("Arm", this.armMotor.getCurrentPosition());
