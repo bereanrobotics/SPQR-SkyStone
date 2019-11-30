@@ -30,9 +30,12 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 import static org.firstinspires.ftc.teamcode.Constants.mmPerInch;
 import static java.lang.Math.*;
 
-/*see  skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
-*/
+/* see skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf */
 
+/* 
+ * This file uses vuforia to move places.
+ * @author Owen Peterson
+ */
 @Autonomous(name="Vuforia Test")
 public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
@@ -46,9 +49,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    // private DcMotor rightIntake = null;
-    // private DcMotor leftIntake = null;
-
+    
     public void initiate() { //this is bad and should be done in hardware, same with above defining of dcmotor
 
         //Initializes motor
@@ -80,6 +81,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     // Constant for Stone Target
     private static final float stoneZ = 2.00f * mmPerInch;
+    
     // Constants for the center support targets
     private static final float bridgeZ = 6.42f * mmPerInch;
     private static final float bridgeY = 23 * mmPerInch;
@@ -113,7 +115,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        while(checkVuforiaPosistion("angle", heading, 0, 0)){
+        while(checkVuforiaPosistion("angle", heading, 0, 0) && opModeIsActive()){
             robotActivity = "Turning";
             if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
                 this.leftFrontDrive.setPower(-speed);
@@ -128,8 +130,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             }
         }
     }
+    
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ)) {
+        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ) && opModeIsActive()) {
             robotActivity = "Driving Forward";
             this.leftFrontDrive.setPower(speed);
             this.leftBackDrive.setPower(speed);
@@ -139,6 +142,7 @@ this.righBackDrive.setPower(speed)
 
         }
     }
+    
     public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
         type = type.toLowerCase(Locale.ENGLISH);
         updateLastLocation();
@@ -152,6 +156,7 @@ this.righBackDrive.setPower(speed)
         }
         return returnBoolean;
     }
+    
     public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
@@ -179,6 +184,7 @@ this.righBackDrive.setPower(speed)
         }
         robotActivity = "Robot is in the desired posistion, yay! ;)";
     }
+    
     public void updateLastLocation () {
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -197,6 +203,7 @@ this.righBackDrive.setPower(speed)
         }
         updateVuforiaTelemetry ();
     }
+    
     public void updateVuforiaTelemetry (){
         // Provide feedback as to where the robot is located (if we know).
         telemetry.addData("Target is visible", targetVisible);
@@ -218,6 +225,7 @@ telemetry.addData("Targeting ", targetCoordsmm[0], targetCoordsmm[1], targetCoor
         }
         telemetry.update();
     }
+    
     public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -413,28 +421,40 @@ telemetry.addData("Targeting ", targetCoordsmm[0], targetCoordsmm[1], targetCoor
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
+        
         VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
         blueRearBridge.setName("Blue Rear Bridge");
+        
         VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
         redRearBridge.setName("Red Rear Bridge");
+        
         VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
         redFrontBridge.setName("Red Front Bridge");
+        
         VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
         blueFrontBridge.setName("Blue Front Bridge");
+        
         VuforiaTrackable red1 = targetsSkyStone.get(5);
         red1.setName("Red Perimeter 1");
+        
         VuforiaTrackable red2 = targetsSkyStone.get(6);
         red2.setName("Red Perimeter 2");
+        
         VuforiaTrackable front1 = targetsSkyStone.get(7);
         front1.setName("Front Perimeter 1");
+        
         VuforiaTrackable front2 = targetsSkyStone.get(8);
         front2.setName("Front Perimeter 2");
+        
         VuforiaTrackable blue1 = targetsSkyStone.get(9);
         blue1.setName("Blue Perimeter 1");
+        
         VuforiaTrackable blue2 = targetsSkyStone.get(10);
         blue2.setName("Blue Perimeter 2");
+        
         VuforiaTrackable rear1 = targetsSkyStone.get(11);
         rear1.setName("Rear Perimeter 1");
+        
         VuforiaTrackable rear2 = targetsSkyStone.get(12);
         rear2.setName("Rear Perimeter 2");
 
@@ -483,6 +503,7 @@ telemetry.addData("Targeting ", targetCoordsmm[0], targetCoordsmm[1], targetCoor
         redRearBridge.setLocation(OpenGLMatrix
                 .translation(bridgeX, -bridgeY, bridgeZ)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, 0)));
+        
         //Set the position of the perimeter targets with relation to origin (center of field)
         red1.setLocation(OpenGLMatrix
                 .translation(quadField, -halfField, mmTargetHeight)
@@ -569,7 +590,7 @@ telemetry.addData("Targeting ", targetCoordsmm[0], targetCoordsmm[1], targetCoor
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
         targetsSkyStone.activate();
-        while (!isStopRequested()) {
+        while (!isStopRequested() && opModeIsActive()) {
 
             // check all the trackable targets to see which one (if any) is visible.
             updateLastLocation ();// Provide feedback as to where the robot is located (if we know).
@@ -582,5 +603,3 @@ telemetry.addData("Targeting ", targetCoordsmm[0], targetCoordsmm[1], targetCoor
         targetsSkyStone.deactivate();
     }
 }
-
-//I've definitely screwed something up, the problem is, I don't know what. This code feels messy and I don't know enough about Java to clean it up. But the idea looks doable.
