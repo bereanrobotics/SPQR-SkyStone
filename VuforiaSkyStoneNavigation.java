@@ -21,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -208,6 +209,11 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             this.rightBackDrive.setPower(0);
         }
         robotActivity = "Robot is in the desired posistion, yay! ;)";
+        try {
+        TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException ie) {
+        Thread.currentThread().interrupt();
+        }
     }
     
     public void updateLastLocation () {
