@@ -181,7 +181,14 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
         boolean returnBoolean;
         if (type == "angle"){
+                    telemetry.addData("Returning angle for check posistion", returnAngleB);
+                    telemetry.update();
                     returnBoolean = (returnAngleB);
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
         } else {
             returnBoolean = (returnCoordsB);
         }
