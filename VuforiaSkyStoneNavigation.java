@@ -261,8 +261,8 @@ double angleVariance = 0;
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             telemetry.addData("Robot is...", robotActivity);
-            telemetry.addData("Targeting ", "{X, Y, Z} = %.0f, %.0f, %.0f", targetCoordsmm[0], targetCoordsmm[1], targetCoordsmm[2]);
-            telemetry.addData("Distance from target in X/Y/Direct", "{X, Y, Direct} = %.0f, %.0f, %.0f", xDistance, yDistance, distance);
+            telemetry.addData("Targeting (in)", "{X, Y, Z} = %.0f, %.0f, %.0f", targetCoordsmm[0], targetCoordsmm[1], targetCoordsmm[2]);
+            telemetry.addData("Distance from target in (mm) X/Y/Direct", "{X, Y, Direct} = %.0f, %.0f, %.0f", xDistance, yDistance, distance);
         }
         else {
             telemetry.addData("Visible Target", "none");
