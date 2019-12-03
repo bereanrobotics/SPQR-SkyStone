@@ -185,7 +185,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
                     telemetry.update();
                     returnBoolean = (returnAngleB);
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(0);
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
