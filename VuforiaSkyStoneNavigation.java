@@ -292,7 +292,8 @@ public void howAngle (double targetAngle) {
 
 updateLastLocation()
 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-double variance = targetAngle - 
+double variance = abs((targetAngle - desiredAngle));
+
 
 }
 
