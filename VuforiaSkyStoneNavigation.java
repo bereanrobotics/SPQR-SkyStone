@@ -118,10 +118,10 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
-        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         while(checkVuforiaPosistion("angle", heading, 0, 0) && opModeIsActive()){
             robotActivity = "Turning";
-            if (abs(rotation.thirdAngle - heading) > 180 + angleTolerance){ //this is to make the turn direction the fastest, may not be functional
+            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+            if (abs(rotation.thirdAngle - heading) > 180){ //this is to make the turn direction the fastest, may not be functional
                 this.leftFrontDrive.setPower(-speed);
                 this.leftBackDrive.setPower(-speed);
                 this.rightFrontDrive.setPower(speed);
