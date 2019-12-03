@@ -144,7 +144,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             this.rightBackDrive.setPower(speed);
             howClose(targetX, targetY, targetZ);
             try {
-                TimeUnit.MILLISECONDS.sleep(25);
+                TimeUnit.MILLISECONDS.sleep(20);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }
