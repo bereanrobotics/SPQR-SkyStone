@@ -106,7 +106,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
-    private double TargetXmm = 0;
+    
+private double TargetXmm = 0;
     private double TargetYmm = 0;
     private double TargetZmm = 0;
     double[] targetCoordsmm = new double[]{TargetXmm, TargetYmm ,TargetZmm};
@@ -284,6 +285,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         distance = crowFlies;
         updateLastLocation();
     }
+
+public void
 
     public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
