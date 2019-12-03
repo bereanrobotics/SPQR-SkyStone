@@ -138,16 +138,16 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         for (int i = 0; checkVuforiaPosistion ("position", targetX, targetY, targetZ) && opModeIsActive() && i < 10; i++) {
             robotActivity = "Driving Forward";
-            this.leftFrontDrive.setPower(speed);
-            this.leftBackDrive.setPower(speed);
-            this.rightFrontDrive.setPower(speed);
-            this.rightBackDrive.setPower(speed);
-            howClose(targetX, targetY, targetZ);
             try {
                 TimeUnit.MILLISECONDS.sleep(20);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }
+            this.leftFrontDrive.setPower(speed);
+            this.leftBackDrive.setPower(speed);
+            this.rightFrontDrive.setPower(speed);
+            this.rightBackDrive.setPower(speed);
+            howClose(targetX, targetY, targetZ);
         }
     }
     
