@@ -290,10 +290,13 @@ double angleVariance = 0;
 
 public void howAngle (double targetAngle) {
 
-updateLastLocation()
+updateLastLocation();
 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
 double variance = abs((targetAngle - desiredAngle));
 
+angleVariance = variance;
+
+updateLastLocation();
 
 }
 
