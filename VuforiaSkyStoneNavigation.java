@@ -106,13 +106,17 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
-    private double TargetXmm = 0;
+    
+private double TargetXmm = 0;
     private double TargetYmm = 0;
     private double TargetZmm = 0;
     double[] targetCoordsmm = new double[]{TargetXmm, TargetYmm ,TargetZmm};
     double xDistance = 0;
     double yDistance = 0;
     double distance = 0;
+
+double desiredAngle = 0;
+double angleVariance = 0;
 
     List<VuforiaTrackable> allTrackables;
 
@@ -204,7 +208,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         VectorF translation = lastLocation.getTranslation();
         double xLength = (translation.get(0) - TargetXmm); //delta x
         double yLength = (translation.get(1) - TargetYmm); //delta y
-        double desiredAngle = toDegrees(atan2(yLength, xLength));
+        desiredAngle = toDegrees(atan2(yLength, xLength));
         robotActivity = "Checking if not in area if true, it is not: " + checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
         while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
@@ -269,7 +273,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     public void howClose (double targetX, double targetY, double targetZ){
         updateLastLocation();
         VectorF translation = lastLocation.getTranslation();
-        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
 
         double deltaX = abs((targetX - translation.get(0)));
         double deltaY = abs((targetY - translation.get(1)));
@@ -284,6 +287,17 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         distance = crowFlies;
         updateLastLocation();
     }
+
+public void howAngle (double targetAngle) {
+
+updateLastLocation();
+Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+double variance = abs((targetAngle - desiredAngle));
+
+angleVariance = variance;
+
+updateLastLocation();
+}
 
     public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
