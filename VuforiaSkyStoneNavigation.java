@@ -297,7 +297,6 @@ double variance = abs((targetAngle - desiredAngle));
 angleVariance = variance;
 
 updateLastLocation();
-
 }
 
     public void initializeVuforia () {
