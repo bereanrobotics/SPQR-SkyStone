@@ -115,6 +115,9 @@ private double TargetXmm = 0;
     double yDistance = 0;
     double distance = 0;
 
+double desiredAngle = 0;
+double angleVariance = 0;
+
     List<VuforiaTrackable> allTrackables;
 
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
@@ -205,7 +208,7 @@ private double TargetXmm = 0;
         VectorF translation = lastLocation.getTranslation();
         double xLength = (translation.get(0) - TargetXmm); //delta x
         double yLength = (translation.get(1) - TargetYmm); //delta y
-        double desiredAngle = toDegrees(atan2(yLength, xLength));
+        desiredAngle = toDegrees(atan2(yLength, xLength));
         robotActivity = "Checking if not in area if true, it is not: " + checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
         while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
@@ -270,7 +273,6 @@ private double TargetXmm = 0;
     public void howClose (double targetX, double targetY, double targetZ){
         updateLastLocation();
         VectorF translation = lastLocation.getTranslation();
-        Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
 
         double deltaX = abs((targetX - translation.get(0)));
         double deltaY = abs((targetY - translation.get(1)));
@@ -286,7 +288,13 @@ private double TargetXmm = 0;
         updateLastLocation();
     }
 
-public void
+public void howAngle (double targetAngle) {
+
+updateLastLocation()
+Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+double variance = targetAngle - 
+
+}
 
     public void initializeVuforia () {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
