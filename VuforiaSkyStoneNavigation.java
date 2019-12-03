@@ -97,7 +97,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //Constants for autonomous
     private static final double mmTolerance = 100;
     private static final double radianTolerance = (Math.PI/180);
-    private static final double angleTolerance = 3;
+    private static final double angleTolerance = 5;
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
@@ -122,15 +122,15 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
             robotActivity = "Turning";
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if (abs(rotation.thirdAngle - heading) > 180){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(-speed);
-                this.leftBackDrive.setPower(-speed);
-                this.rightFrontDrive.setPower(speed);
-                this.rightBackDrive.setPower(speed);
-            } else {
                 this.leftFrontDrive.setPower(speed);
                 this.leftBackDrive.setPower(speed);
                 this.rightFrontDrive.setPower(-speed);
                 this.rightBackDrive.setPower(-speed);
+            } else {
+                this.leftFrontDrive.setPower(-speed);
+                this.leftBackDrive.setPower(-speed);
+                this.rightFrontDrive.setPower(speed);
+                this.rightBackDrive.setPower(speed);
             }
         }
     }
