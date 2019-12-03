@@ -136,13 +136,18 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     }
     
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ) && opModeIsActive()) {
+        for (int i = 0; checkVuforiaPosistion ("position", targetX, targetY, targetZ) && opModeIsActive() && i < 10; i++) {
             robotActivity = "Driving Forward";
             this.leftFrontDrive.setPower(speed);
             this.leftBackDrive.setPower(speed);
             this.rightFrontDrive.setPower(speed);
             this.rightBackDrive.setPower(speed);
             howClose(targetX, targetY, targetZ);
+            try {
+                TimeUnit.MILLISECONDS.sleep(25);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
     
@@ -194,18 +199,18 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         double yLength = (translation.get(1) - TargetYmm); //delta y
         double desiredAngle = toDegrees(atan2(yLength, xLength));
         robotActivity = "Checking if not in area if true, it is not: " + checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
-        while (checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
+        while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
             } else{ //Rotate to face point
                 setHeading(desiredAngle);
             }
             goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
-            this.leftFrontDrive.setPower(0);
-            this.leftBackDrive.setPower(0);
-            this.rightFrontDrive.setPower(0);
-            this.rightBackDrive.setPower(0);
         }
+        this.leftFrontDrive.setPower(0);
+        this.leftBackDrive.setPower(0);
+        this.rightFrontDrive.setPower(0);
+        this.rightBackDrive.setPower(0);
         robotActivity = "Robot is in the desired posistion, yay! ;)";
         try {
         TimeUnit.SECONDS.sleep(5);
