@@ -209,7 +209,6 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
-            } else{ //Rotate to face point
                 setHeading(desiredAngle);
             }
             goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
