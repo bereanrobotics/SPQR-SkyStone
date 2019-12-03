@@ -193,11 +193,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
         double xLength = (translation.get(0) - TargetXmm); //delta x
         double yLength = (translation.get(1) - TargetYmm); //delta y
         double desiredAngle = toDegrees(atan2(yLength, xLength));
-        boolean notTranslation = checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        robotActivity = "Checking if not in area if true, it is not: " + notTranslation;
-        if (notTranslation){ //see if already within target area, if is, then stop
-            robotActivity = "Checking if oriented correctly...";
+        robotActivity = "Checking if not in area if true, it is not: " + checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
+        while (checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
+            robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
             } else{ //Rotate to face point
                 setHeading(desiredAngle);
