@@ -97,7 +97,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //Constants for autonomous
     private static final double mmTolerance = 100;
     private static final double radianTolerance = (Math.PI/180);
-    private static final double angleTolerance = 5;
+    private static final double angleTolerance = 15;
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
