@@ -223,7 +223,7 @@ double angleVariance = 0;
         this.rightBackDrive.setPower(0);
         robotActivity = "Robot is in the desired posistion, yay! ;)";
         try {
-        TimeUnit.SECONDS.sleep(5);
+        TimeUnit.SECONDS.sleep(4);
         } catch (InterruptedException ie) {
         Thread.currentThread().interrupt();
         }
