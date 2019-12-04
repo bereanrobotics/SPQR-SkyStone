@@ -128,15 +128,15 @@ double angleVariance = 0;
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if ((rotation.thirdAngle - heading) > 0){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(-speed);
-                this.leftBackDrive.setPower(-speed);
-                this.rightFrontDrive.setPower(speed);
-                this.rightBackDrive.setPower(speed);
-            } else {
                 this.leftFrontDrive.setPower(speed);
                 this.leftBackDrive.setPower(speed);
                 this.rightFrontDrive.setPower(-speed);
                 this.rightBackDrive.setPower(-speed);
+            } else {
+                this.leftFrontDrive.setPower(-speed);
+                this.leftBackDrive.setPower(-speed);
+                this.rightFrontDrive.setPower(speed);
+                this.rightBackDrive.setPower(speed);
             }
         }
     }
