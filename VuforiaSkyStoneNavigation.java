@@ -28,6 +28,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 import static org.firstinspires.ftc.teamcode.Constants.mmPerInch;
 import static java.lang.Math.*;
 
@@ -67,7 +68,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     }
 
 
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
 
     private static final String VUFORIA_KEY =
@@ -298,7 +299,7 @@ public void howAngle (double targetAngle) {
 
 updateLastLocation();
 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-double variance = abs((rotation.thirdAngle - desiredAngle));
+double variance = abs((rotation.thirdAngle - targetAngle));
 
 angleVariance = variance;
 
