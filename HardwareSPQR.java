@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -83,7 +84,7 @@ public class HardwareSPQR {
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
+        this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
         this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
        
@@ -109,7 +110,7 @@ public class HardwareSPQR {
         //Reset servo positions
         this.leftDrop.setPosition(1);
         this.rightDrop.setPosition(1);
-        this.blockBeater.setPosition(1);   
+        this.blockBeater.setPosition(1);
         this.rampDrop.setPosition(1);
 
         /* Initialize sensors */
@@ -153,5 +154,28 @@ public class HardwareSPQR {
     public void forward(){
         if (!robotIsInitialized) return;
         this.setPowers(1.0);
+    }
+
+    /* Intake movement */
+
+    //Speed of the intake
+    private double intakeSpeed = 0.5;
+
+    //Suck in blocks
+    public void intakeIn(){
+        this.leftIntake.setPower(this.intakeSpeed);
+        this.rightIntake.setPower(this.intakeSpeed);
+    }
+
+    //Push out blocks
+    public void intakeOut(){
+        this.leftIntake.setPower(-this.intakeSpeed);
+        this.rightIntake.setPower(-this.intakeSpeed);
+    }
+
+    //Stop intake
+    public void stopIntake(){
+        this.leftIntake.setPower(0);
+        this.rightIntake.setPower(0);
     }
 }

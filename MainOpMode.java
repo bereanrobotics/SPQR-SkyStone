@@ -89,19 +89,12 @@ public class MainOpMode extends OpMode {
         }
 
         /* Intake */
-        if (gamepad2.left_trigger > 0.1){ //Left trigger first so that right trigger overrides
-            this.robot.leftIntake.setPower(-1);
-            this.robot.rightIntake.setPower(-1);
-        } else {
-            this.robot.leftIntake.setPower(0);
-            this.robot.rightIntake.setPower(0);
-        }
         if (gamepad2.right_trigger > 0.1){
-            this.robot.leftIntake.setPower(1);
-            this.robot.rightIntake.setPower(1);
+            this.robot.intakeIn();
+        } else if (gamepad2.left_trigger > 0.1){
+            this.robot.intakeOut();
         } else {
-            this.robot.leftIntake.setPower(0);
-            this.robot.rightIntake.setPower(0);
+            this.robot.stopIntake();
         }
 
         /* Grab blocks */
