@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.Dir;
 
@@ -14,17 +14,7 @@ import org.firstinspires.ftc.teamcode.Dir;
 @TeleOp(name="Main OpMode")
 public class MainOpMode extends OpMode {
 
-    //Hardware declaration
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
-    private DcMotor rightIntake = null;
-    private DcMotor leftIntake = null;
-    private DcMotor armMotor = null;
-    private Servo blockBeater = null;
-    private Servo blockGrabber = null;
-    private Servo armBalancer = null;
+    private HardwareSPQR robot = new HardwareSPQR();
 
     //Speed of the robot
     private double speed = 1.0;
@@ -33,51 +23,16 @@ public class MainOpMode extends OpMode {
     private int[] levels = {0, 0, 0, 0};
     
     //Level counter
-    private int levlCounter = 0;
+    private int levelCounter = 0;
+
+    //If we are locking to levels
+    private boolean isArmLocked = false;
 
     @Override
     public void init() {
 
-        /* Initialize motors*/
-
-        //Define motors
-        this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-        this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        this.leftIntake = hardwareMap.get(DcMotor.class, "left_intake");
-        this.rightIntake = hardwareMap.get(DcMotor.class, "right_intake");
-        this.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
-
-        //Set all motors to use or not use encoders
-        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //Sets motor direction
-        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.leftIntake.setDirection(DcMotor.Direction.REVERSE);
-        this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
-        this.armMotor.setDirection(DcMotor.Direction.FORWARD);
-
-        /* Initialize servos */
-
-        //Define servos
-        this.blockBeater = hardwareMap.get(Servo.class, "block_beater");
-        this.blockGrabber = hardwareMap.get(Servo.class, "block_grabber");
-        this.armBalancer = hardwareMap.get(Servo.class, "arm_balancer");
-
-        //Reset servo positions
-        this.blockBeater.setPosition(1);
-        this.blockGrabber.setPosition(1);
+        //Initialize hardware
+        this.robot.init(hardwareMap);
     }
 
     @Override
@@ -86,32 +41,32 @@ public class MainOpMode extends OpMode {
         /* Left and right bumper movement */
         if (gamepad1.left_bumper){
             if (gamepad1.right_bumper) return;
-            this.strafe(Dir.LEFT, 1.0);
+            this.robot.strafe(Dir.LEFT, 1.0);
         }
         if (gamepad1.right_bumper) {
             if (gamepad1.left_bumper) return;
-            this.strafe(Dir.RIGHT, 1.0);
+            this.robot.strafe(Dir.RIGHT, 1.0);
         }
 
         /* Tank movement */
         double right = -gamepad1.left_stick_y * this.speed;
         double left = -gamepad1.right_stick_y * this.speed;
 
-        this.leftFrontDrive.setPower(left);
-        this.leftBackDrive.setPower(left);
-        this.rightFrontDrive.setPower(right);
-        this.rightBackDrive.setPower(right);
+        this.robot.leftFrontDrive.setPower(left);
+        this.robot.leftBackDrive.setPower(left);
+        this.robot.rightFrontDrive.setPower(right);
+        this.robot.rightBackDrive.setPower(right);
 
         /* Left and right joystick movement */
         double leftPower = gamepad1.left_stick_x;
         double rightPower = gamepad1.right_stick_x;
 
         if ((leftPower >= 0.08 || leftPower <= -0.08) && (rightPower >= 0.08 || rightPower <= -0.08)){
-            double power = (leftPower + rightPower) / 2;
+            double power = ((leftPower + rightPower) / 2) * this.speed;
             if (leftPower < 0){
-                this.strafe(Dir.LEFT, power);
+                this.robot.strafe(Dir.LEFT, power);
             } else {
-                this.strafe(Dir.RIGHT, power);
+                this.robot.strafe(Dir.RIGHT, power);
             }
         }
 
@@ -126,52 +81,80 @@ public class MainOpMode extends OpMode {
         }
 
         /* Move block beater */
-        if (gamepad2.dpad_up) {
-            this.blockBeater.setPosition(-1);
+        if (gamepad2.dpad_left) {
+            this.robot.blockBeater.setPosition(-1);
         }
-        if (gamepad2.dpad_down){
-            this.blockBeater.setPosition(1);
+        if (gamepad2.dpad_right){
+            this.robot.blockBeater.setPosition(1);
         }
 
         /* Intake */
         if (gamepad2.left_trigger > 0.1){ //Left trigger first so that right trigger overrides
-            this.leftIntake.setPower(-1);
-            this.rightIntake.setPower(-1);
+            this.robot.leftIntake.setPower(-1);
+            this.robot.rightIntake.setPower(-1);
         } else {
-            this.leftIntake.setPower(0);
-            this.rightIntake.setPower(0);
+            this.robot.leftIntake.setPower(0);
+            this.robot.rightIntake.setPower(0);
         }
         if (gamepad2.right_trigger > 0.1){
-            this.leftIntake.setPower(1);
-            this.rightIntake.setPower(1);
+            this.robot.leftIntake.setPower(1);
+            this.robot.rightIntake.setPower(1);
         } else {
-            this.leftIntake.setPower(0);
-            this.rightIntake.setPower(0);
+            this.robot.leftIntake.setPower(0);
+            this.robot.rightIntake.setPower(0);
         }
 
         /* Grab blocks */
         if (gamepad2.a){
-            this.blockGrabber.setPosition(-1);
+            this.robot.blockGrabber.setPosition(-1);
         }
         if (gamepad2.b){
-            this.blockGrabber.setPosition(1);
+            this.robot.blockGrabber.setPosition(1);
         }
 
         /* Arm movement */
-        
-        //Adjust minutely
-        this.armMotor.setPower(-gamepad2.right_stick_y / 10);
+
+        //Reset arm zero
+        if (gamepad2.right_bumper){
+            DcMotor.RunMode previousMode = this.robot.armMotor.getMode();
+            this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            this.robot.armMotor.setMode(previousMode);
+        }
+
+        //Toggle arm lock or unlock
+        if (gamepad2.x){
+            this.isArmLocked = false;
+        }
+        if (gamepad2.y){
+            this.isArmLocked = true;
+        }
+
+        //Change levels up or down
+        if (gamepad2.dpad_up){
+            this.levelCounter += (this.levelCounter < this.levels.length - 1) ? 1 : 0;
+        }
+        if (gamepad2.dpad_down){
+            this.levelCounter -= (this.levelCounter > 0) ? 1 : 0;
+        }
+
+        //Move to level
+        if (this.isArmLocked){
+            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.robot.armMotor.setTargetPosition(levels[levelCounter]);
+            if (this.robot.armMotor.isBusy()){
+                this.robot.armMotor.setPower(0.3);
+            }else{
+                this.robot.armMotor.setPower(0);
+            }
+        }else{
+
+            //Adjust minutely
+            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
+        }
 
         /* Telementry data */
-        telemetry.addData("Arm", this.armMotor.getCurrentPosition());
-    }
-
-    /* Strafe abstraction */
-    private void strafe(Dir direction, double power){
-        power *= this.speed;
-        this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power : -power);
-        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power : -power);
-        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power  : power);
+        telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
+        telemetry.addData("Level", this.levelCounter);
     }
 }
