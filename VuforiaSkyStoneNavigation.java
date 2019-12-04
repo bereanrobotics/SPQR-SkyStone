@@ -74,7 +74,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
-    private static final double speed = 0.1;
+    private static final double speed = 0.2;
     private String robotActivity;
 
     //Define constants for conversions
@@ -98,7 +98,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //Constants for autonomous
     private static final double mmTolerance = 100;
     private static final double radianTolerance = (Math.PI/180);
-    private static final double angleTolerance = 15;
+    private static final double angleTolerance = 10;
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
@@ -128,15 +128,15 @@ double angleVariance = 0;
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if (abs(rotation.thirdAngle - heading) > 180){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(speed);
-                this.leftBackDrive.setPower(speed);
-                this.rightFrontDrive.setPower(-speed);
-                this.rightBackDrive.setPower(-speed);
-            } else {
                 this.leftFrontDrive.setPower(-speed);
                 this.leftBackDrive.setPower(-speed);
                 this.rightFrontDrive.setPower(speed);
                 this.rightBackDrive.setPower(speed);
+            } else {
+                this.leftFrontDrive.setPower(speed);
+                this.leftBackDrive.setPower(speed);
+                this.rightFrontDrive.setPower(-speed);
+                this.rightBackDrive.setPower(-speed);
             }
         }
     }
