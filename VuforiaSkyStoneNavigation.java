@@ -124,6 +124,7 @@ double angleVariance = 0;
         updateLastLocation ();
         while(checkVuforiaPosistion("angle", heading, 0, 0) && opModeIsActive()){
             robotActivity = "Turning";
+            howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if (abs(rotation.thirdAngle - heading) > 180){ //this is to make the turn direction the fastest, may not be functional
                 this.leftFrontDrive.setPower(speed);
