@@ -4,6 +4,8 @@ package org.firstinspires.ftc.teamcode;
 Shamelessly borrowed and improved upon from FTC examples. In theory, it might work.
 */
 
+//SUCCESS!
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
