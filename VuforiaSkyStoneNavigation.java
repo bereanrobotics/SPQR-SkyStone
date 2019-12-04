@@ -185,8 +185,6 @@ double angleVariance = 0;
 
         boolean returnBoolean;
         if (type == "angle"){
-                    telemetry.addData("Returning angle for check posistion", returnAngleB);
-                    telemetry.update();
                     returnBoolean = (returnAngleB);
                 try {
                     TimeUnit.SECONDS.sleep(0);
