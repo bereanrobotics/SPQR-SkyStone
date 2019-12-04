@@ -200,8 +200,8 @@ double angleVariance = 0;
     public double getHeading (double targetX, double targetY, double targetZ){
         updateLastLocation();
         VectorF translation = lastLocation.getTranslation();
-        double xLength = (translation.get(0) - targetX); //delta x
-        double yLength = (translation.get(1) - targetY); //delta y
+        double xLength = (targetX - translation.get(0)); //delta x
+        double yLength = (targetY - translation.get(1)); //delta y
         double returnAngle = toDegrees(atan2(yLength, xLength));
         return returnAngle;
     }
