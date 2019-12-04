@@ -196,19 +196,25 @@ double angleVariance = 0;
         }
         return returnBoolean;
     }
-    
+
+    public double getHeading (double targetX, double targetY, double targetZ){
+        updateLastLocation();
+        VectorF translation = lastLocation.getTranslation();
+        double xLength = (translation.get(0) - targetX); //delta x
+        double yLength = (translation.get(1) - targetY); //delta y
+        double returnAngle = toDegrees(atan2(yLength, xLength));
+        return returnAngle;
+    }
+
     public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
         TargetZmm = TargetZ * mmPerInch;
         targetCoordsmm = new double[]{TargetXmm, TargetYmm, TargetZmm};
         updateLastLocation ();
-        VectorF translation = lastLocation.getTranslation();
-        double xLength = (translation.get(0) - TargetXmm); //delta x
-        double yLength = (translation.get(1) - TargetYmm); //delta y
-        desiredAngle = toDegrees(atan2(yLength, xLength));
         robotActivity = "Checking if not in area if true, it is not: " + checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
         while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
+            desiredAngle = getHeading(TargetXmm, TargetYmm,TargetZmm);
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
                 setHeading(desiredAngle);
