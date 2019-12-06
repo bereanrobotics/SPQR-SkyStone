@@ -212,7 +212,7 @@ double angleVariance = 0;
         targetCoordsmm = new double[]{TargetXmm, TargetYmm, TargetZmm};
         updateLastLocation ();
         robotActivity = "Checking if not in area";
-        while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm,mmTolerance)){ //see if already within target area, if is, then stop
+        while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm,mmTolerance) && opModeIsActive()){ //see if already within target area, if is, then stop
             desiredAngle = getHeading(TargetXmm, TargetYmm,TargetZmm);
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
@@ -222,7 +222,7 @@ double angleVariance = 0;
         }
         boolean endAngleCheck = 180 >= endAngle && endAngle >= -180;
         double reducedAngleTolerance = angleTolerance/4;
-        while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, reducedAngleTolerance)) {
+        while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, reducedAngleTolerance) && opModeIsActive()) {
             setHeading(endAngle, reducedAngleTolerance);
         }
         this.leftFrontDrive.setPower(0);
