@@ -677,7 +677,7 @@ updateLastLocation();
             // check all the trackable targets to see which one (if any) is visible.
             updateLastLocation ();// Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
-                gotoVuforiaPosistion(-7, 0, 0, 181);
+                gotoVuforiaPosistion(-7, 0, 0, 0);
             }
         }
 
