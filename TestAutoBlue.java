@@ -9,7 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 /**
- * This OpMode will mainly be used in the telemetry portions of competitions
+ * This OpMode stops the robot over the center blue line.
+ *
+ * @author Arkin Solomon
  */
 @Autonomous(name="Test Autonomous (Blue)")
 public class TestAutoBlue extends LinearOpMode {
