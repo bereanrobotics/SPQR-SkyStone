@@ -125,7 +125,7 @@ double angleVariance = 0;
 
     public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
-        while(checkVuforiaPosistion("angle", heading, 0, 0) && opModeIsActive()){
+        while(checkVuforiaPosistion("angle", heading, 0, 0, angleTolerance) && opModeIsActive()){
             robotActivity = "Turning";
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
@@ -144,13 +144,8 @@ double angleVariance = 0;
     }
     
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        for (int i = 0; checkVuforiaPosistion ("position", targetX, targetY, targetZ) && opModeIsActive() && i < 10; i++) {
+        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ, mmTolerance) && opModeIsActive()) {
             robotActivity = "Driving Forward";
-            try {
-                TimeUnit.MILLISECONDS.sleep(20);
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-            }
             this.leftFrontDrive.setPower(speed);
             this.leftBackDrive.setPower(speed);
             this.rightFrontDrive.setPower(speed);
@@ -159,7 +154,7 @@ double angleVariance = 0;
         }
     }
     
-    public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ) {
+    public boolean checkVuforiaPosistion (String type, double TargetAngleorX, double TargetY, double TargetZ, double tolerance) {
         type = type.toLowerCase(Locale.ENGLISH);
         updateLastLocation();
         VectorF translation = lastLocation.getTranslation();
@@ -167,18 +162,18 @@ double angleVariance = 0;
 
         //splitting the checks into bite size pieces in order to evaluate what is going wrong.
 
-        double anglePlusTolerance = TargetAngleorX + angleTolerance;
-        double angleMinusTolerance = TargetAngleorX - angleTolerance;
+        double anglePlusTolerance = TargetAngleorX + tolerance;
+        double angleMinusTolerance = TargetAngleorX - tolerance;
 
         boolean angleOverTolerance = anglePlusTolerance < rotation.thirdAngle;
         boolean angleUnderTolerance = angleMinusTolerance > rotation.thirdAngle;
 
         boolean returnAngleB = angleOverTolerance || angleUnderTolerance;
 
-        double xPlusTolerance = TargetAngleorX + mmTolerance;
-        double xMinusTolerance = TargetAngleorX - mmTolerance;
-        double yPlusTolerance = TargetY + mmTolerance;
-        double yMinusTolerance = TargetY - mmTolerance;
+        double xPlusTolerance = TargetAngleorX + tolerance;
+        double xMinusTolerance = TargetAngleorX - tolerance;
+        double yPlusTolerance = TargetY + tolerance;
+        double yMinusTolerance = TargetY - tolerance;
 
         boolean xOverTolerance = xPlusTolerance < translation.get(0);
         boolean xUnderTolerance = xMinusTolerance > translation.get(0);
@@ -216,11 +211,11 @@ double angleVariance = 0;
         TargetZmm = TargetZ * mmPerInch;
         targetCoordsmm = new double[]{TargetXmm, TargetYmm, TargetZmm};
         updateLastLocation ();
-        robotActivity = "Checking if not in area if true, it is not: " + checkVuforiaPosistion ("position", TargetXmm, TargetYmm, TargetZmm);
-        while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm)){ //see if already within target area, if is, then stop
+        robotActivity = "Checking if not in area";
+        while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm,mmTolerance)){ //see if already within target area, if is, then stop
             desiredAngle = getHeading(TargetXmm, TargetYmm,TargetZmm);
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
-            if (checkVuforiaPosistion("angle", desiredAngle, 0, 0)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
+            if (checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
                 setHeading(desiredAngle);
             }
             goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
