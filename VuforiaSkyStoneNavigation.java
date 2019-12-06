@@ -38,6 +38,7 @@ import static java.lang.Math.*;
 
 /* 
  * This file uses vuforia to move places.
+ *
  * @author Owen Peterson
  */
 @Autonomous(name="Vuforia Test")
@@ -49,26 +50,8 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
-    
-    public void initiate() { //this is bad and should be done in hardware, same with above defining of dcmotor
 
-        //Initializes motor
-        this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-        this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-
-        //Sets motor direction
-        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-    }
-
+    private HardwareSPQR robot = new HardwareSPQR();
 
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
@@ -130,15 +113,15 @@ double angleVariance = 0;
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if ((rotation.thirdAngle - heading) > 0){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(speed);
-                this.leftBackDrive.setPower(speed);
-                this.rightFrontDrive.setPower(-speed);
-                this.rightBackDrive.setPower(-speed);
+                this.robot.leftFrontDrive.setPower(speed);
+                this.robot.leftBackDrive.setPower(speed);
+                this.robot.rightFrontDrive.setPower(-speed);
+                this.robot.rightBackDrive.setPower(-speed);
             } else {
-                this.leftFrontDrive.setPower(-speed);
-                this.leftBackDrive.setPower(-speed);
-                this.rightFrontDrive.setPower(speed);
-                this.rightBackDrive.setPower(speed);
+                this.robot.leftFrontDrive.setPower(-speed);
+                this.robot.leftBackDrive.setPower(-speed);
+                this.robot.rightFrontDrive.setPower(speed);
+                this.robot.rightBackDrive.setPower(speed);
             }
         }
     }
@@ -146,10 +129,7 @@ double angleVariance = 0;
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         while (checkVuforiaPosistion ("position", targetX, targetY, targetZ, mmTolerance) && opModeIsActive()) {
             robotActivity = "Driving Forward";
-            this.leftFrontDrive.setPower(speed);
-            this.leftBackDrive.setPower(speed);
-            this.rightFrontDrive.setPower(speed);
-            this.rightBackDrive.setPower(speed);
+            this.robot.setPowers(speed);
             howClose(targetX, targetY, targetZ);
         }
     }
@@ -225,10 +205,7 @@ double angleVariance = 0;
         while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, reducedAngleTolerance) && opModeIsActive()) {
             setHeading(endAngle, reducedAngleTolerance);
         }
-        this.leftFrontDrive.setPower(0);
-        this.leftBackDrive.setPower(0);
-        this.rightFrontDrive.setPower(0);
-        this.rightBackDrive.setPower(0);
+        this.robot.setPowers(0);
         robotActivity = "Robot is in the desired posistion, yay! ;)";
         try {
         TimeUnit.SECONDS.sleep(4);
@@ -483,7 +460,7 @@ updateLastLocation();
 
         if (!isInitialized){
             isInitialized = true;
-            initiate();
+            this.robot.init(hardwareMap);
         }
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
