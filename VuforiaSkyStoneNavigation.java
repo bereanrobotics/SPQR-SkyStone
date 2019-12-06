@@ -100,7 +100,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //Constants for autonomous
     private static final double mmTolerance = 100;
     private static final double radianTolerance = (Math.PI/180);
-    private static final double angleTolerance = 10;
+    private static final double angleTolerance = 7;
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
@@ -123,9 +123,9 @@ double angleVariance = 0;
 
     List<VuforiaTrackable> allTrackables;
 
-    public void setHeading (double heading){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
+    public void setHeading (double heading, double tolerance){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
-        while(checkVuforiaPosistion("angle", heading, 0, 0, angleTolerance) && opModeIsActive()){
+        while(checkVuforiaPosistion("angle", heading, 0, 0, tolerance) && opModeIsActive()){
             robotActivity = "Turning";
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
@@ -205,7 +205,7 @@ double angleVariance = 0;
         return returnAngle;
     }
 
-    public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
+    public void gotoVuforiaPosistion(double TargetX, double TargetY, double TargetZ, double endAngle){ //Set a posistion and travel to it. Requires constant Vuforia updates, unsure if this has that (needs testing). This does not allow actions to be taken inside of this
         TargetXmm = TargetX * mmPerInch;
         TargetYmm = TargetY * mmPerInch;
         TargetZmm = TargetZ * mmPerInch;
@@ -216,9 +216,14 @@ double angleVariance = 0;
             desiredAngle = getHeading(TargetXmm, TargetYmm,TargetZmm);
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
-                setHeading(desiredAngle);
+                setHeading(desiredAngle, angleTolerance);
             }
             goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
+        }
+        boolean endAngleCheck = 180 >= endAngle && endAngle >= -180;
+        double reducedAngleTolerance = angleTolerance/4;
+        while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, reducedAngleTolerance)) {
+            setHeading(endAngle, reducedAngleTolerance);
         }
         this.leftFrontDrive.setPower(0);
         this.leftBackDrive.setPower(0);
@@ -672,7 +677,7 @@ updateLastLocation();
             // check all the trackable targets to see which one (if any) is visible.
             updateLastLocation ();// Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
-                gotoVuforiaPosistion(-7, 0, 0);
+                gotoVuforiaPosistion(-7, 0, 0, 181);
             }
         }
 
