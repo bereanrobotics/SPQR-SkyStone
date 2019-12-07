@@ -130,9 +130,16 @@ double angleVariance = 0;
 
     public void setHeading (double heading, double tolerance){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
+        double powerMultiplier = 1.1;
+        double powerMultiplierModifier = -0.05;
         while(checkVuforiaPosistion("angle", heading, 0, 0, tolerance) && opModeIsActive()){
             robotActivity = "Turning";
             howAngle(heading);
+            powerMultiplier += powerMultiplierModifier;
+            if (powerMultiplier <= 0.5 || powerMultiplier >= 1.1){
+                powerMultiplierModifier = -powerMultiplierModifier/1.5;
+            }
+            updateLastLocation();
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if ((rotation.thirdAngle - heading) > 0){ //this is to make the turn direction the fastest, may not be functional
                 this.leftFrontDrive.setPower(-speed);
@@ -159,10 +166,10 @@ double angleVariance = 0;
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         if (checkVuforiaPosistion ("position", targetX, targetY, targetZ, mmTolerance) && opModeIsActive()) {
             robotActivity = "Driving Forward";
-            this.leftFrontDrive.setPower(-speed);
-            this.leftBackDrive.setPower(-speed);
-            this.rightFrontDrive.setPower(-speed);
-            this.rightBackDrive.setPower(-speed);
+            this.leftFrontDrive.setPower(-speed*0.5);
+            this.leftBackDrive.setPower(-speed*0.5);
+            this.rightFrontDrive.setPower(-speed*0.5);
+            this.rightBackDrive.setPower(-speed*0.5);
             /*this.robot.setPowers(-speed);*/
             howClose(targetX, targetY, targetZ);
         }
@@ -216,6 +223,7 @@ double angleVariance = 0;
         double xLength = (targetX - translation.get(0)); //delta x
         double yLength = (targetY - translation.get(1)); //delta y
         double returnAngle = toDegrees(atan2(yLength, xLength));
+        updateLastLocation();
         return returnAngle;
     }
 
@@ -246,7 +254,7 @@ double angleVariance = 0;
         /*this.robot.setPowers(0);*/
         robotActivity = "Robot is in the desired posistion, yay! ;)";
         try {
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(0);
         } catch (InterruptedException ie) {
         Thread.currentThread().interrupt();
         }
