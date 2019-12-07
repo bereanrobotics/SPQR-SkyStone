@@ -82,6 +82,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final double hexaBotSpeed = -0.15;
     private static final double spqrBotSpeed = 0.5;
     private static final double speed = hexaBotSpeed;
+    double powerMultiplier;
     private String robotActivity;
 
     //Define constants for conversions
@@ -115,7 +116,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
     
-private double TargetXmm = 0;
+    private double TargetXmm = 0;
     private double TargetYmm = 0;
     private double TargetZmm = 0;
     double[] targetCoordsmm = new double[]{TargetXmm, TargetYmm ,TargetZmm};
@@ -130,11 +131,11 @@ double angleVariance = 0;
 
     public void setHeading (double heading, double tolerance){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
         updateLastLocation ();
-        double powerMultiplier = 1.1;
+        powerMultiplier = 1.1;
         double powerMultiplierModifier = -0.05;
-        while(checkVuforiaPosistion("angle", heading, 0, 0, tolerance) && opModeIsActive()){
+        while(checkVuforiaPosistion("angle", getHeading(TargetXmm, TargetYmm, TargetZmm), 0, 0, tolerance) && opModeIsActive()){
             robotActivity = "Turning";
-            howAngle(heading);
+            howAngle(getHeading(TargetXmm, TargetYmm, TargetZmm));
             powerMultiplier += powerMultiplierModifier;
             if (powerMultiplier <= 0.5 || powerMultiplier >= 1.1){
                 powerMultiplierModifier = -powerMultiplierModifier/1.5;
@@ -238,13 +239,14 @@ double angleVariance = 0;
             desiredAngle = getHeading(TargetXmm, TargetYmm, TargetZmm);
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
-                setHeading(desiredAngle, angleTolerance);
+                setHeading(getHeading(TargetXmm, TargetYmm, TargetZmm), angleTolerance);
             }
             goForward (TargetXmm, TargetYmm, TargetZmm); //go straight until in area (not very good but is what we have for now)
         }
         boolean endAngleCheck = 180 >= endAngle && endAngle >= -180;
         double reducedAngleTolerance = angleTolerance/1.5;
-        while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance) && opModeIsActive()) {
+        desiredAngle = endAngle;
+        while(endAngleCheck && checkVuforiaPosistion("angle", endAngle, 0, 0, angleTolerance) && opModeIsActive()) {
             setHeading(endAngle, angleTolerance);
         }
         this.leftFrontDrive.setPower(0);
