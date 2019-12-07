@@ -59,7 +59,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
-    private static final double speed = 0.1;
+    private static final double speed = 0.3;
     private String robotActivity;
 
     //Define constants for conversions
@@ -113,15 +113,15 @@ double angleVariance = 0;
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if ((rotation.thirdAngle - heading) > 0){ //this is to make the turn direction the fastest, may not be functional
-                this.robot.leftFrontDrive.setPower(speed);
-                this.robot.leftBackDrive.setPower(speed);
-                this.robot.rightFrontDrive.setPower(-speed);
-                this.robot.rightBackDrive.setPower(-speed);
-            } else {
                 this.robot.leftFrontDrive.setPower(-speed);
                 this.robot.leftBackDrive.setPower(-speed);
                 this.robot.rightFrontDrive.setPower(speed);
                 this.robot.rightBackDrive.setPower(speed);
+            } else {
+                this.robot.leftFrontDrive.setPower(speed);
+                this.robot.leftBackDrive.setPower(speed);
+                this.robot.rightFrontDrive.setPower(-speed);
+                this.robot.rightBackDrive.setPower(-speed);
             }
         }
     }
@@ -129,7 +129,7 @@ double angleVariance = 0;
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
         while (checkVuforiaPosistion ("position", targetX, targetY, targetZ, mmTolerance) && opModeIsActive()) {
             robotActivity = "Driving Forward";
-            this.robot.setPowers(speed);
+            this.robot.setPowers(-speed);
             howClose(targetX, targetY, targetZ);
         }
     }
@@ -208,7 +208,7 @@ double angleVariance = 0;
         this.robot.setPowers(0);
         robotActivity = "Robot is in the desired posistion, yay! ;)";
         try {
-        TimeUnit.SECONDS.sleep(4);
+        TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException ie) {
         Thread.currentThread().interrupt();
         }
