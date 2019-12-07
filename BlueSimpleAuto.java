@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import java.lang.System.*;
+import java.util.Locale;
 
 @Autonomous(name="Blue Simple Auto")
 public class BlueSimpleAuto extends LinearOpMode {
@@ -18,17 +19,24 @@ public class BlueSimpleAuto extends LinearOpMode {
 
 
     public double getElaspedTime(double start){ //returns time in seconds for how long the opmode has been running
-        double currentTime = start - (System.nanoTime()*nsPerS);
-        return currentTime;
+        double elaspedTime = (System.nanoTime()/nsPerS) - start;
+        return elaspedTime;
     }
 
     public void goForward (double time) { //go forward for
-        for(double startTime = getElaspedTime(timeStarted); getElaspedTime(startTime) < time;) {
+        updateTelemtry ();
+        for(double startTime = getElaspedTime(timeStarted); (getElaspedTime(startTime) < time) && opModeIsActive();) {
             this.robot.setPowers(speed);
+            updateTelemtry ();
         }
         this.robot.setPowers(0);
+        updateTelemtry ();
     }
 
+    public void updateTelemtry () {
+        telemetry.addData("Seconds Passed","%.5g%n", getElaspedTime(timeStarted));
+        telemetry.update();
+    }
     @Override
     public void runOpMode() {
         if (!isInitialized) {
@@ -36,7 +44,12 @@ public class BlueSimpleAuto extends LinearOpMode {
             this.robot.init(hardwareMap);
 //            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-        timeStarted = System.nanoTime()*nsPerS;
-        goForward(1);
+        waitForStart();
+        if(opModeIsActive() && !isStopRequested()) {
+            timeStarted = System.nanoTime() / nsPerS;
+            updateTelemtry ();
+            goForward(1);
+            requestOpModeStop();
+        }
     }
 }
