@@ -106,7 +106,7 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     //Constants for autonomous
     private static final double mmTolerance = 100;
     private static final double radianTolerance = (Math.PI/180);
-    private static final double angleTolerance = 7;
+    private static final double angleTolerance = 10;
 
     // Class Members
     public OpenGLMatrix lastLocation = null;
@@ -127,39 +127,72 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
 double desiredAngle = 0;
 double angleVariance = 0;
 
+String visibleTarget;
     List<VuforiaTrackable> allTrackables;
 
     public void setHeading (double heading, double tolerance){ //called in gotoVuforiaPosistion, it in theory turns the robot onto the desired heading.
-        updateLastLocation ();
+        updateLastLocation();
         powerMultiplier = 1.1;
         double powerMultiplierModifier = -0.05;
-        while(checkVuforiaPosistion("angle", getHeading(TargetXmm, TargetYmm, TargetZmm), 0, 0, tolerance) && opModeIsActive()){
-            robotActivity = "Turning";
-            howAngle(getHeading(TargetXmm, TargetYmm, TargetZmm));
-            powerMultiplier += powerMultiplierModifier;
-            if (powerMultiplier <= 0.5 || powerMultiplier >= 1.1){
-                powerMultiplierModifier = -powerMultiplierModifier/1.5;
+        if (tolerance == -1){
+            while (checkVuforiaPosistion("angle", heading, 0, 0, tolerance) && opModeIsActive()) {
+                robotActivity = "Turning Final";
+                howAngle(getHeading(TargetXmm, TargetYmm, TargetZmm));
+                powerMultiplier = powerMultiplier + powerMultiplierModifier;
+                if (powerMultiplier <= 0.3 || powerMultiplier >= 0.9) {
+                    powerMultiplierModifier = -powerMultiplierModifier / 2;
+                }
+                updateLastLocation();
+                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+                if ((rotation.thirdAngle - heading) > 0) { //this is to make the turn direction the fastest, may not be functional
+                    this.leftFrontDrive.setPower(-speed * powerMultiplier);
+                    this.leftBackDrive.setPower(-speed * powerMultiplier);
+                    this.rightFrontDrive.setPower(speed * powerMultiplier);
+                    this.rightBackDrive.setPower(speed * powerMultiplier);
+                    /*this.robot.leftFrontDrive.setPower(-speed);
+                    this.robot.leftBackDrive.setPower(-speed);
+                    this.robot.rightFrontDrive.setPower(speed);
+                    this.robot.rightBackDrive.setPower(speed);*/
+                } else {
+                    this.leftFrontDrive.setPower(speed * powerMultiplier);
+                    this.leftBackDrive.setPower(speed * powerMultiplier);
+                    this.rightFrontDrive.setPower(-speed * powerMultiplier);
+                    this.rightBackDrive.setPower(-speed * powerMultiplier);
+                    /*this.robot.leftFrontDrive.setPower(speed);
+                    this.robot.leftBackDrive.setPower(speed);
+                    this.robot.rightFrontDrive.setPower(-speed);
+                    this.robot.rightBackDrive.setPower(-speed);*/
+                }
             }
-            updateLastLocation();
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-            if ((rotation.thirdAngle - heading) > 0){ //this is to make the turn direction the fastest, may not be functional
-                this.leftFrontDrive.setPower(-speed);
-                this.leftBackDrive.setPower(-speed);
-                this.rightFrontDrive.setPower(speed);
-                this.rightBackDrive.setPower(speed);
-                /*this.robot.leftFrontDrive.setPower(-speed);
-                this.robot.leftBackDrive.setPower(-speed);
-                this.robot.rightFrontDrive.setPower(speed);
-                this.robot.rightBackDrive.setPower(speed);*/
-            } else {
-                this.leftFrontDrive.setPower(speed);
-                this.leftBackDrive.setPower(speed);
-                this.rightFrontDrive.setPower(-speed);
-                this.rightBackDrive.setPower(-speed);
-                /*this.robot.leftFrontDrive.setPower(speed);
-                this.robot.leftBackDrive.setPower(speed);
-                this.robot.rightFrontDrive.setPower(-speed);
-                this.robot.rightBackDrive.setPower(-speed);*/
+        } else {
+            while (checkVuforiaPosistion("angle", getHeading(TargetXmm, TargetYmm, TargetZmm), 0, 0, tolerance) && opModeIsActive()) {
+                robotActivity = "Turning";
+                howAngle(getHeading(TargetXmm, TargetYmm, TargetZmm));
+                powerMultiplier = powerMultiplier + powerMultiplierModifier;
+                if (powerMultiplier <= 0.3 || powerMultiplier >= 0.9) {
+                    powerMultiplierModifier = -powerMultiplierModifier / 2;
+                }
+                updateLastLocation();
+                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+                if ((rotation.thirdAngle - heading) > 0) { //this is to make the turn direction the fastest, may not be functional
+                    this.leftFrontDrive.setPower(-speed * powerMultiplier);
+                    this.leftBackDrive.setPower(-speed * powerMultiplier);
+                    this.rightFrontDrive.setPower(speed * powerMultiplier);
+                    this.rightBackDrive.setPower(speed * powerMultiplier);
+                    /*this.robot.leftFrontDrive.setPower(-speed);
+                    this.robot.leftBackDrive.setPower(-speed);
+                    this.robot.rightFrontDrive.setPower(speed);
+                    this.robot.rightBackDrive.setPower(speed);*/
+                } else {
+                    this.leftFrontDrive.setPower(speed * powerMultiplier);
+                    this.leftBackDrive.setPower(speed * powerMultiplier);
+                    this.rightFrontDrive.setPower(-speed * powerMultiplier);
+                    this.rightBackDrive.setPower(-speed * powerMultiplier);
+                    /*this.robot.leftFrontDrive.setPower(speed);
+                    this.robot.leftBackDrive.setPower(speed);
+                    this.robot.rightFrontDrive.setPower(-speed);
+                    this.robot.rightBackDrive.setPower(-speed);*/
+                }
             }
         }
     }
@@ -265,7 +298,8 @@ double angleVariance = 0;
     public void updateLastLocation () {
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-                telemetry.addData("Visible Target", trackable.getName());
+                visibleTarget = trackable.getName();
+                telemetry.addData("Visible Target", visibleTarget);
                 targetVisible = true;
                 // getUpdatedRobotLocation() will return null if no new information is available since
                 // the last time that call was made, or if the trackable is not currently visible.
@@ -293,7 +327,7 @@ double angleVariance = 0;
             // express the rotation of the robot in degrees.
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-            telemetry.addData("Attitude of robot (deg), target/variance", "{Target/Variance} = %.0f, %.0f", desiredAngle, angleVariance);
+            telemetry.addData("Attitude of robot (deg), target/variance/POWER", "{Target/Variance/POWER} = %.0f, %.0f, %.0f", desiredAngle, angleVariance, powerMultiplier);
             telemetry.addData("Distance from target in (mm) X/Y/Direct", "{X, Y, Direct} = %.0f, %.0f, %.0f", xDistance, yDistance, distance);
             telemetry.addData("Robot is...", robotActivity);
             telemetry.addData("Targeting (in)", "{X, Y, Z} = %.0f, %.0f, %.0f", targetCoordsmm[0], targetCoordsmm[1], targetCoordsmm[2]);
@@ -331,6 +365,17 @@ double variance = abs((rotation.thirdAngle - targetAngle));
 angleVariance = variance;
 
 updateLastLocation();
+}
+
+public void getSkystoneAcross(){
+    gotoVuforiaPosistion(-7, 0, 0, 0);
+    //grab skystone
+    //dock skystone
+    //turn x+
+    //go forward until across line
+    //from there, move to platform
+    //drop block on platform
+    //
 }
 
     public void initializeVuforia () {
@@ -699,15 +744,21 @@ updateLastLocation();
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
         targetsSkyStone.activate();
-        while (!isStopRequested() && opModeIsActive()) {
+        if(!isStopRequested() && opModeIsActive()) {
+            for (int i=0; !isStopRequested() && opModeIsActive() && i<10; i++) {
+                updateLastLocation();
+            }
+            if (visibleTarget == "Stone Target"){
 
-            // check all the trackable targets to see which one (if any) is visible.
-            updateLastLocation ();// Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
-                gotoVuforiaPosistion(-7, 0, 0, 0);
+            }
+            while (!isStopRequested() && opModeIsActive()) {
+                // check all the trackable targets to see which one (if any) is visible.
+                updateLastLocation();// Provide feedback as to where the robot is located (if we know).
+                if (targetVisible) {
+                    gotoVuforiaPosistion(-7, 0, 0, 0);
+                }
             }
         }
-
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
     }
