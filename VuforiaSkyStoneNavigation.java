@@ -59,7 +59,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
-    private static final double speed = 0.5;
+    private static final double hexaBotSpeed = -0.1;
+    private static final double spqrBotSpeed = 0.5;
+    private static final double speed = spqrBotSpeed;
     private String robotActivity;
 
     //Define constants for conversions
@@ -202,8 +204,8 @@ double angleVariance = 0;
         }
         boolean endAngleCheck = 180 >= endAngle && endAngle >= -180;
         double reducedAngleTolerance = angleTolerance/1.5;
-        while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, reducedAngleTolerance) && opModeIsActive()) {
-            setHeading(endAngle, reducedAngleTolerance);
+        while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance) && opModeIsActive()) {
+            setHeading(endAngle, angleTolerance);
         }
         this.robot.setPowers(0);
         robotActivity = "Robot is in the desired posistion, yay! ;)";
