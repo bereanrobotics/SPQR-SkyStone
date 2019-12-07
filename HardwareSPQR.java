@@ -22,6 +22,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Servo channel H1-3 (Servo):                           Block grabber servo:      "block_grabber"
  * Servo channel H1-4 (Servo):                           Arm balancer servo:       "arm_balancer"
  * Servo channel H1-5 (Servo):                           Ramp dropper servo:       "ramp_drop"
+ * Servo channel H2-0 (Servo):                           Buildplate tow:           "tow"
  * I2C H1-0-0 (REV Expansion Hub IMU):                   Hub connector:            "imu"
  * I2C H2-0-0 (REV Expansion Hub IMU):                   Hub connector:            "imu 1"
  * I2C H2-1-0 (Rev Color Sensor v3):                     Line park sensor          "line_park_sensor"
@@ -44,6 +45,7 @@ public class HardwareSPQR {
     public Servo blockGrabber = null;
     public Servo armBalancer = null;
     public Servo rampDrop = null;
+    public Servo tow = null;
     public ColorSensor lineParkSensor = null;
 
     //Hardware map
@@ -78,7 +80,7 @@ public class HardwareSPQR {
         this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
+
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -87,7 +89,7 @@ public class HardwareSPQR {
         this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
         this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
-       
+
         //Set all motor power to zero
         this.leftFrontDrive.setPower(0);
         this.leftBackDrive.setPower(0);
@@ -106,12 +108,16 @@ public class HardwareSPQR {
         this.blockGrabber = hwMap.get(Servo.class, "block_grabber");
         this.armBalancer = hwMap.get(Servo.class, "arm_balancer");
         this.rampDrop = hwMap.get(Servo.class, "ramp_drop");
+        this.tow = hwMap.get(Servo.class, "tow");
 
         //Reset servo positions
-        this.leftDrop.setPosition(1);
+        this.leftDrop.setPosition(-1);
         this.rightDrop.setPosition(1);
         this.blockBeater.setPosition(1);
-        this.rampDrop.setPosition(1);
+        this.rampDrop.setPosition(-1);
+        this.blockGrabber.setPosition(1);
+        this.armBalancer.setPosition(-1);
+        this.tow.setPosition(-1);
 
         /* Initialize sensors */
 
@@ -156,10 +162,19 @@ public class HardwareSPQR {
         this.setPowers(1.0);
     }
 
+    //Set left and right motors differently
+    public void tank(double left, double right){
+        if (!robotIsInitialized) return;
+        this.leftFrontDrive.setPower(left);
+        this.leftBackDrive.setPower(left);
+        this.rightFrontDrive.setPower(right);
+        this.rightBackDrive.setPower(right);
+    }
+
     /* Intake movement */
 
     //Speed of the intake
-    private double intakeSpeed = 0.5;
+    private double intakeSpeed = 0.30;
 
     //Suck in blocks
     public void intakeIn(){
