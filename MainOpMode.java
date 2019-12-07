@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.Dir;
 
@@ -51,7 +52,10 @@ public class MainOpMode extends OpMode {
         double right = -gamepad1.left_stick_y * this.speed;
         double left = -gamepad1.right_stick_y * this.speed;
 
-        this.robot.tank(left, right);
+        this.robot.leftFrontDrive.setPower(left);
+        this.robot.leftBackDrive.setPower(left);
+        this.robot.rightFrontDrive.setPower(right);
+        this.robot.rightBackDrive.setPower(right);
 
         /* Left and right joystick movement */
         double leftPower = gamepad1.left_stick_x;
@@ -74,14 +78,6 @@ public class MainOpMode extends OpMode {
         /* Sniper mode */
         if (gamepad1.b) {
             this.speed = (this.speed > 0.5) ? 0.5 : 1.0;
-        }
-
-        /* Move tow */
-        if (gamepad1.dpad_down){
-            this.robot.tow.setPosition(-1);
-        }
-        if (gamepad1.dpad_up){
-            this.robot.tow.setPosition(1);
         }
 
         /* Move block beater */
