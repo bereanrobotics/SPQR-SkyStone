@@ -51,6 +51,26 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
 
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightBackDrive = null;
+
+    public void initiate() { //this is bad and should be done in hardware, same with above defining of dcmotor
+
+        //Initializes motor
+        this.leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
+        this.leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
+        this.rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        this.rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+
+        //Sets motor direction
+        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+    }
+
     private HardwareSPQR robot = new HardwareSPQR();
 
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
@@ -59,9 +79,9 @@ public class VuforiaSkyStoneNavigation extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AWtXaxz/////AAABmRR0jgdlWk2FthkZ9SvkJ8xNzumIjMaBRLmAXai+mjVdcWIftTV1og2Xbg51XvRrhlChUqboMX6KQrV3r+myUDmbmPrdOpdHETrcgLAXQbKvPBHSHXFn5kOVhAwKJYaXjWpGe/XzIKLZ9bIDVpdKBw01+Kf49X0YzY1y+lBtFAlSqe4AntJfG/j9PDK+OMNieRKUnoreXdf1EG2EYjebeLOww935ME3RP8N9O7STAwNcs/I00TexOjgfIPACWX14r3OVY3Cij1LXMT2RP+LtzizsM6UdMYAZwWukw6YQ3Toni9aC//gjHwehLLlzsgkoxDaVW2G5VrER/8Sm0pC9wdfgTUq6bMrWsZRvRyud8Rsk";
 
-    private static final double hexaBotSpeed = -0.1;
+    private static final double hexaBotSpeed = -0.15;
     private static final double spqrBotSpeed = 0.5;
-    private static final double speed = spqrBotSpeed;
+    private static final double speed = hexaBotSpeed;
     private String robotActivity;
 
     //Define constants for conversions
@@ -115,23 +135,35 @@ double angleVariance = 0;
             howAngle(heading);
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             if ((rotation.thirdAngle - heading) > 0){ //this is to make the turn direction the fastest, may not be functional
-                this.robot.leftFrontDrive.setPower(-speed);
+                this.leftFrontDrive.setPower(-speed);
+                this.leftBackDrive.setPower(-speed);
+                this.rightFrontDrive.setPower(speed);
+                this.rightBackDrive.setPower(speed);
+                /*this.robot.leftFrontDrive.setPower(-speed);
                 this.robot.leftBackDrive.setPower(-speed);
                 this.robot.rightFrontDrive.setPower(speed);
-                this.robot.rightBackDrive.setPower(speed);
+                this.robot.rightBackDrive.setPower(speed);*/
             } else {
-                this.robot.leftFrontDrive.setPower(speed);
+                this.leftFrontDrive.setPower(speed);
+                this.leftBackDrive.setPower(speed);
+                this.rightFrontDrive.setPower(-speed);
+                this.rightBackDrive.setPower(-speed);
+                /*this.robot.leftFrontDrive.setPower(speed);
                 this.robot.leftBackDrive.setPower(speed);
                 this.robot.rightFrontDrive.setPower(-speed);
-                this.robot.rightBackDrive.setPower(-speed);
+                this.robot.rightBackDrive.setPower(-speed);*/
             }
         }
     }
     
     public void goForward (double targetX, double targetY, double targetZ) { //called in gotoVuforiaPosistion, it in theory moves the robot forward until it hits the desired posistion.
-        while (checkVuforiaPosistion ("position", targetX, targetY, targetZ, mmTolerance) && opModeIsActive()) {
+        if (checkVuforiaPosistion ("position", targetX, targetY, targetZ, mmTolerance) && opModeIsActive()) {
             robotActivity = "Driving Forward";
-            this.robot.setPowers(-speed);
+            this.leftFrontDrive.setPower(-speed);
+            this.leftBackDrive.setPower(-speed);
+            this.rightFrontDrive.setPower(-speed);
+            this.rightBackDrive.setPower(-speed);
+            /*this.robot.setPowers(-speed);*/
             howClose(targetX, targetY, targetZ);
         }
     }
@@ -195,7 +227,7 @@ double angleVariance = 0;
         updateLastLocation ();
         robotActivity = "Checking if not in area";
         while (checkVuforiaPosistion("position", TargetXmm, TargetYmm, TargetZmm,mmTolerance) && opModeIsActive()){ //see if already within target area, if is, then stop
-            desiredAngle = getHeading(TargetXmm, TargetYmm,TargetZmm);
+            desiredAngle = getHeading(TargetXmm, TargetYmm, TargetZmm);
             robotActivity = "Checking if oriented correctly, already checked and found it was not in the right place";
             if (checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance)){ //see if orientation is facing desired point from current position CURRENT CODE IS TRASH (now it might not be)
                 setHeading(desiredAngle, angleTolerance);
@@ -207,7 +239,11 @@ double angleVariance = 0;
         while(endAngleCheck && checkVuforiaPosistion("angle", desiredAngle, 0, 0, angleTolerance) && opModeIsActive()) {
             setHeading(endAngle, angleTolerance);
         }
-        this.robot.setPowers(0);
+        this.leftFrontDrive.setPower(0);
+        this.leftBackDrive.setPower(0);
+        this.rightFrontDrive.setPower(0);
+        this.rightBackDrive.setPower(0);
+        /*this.robot.setPowers(0);*/
         robotActivity = "Robot is in the desired posistion, yay! ;)";
         try {
         TimeUnit.SECONDS.sleep(2);
@@ -462,7 +498,9 @@ updateLastLocation();
 
         if (!isInitialized){
             isInitialized = true;
-            this.robot.init(hardwareMap);
+            initiate();
+            /*this.robot.init(hardwareMap);*/
+//            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
