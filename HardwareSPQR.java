@@ -55,7 +55,8 @@ public class HardwareSPQR {
     private boolean robotIsInitialized = false;
 
     //Levels of blocks
-    public static int[] levels = {-1300, -1530, -1655, -1770};
+    public static final int[] levels = {-200, -995, -1190, -1400, -1460};
+    public static final double[] servoLevels = {1.0, 0.83, 0.92, 1.0};
 
     //Initializer
     public void init(HardwareMap ahwMap) {
