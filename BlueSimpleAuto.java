@@ -17,6 +17,8 @@ public class BlueSimpleAuto extends LinearOpMode {
     public long halfNinetyDegreeTime = 5000;
 
     private double speed = -0.5;
+    private double turnSpeed = -1;
+
     @Override
     public void runOpMode() {
         if (!isInitialized) {
@@ -29,11 +31,11 @@ public class BlueSimpleAuto extends LinearOpMode {
 
         if(opModeIsActive() && !isStopRequested()) {
             this.robot.forwardTime(500, speed);
-            this.robot.turnTime("left", halfNinetyDegreeTime, speed);
-            this.robot.turnTime("right",halfNinetyDegreeTime, -speed);
+            this.robot.turnTime("left", halfNinetyDegreeTime, turnSpeed);
+            this.robot.turnTime("right",halfNinetyDegreeTime, -turnSpeed);
             this.robot.forwardTime(8000, speed);
-            this.robot.turnTime("right",halfNinetyDegreeTime, speed);
-            this.robot.turnTime("left",halfNinetyDegreeTime, -speed);
+            this.robot.turnTime("right",halfNinetyDegreeTime, turnSpeed);
+            this.robot.turnTime("left",halfNinetyDegreeTime, -turnSpeed);
             this.robot.tow.setPosition(1);
             }
         }
