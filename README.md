@@ -1,4 +1,6 @@
-Code in this repository is maintained by Arkin Solomon and Owen Peterson, Berean Christian High School Robotics (SPQR - 4998 FTC). 
+# 4998 SPQR
+
+Code in this repository is maintained by Arkin Solomon and Owen Peterson, Berean Christian High School Robotics (SPQR - 4998 FTC).
 
 Contact: solomonarkin21@bereanchristian.com<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;petersonowen20@bereanchrisitan.com
