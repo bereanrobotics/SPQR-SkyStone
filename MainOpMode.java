@@ -28,6 +28,8 @@ public class MainOpMode extends OpMode {
     //Prevent detecting multiple clicks
     private boolean dpad_upPressed = false;
     private boolean dpad_downPressed = false;
+    private boolean gamepad1_aPressed = false;
+    private boolean gamepad1_bPressed = false;
 
     @Override
     public void init() {
@@ -50,14 +52,24 @@ public class MainOpMode extends OpMode {
         }
 
         /* Tank movement */
-        final double right = -gamepad1.left_stick_y * this.speed;
-        final double left = -gamepad1.right_stick_y * this.speed;
+        double right = -gamepad1.left_stick_y * this.speed;
+        double left = -gamepad1.right_stick_y * this.speed;
+        if (this.speed < 0){
+            double l = left;
+            left = right;
+            right = l;
+        }
 
         this.robot.tank(left, right);
 
         /* Reverse direction */
         if (gamepad1.a) {
+            if (this.gamepad1_aPressed) return;
+            this.gamepad1_aPressed = true;
             this.speed = -this.speed;
+        }
+        if (!gamepad1.a){
+            this.gamepad1_aPressed = true;
         }
 
         /* Sniper mode */
