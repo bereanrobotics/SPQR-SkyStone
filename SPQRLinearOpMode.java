@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
-    public long ninetyDegreeTime = 1100;
+    public long ninetyDegreeTime = 1075;
 
     public double speed = -0.5;
     public double turnSpeed = -1;

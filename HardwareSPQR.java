@@ -124,7 +124,7 @@ public class HardwareSPQR {
         this.blockBeater.setPosition(1);
         this.rampDrop.setPosition(-1);
         this.blockGrabber.setPosition(1);
-        this.armBalancer.setPosition(-1);
+        this.armBalancer.setPosition(1);
         this.tow.setPosition(-1);
 
         /* Initialize sensors */

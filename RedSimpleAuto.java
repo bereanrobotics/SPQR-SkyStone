@@ -19,7 +19,7 @@ public class RedSimpleAuto extends SPQRLinearOpMode {
             this.turnForTime(Dir.LEFT,this.turnSpeed, this.ninetyDegreeTime);
             this.driveForTime(speed, 2000);
             //this.robot.tow.setPosition(1);
-            this.driveForTime(-this.speed, 3000);
+            this.driveForTime(-this.speed, 1500);
             // bthis.robot.tow.setPosition(0);
             this.turnForTime(Dir.LEFT, this.turnSpeed, this.ninetyDegreeTime);
             this.driveForTime(speed, 2000);
