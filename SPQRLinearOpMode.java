@@ -45,7 +45,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Stops the robot over the tape
     public void stopAtTape(int[] tapeColor, int change){
-        this.robot.setPowers(0.5);
+        this.robot.setPowers(-0.5);
         boolean isOnLine = false;
         while (!isOnLine && this.opModeIsActive()) {
             int[] r = this.plusOrMinus(this.robot.lineParkSensor.red(), change);
@@ -54,7 +54,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             isOnLine = (((tapeColor[0] > r[0]) && (tapeColor[0] < r[1])) && ((tapeColor[1] > g[0]) && (tapeColor[1] < g[1])) && ((tapeColor[2] > b[0]) && (tapeColor[2] < b[1])));
         }
         this.robot.lineParkSensor.enableLed(false);
-        this.robot.backward();
+        this.robot.forward();
         this.sleep(100);
         this.robot.stopMoving();
     }

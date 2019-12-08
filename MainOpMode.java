@@ -18,12 +18,6 @@ public class MainOpMode extends OpMode {
 
     //Speed of the robot
     private double speed = 1.0;
-    
-    //Levels of buildplate
-    private int[] levels = robot.levels;
-
-    //Servo value / encoder tick ratio
-    private double servoToEncoderRatio;
 
     //Level counter
     private int levelCounter = 0;
@@ -40,9 +34,6 @@ public class MainOpMode extends OpMode {
 
         //Initialize hardware
         this.robot.init(hardwareMap);
-
-        //Initialize variables
-        this.servoToEncoderRatio = .001036269;//(2 / (Math.abs(this.levels[this.levels.length - 1]) - Math.abs(this.levels[0])));
     }
 
     @Override
@@ -59,26 +50,10 @@ public class MainOpMode extends OpMode {
         }
 
         /* Tank movement */
-        double right = -gamepad1.left_stick_y * this.speed;
-        double left = -gamepad1.right_stick_y * this.speed;
+        final double right = -gamepad1.left_stick_y * this.speed;
+        final double left = -gamepad1.right_stick_y * this.speed;
 
-        this.robot.leftFrontDrive.setPower(left);
-        this.robot.leftBackDrive.setPower(left);
-        this.robot.rightFrontDrive.setPower(right);
-        this.robot.rightBackDrive.setPower(right);
-
-        /* Left and right joystick movement */
-        double leftPower = gamepad1.left_stick_x;
-        double rightPower = gamepad1.right_stick_x;
-
-        if ((leftPower >= 0.08 || leftPower <= -0.08) && (rightPower >= 0.08 || rightPower <= -0.08)){
-            double power = ((leftPower + rightPower) / 2) * this.speed;
-            if (leftPower < 0){
-                this.robot.strafe(Dir.LEFT, power);
-            } else {
-                this.robot.strafe(Dir.RIGHT, power);
-            }
-        }
+        this.robot.tank(left, right);
 
         /* Reverse direction */
         if (gamepad1.a) {
@@ -96,6 +71,14 @@ public class MainOpMode extends OpMode {
         }
         if (gamepad2.dpad_right){
             this.robot.blockBeater.setPosition(1);
+        }
+
+        /* Bring tow down */
+        if (gamepad1.dpad_down){
+            this.robot.tow.setPosition(-1);
+        }
+        if (gamepad1.dpad_up){
+            this.robot.tow.setPosition(1);
         }
 
         /* Intake */
@@ -136,7 +119,7 @@ public class MainOpMode extends OpMode {
         if (gamepad2.dpad_up){
             if (this.dpad_upPressed) return;
             this.dpad_upPressed = true;
-            this.levelCounter += (this.levelCounter < this.levels.length - 1) ? 1 : 0;
+            this.levelCounter += (this.levelCounter < this.robot.levels.length - 1) ? 1 : 0;
         }
         if (gamepad2.dpad_down){
             if (this.dpad_downPressed) return;
@@ -154,7 +137,8 @@ public class MainOpMode extends OpMode {
         //Move to level
         if (this.isArmLocked){
             this.robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            this.robot.armMotor.setTargetPosition(levels[levelCounter]);
+            this.robot.armMotor.setTargetPosition(this.robot.levels[this.levelCounter]);
+            this.robot.armBalancer.setPosition(this.robot.servoLevels[this.levelCounter]);
             if (this.robot.armMotor.isBusy()){
                 this.robot.armMotor.setPower(0.35);
             }else{
@@ -167,15 +151,12 @@ public class MainOpMode extends OpMode {
             this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
         }
 
-        //Level the arm
-//        this.robot.armBalancer.setPosition(Math.abs(this.robot.armMotor.getCurrentPosition()) * this.servoToEncoderRatio - 1);
-        this.robot.armBalancer.setPosition(1);
-
         /* Telementry data */
         telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
         telemetry.addData("Level", this.levelCounter);
-        telemetry.addData("Ratio", this.servoToEncoderRatio);
-        telemetry.addData("Calculated servo power", Math.abs(this.robot.armMotor.getCurrentPosition()) * this.servoToEncoderRatio - 1);
-        telemetry.addData("Servo power", this.robot.armBalancer.getPosition());
+        telemetry.addData("Servo", this.robot.armBalancer.getPosition());
+        telemetry.addData("Red", this.robot.lineParkSensor.red());
+        telemetry.addData("Green", this.robot.lineParkSensor.green());
+        telemetry.addData("Blue", this.robot.lineParkSensor.blue());
     }
 }

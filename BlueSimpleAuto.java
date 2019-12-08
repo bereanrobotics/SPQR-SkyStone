@@ -14,6 +14,8 @@ import static java.lang.Math.pow;
 public class BlueSimpleAuto extends SPQRLinearOpMode {
 
     private int[] tapeColor = {846, 2137, 2515};
+    private Dir directionOne = Dir.LEFT;
+    private Dir directionTwo = Dir.RIGHT;
 
     @Override
     public void runOpMode() {
@@ -24,11 +26,11 @@ public class BlueSimpleAuto extends SPQRLinearOpMode {
         if (opModeIsActive() && !isStopRequested()) {
             this.driveForTime(this.speed, justSpeed(250, this.speed));
 
-            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(this.speed, justSpeed(3250, this.speed));
 
-            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionTwo, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(this.speed, this.justSpeed(550, this.speed));
 
@@ -40,37 +42,37 @@ public class BlueSimpleAuto extends SPQRLinearOpMode {
 
             this.robot.tow.setPosition(0);
 
-            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionTwo, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+
+            this.driveForTime(this.speed, this.justSpeed(1250, this.speed));
+
+            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+
+            this.driveForTime(speed, this.justSpeed(1150, this.speed));
+
+            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
 
-            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-
-            this.driveForTime(speed, this.justSpeed(1000, this.speed));
-
-            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-
-            this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
-
-            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(this.speed, this.justSpeed(400, this.speed));
 
             this.driveForTime(-this.speed, this.justSpeed(250, this.speed));
 
-            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(this.speed, justSpeed(900, this.speed));
 
-            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionTwo, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(this.speed, justSpeed(400, this.speed));
 
-            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
 
             this.driveForTime(speed, justSpeed(300, speed));
 
             this.stopAtTape(this.tapeColor, 500);
-            }
         }
     }
+}
