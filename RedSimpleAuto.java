@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Red Simple Auto")
-public class RedSimpleAuto extends LinearOpMode {
+public class RedSimpleAuto extends SPQRLinearOpMode {
     private boolean isInitialized = false;
     private HardwareSPQR robot = new HardwareSPQR();
     public long halfNinetyDegreeTime = 5000;
@@ -15,7 +15,7 @@ public class RedSimpleAuto extends LinearOpMode {
     public void runOpMode() {
         if (!isInitialized) {
             isInitialized = true;
-            this.robot.init(hardwareMap);
+            this.initHardware();
 //            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
@@ -30,6 +30,13 @@ public class RedSimpleAuto extends LinearOpMode {
             this.robot.turnTime("right",halfNinetyDegreeTime, -turnSpeed);
             this.robot.tow.setPosition(1);
             this.robot.forwardTime(3000, -speed);
+            this.robot.turnTime("left", halfNinetyDegreeTime, turnSpeed);
+            this.robot.turnTime( "right", halfNinetyDegreeTime, -turnSpeed);
+
+            this.robot.setPowers(speed);
+            if (false){
+                this.robot.setPowers(0);
+            }
         }
     }
 }
