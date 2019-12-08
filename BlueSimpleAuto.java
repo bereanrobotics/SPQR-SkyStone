@@ -12,31 +12,39 @@ import static java.lang.Math.pow;
 
 @Autonomous(name="Blue Simple Auto")
 public class BlueSimpleAuto extends SPQRLinearOpMode {
-    private boolean isInitialized = false;
-    private HardwareSPQR robot = new HardwareSPQR();
-    public long halfNinetyDegreeTime = 5000;
-
-    private double speed = -0.5;
-    private double turnSpeed = -1;
     @Override
     public void runOpMode() {
-        if (!isInitialized) {
-            isInitialized = true;
-            this.hardwareInit();
-//            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
+        this.hardwareInit();
 
         waitForStart();
 
         if(opModeIsActive() && !isStopRequested()) {
-            this.robot.forwardTime(500, speed);
-            this.robot.turnTime("left", halfNinetyDegreeTime, turnSpeed);
-            this.robot.turnTime("right",halfNinetyDegreeTime, -turnSpeed);
-            this.robot.forwardTime(8000, speed);
-            this.robot.turnTime("right",halfNinetyDegreeTime, turnSpeed);
-            this.robot.turnTime("left",halfNinetyDegreeTime, -turnSpeed);
+            this.driveForTime(this.speed, justSpeed(250, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, justSpeed(3250, this.speed));
+            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, this.justSpeed(550, this.speed));
             this.robot.tow.setPosition(1);
+            this.sleep(1000);
+            this.driveForTime(-this.speed, this.justSpeed(1000, this.speed));
+            this.robot.tow.setPosition(0);
+            this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(speed, this.justSpeed(1000, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, this.justSpeed(400, this.speed));
+            this.driveForTime(-this.speed, this.justSpeed(250, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, justSpeed(900, this.speed));
+            this.turnForTime(Dir.LEFT,this.turnSpeed, justSpeed(this.ninetyDegreeTime,this.turnSpeed));
+            this.driveForTime(this.speed, justSpeed(400, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime,this.turnSpeed));
+            this.driveForTime(speed,justSpeed(300, speed));
+            if (true){
+                this.robot.setPowers(0);
             }
         }
     }
-
