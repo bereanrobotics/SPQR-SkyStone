@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Dir;
 
 /**
  * This OpMode will mainly be used in the telemetry portions of competitions
+ *
  * @author Arkin Solomon
  */
 @TeleOp(name="Main OpMode")
@@ -33,6 +34,8 @@ public class MainOpMode extends OpMode {
     //Prevent detecting multiple clicks
     private boolean dpad_upPressed = false;
     private boolean dpad_downPressed = false;
+    private boolean gamepad1_aClicked = false;
+    private boolean gamepad1_bClicked = false;
 
     @Override
     public void init() {
@@ -78,12 +81,20 @@ public class MainOpMode extends OpMode {
 
         /* Reverse direction */
         if (gamepad1.a) {
+            if (this.gamepad1_aClicked) return;
             this.speed = -this.speed;
+        }
+        if (!gamepad1.a){
+            this.gamepad1_aClicked = false;
         }
 
         /* Sniper mode */
         if (gamepad1.b) {
+            if (this.gamepad1_bClicked) return;
             this.speed = (this.speed > 0.5) ? 0.5 : 1.0;
+        }
+        if (!gamepad1.b){
+            this.gamepad1_bClicked = false;
         }
 
         /* Move tow */
