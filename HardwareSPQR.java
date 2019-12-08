@@ -59,6 +59,9 @@ public class HardwareSPQR {
     //True if robot is initialized
     private boolean robotIsInitialized = false;
 
+    //Levels of blocks
+    public static int[] levels = {-830, -1050, -1270};
+
     //Initializer
     public void init(HardwareMap ahwMap) {
 
@@ -92,7 +95,7 @@ public class HardwareSPQR {
         this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
-        this.rightIntake.setDirection(DcMotor.Direction.FORWARD);
+        this.rightIntake.setDirection(DcMotor.Direction.REVERSE);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //Set all motor power to zero
@@ -224,6 +227,28 @@ public class HardwareSPQR {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    /* Arm movement */
+
+    //Drop the arm down to levels
+    public void moveArm(int level, double speed){
+        this.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.armMotor.setTargetPosition(this.levels[level]);
+        this.armMotor.setPower(speed);
+        while (this.armMotor.isBusy()){
+            this.armMotor.setPower(0);
+        }
+    }
+
+    //Grab a block
+    public void grabBlock(){
+        this.blockGrabber.setPosition(-1);
+    }
+
+    //Release a block
+    public void releaseBlock(){
+        this.blockGrabber.setPosition(1);
     }
 }
 

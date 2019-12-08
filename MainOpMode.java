@@ -19,20 +19,30 @@ public class MainOpMode extends OpMode {
     //Speed of the robot
     private double speed = 1.0;
     
-    //TODO: Levels of buildplate
-    private int[] levels = {0, 0, 0, 0};
-    
+    //Levels of buildplate
+    private int[] levels = robot.levels;
+
+    //Servo value / encoder tick ratio
+    private double servoToEncoderRatio;
+
     //Level counter
     private int levelCounter = 0;
 
     //If we are locking to levels
     private boolean isArmLocked = false;
 
+    //Prevent detecting multiple clicks
+    private boolean dpad_upPressed = false;
+    private boolean dpad_downPressed = false;
+
     @Override
     public void init() {
 
         //Initialize hardware
         this.robot.init(hardwareMap);
+
+        //Initialize variables
+        this.servoToEncoderRatio = .001036269;//(2 / (Math.abs(this.levels[this.levels.length - 1]) - Math.abs(this.levels[0])));
     }
 
     @Override
@@ -124,18 +134,29 @@ public class MainOpMode extends OpMode {
 
         //Change levels up or down
         if (gamepad2.dpad_up){
+            if (this.dpad_upPressed) return;
+            this.dpad_upPressed = true;
             this.levelCounter += (this.levelCounter < this.levels.length - 1) ? 1 : 0;
         }
         if (gamepad2.dpad_down){
+            if (this.dpad_downPressed) return;
+            this.dpad_downPressed = true;
             this.levelCounter -= (this.levelCounter > 0) ? 1 : 0;
         }
+        if (!gamepad2.dpad_up){
+            this.dpad_upPressed = false;
+        }
+        if (!gamepad2.dpad_down){
+            this.dpad_downPressed = false;
+        }
+
 
         //Move to level
         if (this.isArmLocked){
             this.robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             this.robot.armMotor.setTargetPosition(levels[levelCounter]);
             if (this.robot.armMotor.isBusy()){
-                this.robot.armMotor.setPower(0.3);
+                this.robot.armMotor.setPower(0.35);
             }else{
                 this.robot.armMotor.setPower(0);
             }
@@ -146,8 +167,15 @@ public class MainOpMode extends OpMode {
             this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
         }
 
+        //Level the arm
+//        this.robot.armBalancer.setPosition(Math.abs(this.robot.armMotor.getCurrentPosition()) * this.servoToEncoderRatio - 1);
+        this.robot.armBalancer.setPosition(1);
+
         /* Telementry data */
         telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
         telemetry.addData("Level", this.levelCounter);
+        telemetry.addData("Ratio", this.servoToEncoderRatio);
+        telemetry.addData("Calculated servo power", Math.abs(this.robot.armMotor.getCurrentPosition()) * this.servoToEncoderRatio - 1);
+        telemetry.addData("Servo power", this.robot.armBalancer.getPosition());
     }
 }
