@@ -9,9 +9,7 @@ import static java.lang.Math.abs;
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
-    public long ninetyDegreeTime = 1050;
-
-
+    public long ninetyDegreeTime = 1071;
 
     public double speed = -0.75;
     public double turnSpeed = -1;

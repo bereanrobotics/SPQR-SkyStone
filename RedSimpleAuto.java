@@ -19,22 +19,26 @@ public class RedSimpleAuto extends SPQRLinearOpMode {
             this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
             this.driveForTime(this.speed, justSpeed(3250, this.speed));
             this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-            this.driveForTime(this.speed, this.justSpeed(750, this.speed));
+            this.driveForTime(this.speed, this.justSpeed(550, this.speed));
             this.robot.tow.setPosition(1);
             this.sleep(1000);
-            this.driveForTime(-this.speed, this.justSpeed(1800, this.speed));
+            this.driveForTime(-this.speed, this.justSpeed(1000, this.speed));
             this.robot.tow.setPosition(0);
             this.turnForTime(Dir.LEFT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-            this.driveForTime(this.speed, this.justSpeed(1300, this.speed));
+            this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
             this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-            this.driveForTime(speed, this.justSpeed(800, this.speed));
+            this.driveForTime(speed, this.justSpeed(1000, this.speed));
             this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-            this.driveForTime(this.speed, this.justSpeed(1300, this.speed));
+            this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
             this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
             this.driveForTime(this.speed, this.justSpeed(400, this.speed));
             this.driveForTime(-this.speed, this.justSpeed(250, this.speed));
             this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-            this.driveForTime(speed, justSpeed(1200, this.speed));
+            this.driveForTime(this.speed, justSpeed(900, this.speed));
+            this.turnForTime(Dir.LEFT,this.turnSpeed, justSpeed(this.ninetyDegreeTime,this.turnSpeed));
+            this.driveForTime(this.speed, justSpeed(400, this.speed));
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, justSpeed(this.ninetyDegreeTime,this.turnSpeed));
+            this.driveForTime(speed,justSpeed(300, speed));
             if (true){
                 this.robot.setPowers(0);
             }
