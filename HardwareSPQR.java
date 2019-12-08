@@ -55,7 +55,7 @@ public class HardwareSPQR {
     private boolean robotIsInitialized = false;
 
     //Levels of blocks
-    public static final int[] levels = {-200, -995, -1190, -1400, -1460};
+    public static final int[] levels = {-200, -1415, -1670, -1835, -1870};
     public static final double[] servoLevels = {1.0, 0.83, 0.92, 1.0};
 
     //Initializer
