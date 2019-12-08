@@ -6,6 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.util.Locale;
+
+import static com.qualcomm.robotcore.eventloop.opmode.LinearOpMode.*;
+import static java.lang.Thread.sleep;
+
 /**
  * This class defines all hardware on the robot. It also contains movement abstractions.
  *
@@ -192,5 +197,34 @@ public class HardwareSPQR {
     public void stopIntake(){
         this.leftIntake.setPower(0);
         this.rightIntake.setPower(0);
+
+
+    }
+
+    public void forwardTime(long time, double speed) { //go forward for
+            this.setPowers(speed);
+            sleep(time);
+            this.setPowers(0);
+        }
+
+    public void turnTime(String direction, long time, double speed) {
+        direction = direction.toLowerCase(Locale.ENGLISH);
+        if (direction == "right") {
+            this.tank(speed, -speed);
+        } else if (direction == "left") {
+            this.tank(-speed, speed);
+        }
+        sleep(time);
+        this.setPowers(0);
+    }
+
+    public final void sleep(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
+
+
