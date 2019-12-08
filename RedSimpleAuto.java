@@ -18,51 +18,43 @@ public class RedSimpleAuto extends SPQRLinearOpMode {
         if (opModeIsActive() && !isStopRequested()) {
             this.driveForTime(this.speed, justSpeed(250, this.speed));
 
-            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime90(directionOne, this.turnSpeed);
 
-            this.driveForTime(this.speed, justSpeed(3250, this.speed));
+            this.driveForTime(this.speed, justSpeed(3050, this.speed));
 
-            this.turnForTime(directionTwo, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime90(directionTwo, this.turnSpeed);
 
-            this.driveForTime(this.speed, this.justSpeed(550, this.speed));
+            this.driveForTime(this.speed, this.justSpeed(570, this.speed));
 
             this.robot.tow.setPosition(1);
 
             this.sleep(1000);
 
-            this.driveForTime(-this.speed, this.justSpeed(1000, this.speed));
+            this.driveForTime(-this.speed, this.justSpeed(1200, this.speed));
 
             this.robot.tow.setPosition(0);
 
-            this.turnForTime(directionTwo, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(-this.speed, this.justSpeed(60, this.speed));
 
-            this.driveForTime(this.speed, this.justSpeed(1250, this.speed));
+            this.turnForTime90(directionTwo, this.turnSpeed);
 
-            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(this.speed, this.justSpeed(1000, this.speed));
 
-            this.driveForTime(speed, this.justSpeed(1150, this.speed));
+            this.turnForTime90(directionOne, this.turnSpeed);
 
-            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.driveForTime(speed, this.justSpeed(1200, this.speed));
+
+            this.turnForTime90(directionOne, this.turnSpeed);
 
             this.driveForTime(this.speed, this.justSpeed(1400, this.speed));
 
-            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
+            this.turnForTime90(directionOne, this.turnSpeed);
 
-            this.driveForTime(this.speed, this.justSpeed(400, this.speed));
+            this.driveForTime(this.speed, this.justSpeed(500, this.speed));
 
-            this.driveForTime(-this.speed, this.justSpeed(250, this.speed));
+            this.driveForTime(-this.speed, this.justSpeed(300, this.speed));
 
-            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-
-            this.driveForTime(this.speed, justSpeed(900, this.speed));
-
-            this.turnForTime(directionTwo, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-
-            this.driveForTime(this.speed, justSpeed(400, this.speed));
-
-            this.turnForTime(directionOne, this.turnSpeed, justSpeed(this.ninetyDegreeTime, this.turnSpeed));
-
-            this.driveForTime(speed, justSpeed(300, speed));
+            this.turnForTime90(directionOne, this.turnSpeed);
 
             this.stopAtTape(this.tapeColor, 500);
         }

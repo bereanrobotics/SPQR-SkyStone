@@ -17,7 +17,7 @@ public class MainOpMode extends OpMode {
     private HardwareSPQR robot = new HardwareSPQR();
 
     //Speed of the robot
-    private double speed = 1.0;
+    private double speed = -1.0;
 
     //Level counter
     private int levelCounter = 0;
@@ -69,7 +69,7 @@ public class MainOpMode extends OpMode {
             this.speed = -this.speed;
         }
         if (!gamepad1.a){
-            this.gamepad1_aPressed = true;
+            this.gamepad1_aPressed = false;
         }
 
         /* Sniper mode */

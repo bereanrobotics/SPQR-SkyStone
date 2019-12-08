@@ -10,9 +10,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Variables
-    public final long ninetyDegreeTime = 990;
     public final double speed = -0.75;
     public final double turnSpeed = -1;
+    public final long ninetyDegreeRightTime = 990;
+    public final long ninetyDegreeLeftTime = 975;
 
     //Intialize hardware
     public HardwareSPQR robot = new HardwareSPQR();
@@ -28,13 +29,14 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     //Turn for a certain amount of time
-    public void turnForTime(Dir direction, double speed, long milliseconds){
+    public void turnForTime90(Dir direction, double speed){
         if (direction == Dir.RIGHT) {
             this.robot.tank(speed, -speed);
+            this.sleep(ninetyDegreeRightTime);
         } else {
             this.robot.tank(-speed, speed);
+            this.sleep(ninetyDegreeLeftTime);
         }
-        this.sleep(milliseconds);
         this.robot.stopMoving();
     }
 
