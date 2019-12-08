@@ -1,11 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-/* BASICALLY: USE CAMERA TO FIND POSITION AND REPORT IT FOR USE IN OTHER THINGS
-Shamelessly borrowed and improved upon from FTC examples. In theory, it might work.
-*/
-
-//SUCCESS!
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -30,8 +24,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
-import static org.firstinspires.ftc.teamcode.Constants.mmPerInch;
 import static java.lang.Math.*;
 
 /* see skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf */

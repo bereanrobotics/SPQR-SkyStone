@@ -6,11 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.Locale;
-
-import static com.qualcomm.robotcore.eventloop.opmode.LinearOpMode.*;
-import static java.lang.Thread.sleep;
-
 /**
  * This class defines all hardware on the robot. It also contains movement abstractions.
  *
@@ -35,6 +30,7 @@ import static java.lang.Thread.sleep;
  * @author Arkin Solomon
  */
 public class HardwareSPQR {
+
     //Declare hardware
     public DcMotor leftFrontDrive = null;
     public DcMotor leftBackDrive = null;
@@ -59,7 +55,7 @@ public class HardwareSPQR {
     private boolean robotIsInitialized = false;
 
     //Levels of blocks
-    public static int[] levels = {-830, -1050, -1270};
+    public static int[] levels = {-1300, -1530, -1655, -1770};
 
     //Initializer
     public void init(HardwareMap ahwMap) {
@@ -87,7 +83,7 @@ public class HardwareSPQR {
         this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -96,7 +92,7 @@ public class HardwareSPQR {
         this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
         this.rightIntake.setDirection(DcMotor.Direction.REVERSE);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
-
+       
         //Set all motor power to zero
         this.leftFrontDrive.setPower(0);
         this.leftBackDrive.setPower(0);
@@ -123,7 +119,7 @@ public class HardwareSPQR {
         this.blockBeater.setPosition(1);
         this.rampDrop.setPosition(-1);
         this.blockGrabber.setPosition(1);
-        this.armBalancer.setPosition(1);
+        this.armBalancer.setPosition(-1);
         this.tow.setPosition(-1);
 
         /* Initialize sensors */
@@ -199,33 +195,6 @@ public class HardwareSPQR {
     public void stopIntake(){
         this.leftIntake.setPower(0);
         this.rightIntake.setPower(0);
-
-
-    }
-
-    public void forwardTime(long time, double speed) { //go forward for
-            this.setPowers(speed);
-            sleep(time);
-            this.setPowers(0);
-        }
-
-    public void turnTime(String direction, long time, double speed) {
-        direction = direction.toLowerCase(Locale.ENGLISH);
-        if (direction == "right") {
-            this.tank(speed, -speed);
-        } else if (direction == "left") {
-            this.tank(-speed, speed);
-        }
-        sleep(time);
-        this.setPowers(0);
-    }
-
-    public final void sleep(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     /* Arm movement */
@@ -250,5 +219,3 @@ public class HardwareSPQR {
         this.blockGrabber.setPosition(1);
     }
 }
-
-
