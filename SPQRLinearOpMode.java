@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Custom Linear OpMode class with extra functions
+ *
+ * @author Owen peterson
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
-    public long ninetyDegreeTime = 1000;
+    public long ninetyDegreeTime = 1100;
 
     public double speed = -0.5;
     public double turnSpeed = -1;

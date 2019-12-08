@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Red Simple Auto")
 public class RedSimpleAuto extends SPQRLinearOpMode {
-    private HardwareSPQR robot = new HardwareSPQR();
 
     @Override
     public void runOpMode() {
@@ -16,12 +15,12 @@ public class RedSimpleAuto extends SPQRLinearOpMode {
         if(opModeIsActive() && !isStopRequested()) {
             this.driveForTime(this.speed, 500);
             this.turnForTime(Dir.RIGHT, this.turnSpeed, this.ninetyDegreeTime);
-            this.driveForTime(this.speed, 8000);
+            this.driveForTime(this.speed, 7000);
             this.turnForTime(Dir.LEFT,this.turnSpeed, this.ninetyDegreeTime);
             this.driveForTime(speed, 2000);
-            this.robot.tow.setPosition(1);
+            //this.robot.tow.setPosition(1);
             this.driveForTime(-this.speed, 3000);
-            this.robot.tow.setPosition(0);
+            // bthis.robot.tow.setPosition(0);
             this.turnForTime(Dir.LEFT, this.turnSpeed, this.ninetyDegreeTime);
             this.driveForTime(speed, 2000);
             this.turnForTime(Dir.RIGHT, this.turnSpeed, this.ninetyDegreeTime);
