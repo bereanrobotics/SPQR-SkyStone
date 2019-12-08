@@ -177,6 +177,7 @@ public class HardwareSPQR {
 
     //Stop moving
     public void stopMoving(){
+        if (!this.robotIsInitialized) return;
         this.setPowers(0);
     }
 
@@ -187,18 +188,21 @@ public class HardwareSPQR {
 
     //Suck in blocks
     public void intakeIn(){
+        if (!this.robotIsInitialized) return;
         this.leftIntake.setPower(this.intakeSpeed);
         this.rightIntake.setPower(this.intakeSpeed);
     }
 
     //Push out blocks
     public void intakeOut(){
+        if (!this.robotIsInitialized) return;
         this.leftIntake.setPower(-this.intakeSpeed);
         this.rightIntake.setPower(-this.intakeSpeed);
     }
 
     //Stop intake
     public void stopIntake(){
+        if (!this.robotIsInitialized) return;
         this.leftIntake.setPower(0);
         this.rightIntake.setPower(0);
     }
@@ -207,6 +211,7 @@ public class HardwareSPQR {
 
     //Drop the arm down to levels
     public void moveArm(int level, double speed){
+        if (!this.robotIsInitialized) return;
         this.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.armMotor.setTargetPosition(this.levels[level]);
         this.armMotor.setPower(speed);
@@ -217,11 +222,13 @@ public class HardwareSPQR {
 
     //Grab a block
     public void grabBlock(){
+        if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(-1);
     }
 
     //Release a block
     public void releaseBlock(){
+        if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(1);
     }
 }

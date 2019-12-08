@@ -10,10 +10,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Variables
-    public final double speed = -0.75;
-    public final double turnSpeed = -1;
+    public final double speed = 0.75;
+    public final double turnSpeed = 1;
     public final long ninetyDegreeRightTime = 990;
-    public final long ninetyDegreeLeftTime = 975;
+    public final long ninetyDegreeLeftTime = 970;
 
     //Intialize hardware
     public HardwareSPQR robot = new HardwareSPQR();
@@ -47,7 +47,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Stops the robot over the tape
     public void stopAtTape(int[] tapeColor, int change){
-        this.robot.setPowers(-0.5);
+        this.robot.setPowers(.6);
         boolean isOnLine = false;
         while (!isOnLine && this.opModeIsActive()) {
             int[] r = this.plusOrMinus(this.robot.lineParkSensor.red(), change);
@@ -56,7 +56,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             isOnLine = (((tapeColor[0] > r[0]) && (tapeColor[0] < r[1])) && ((tapeColor[1] > g[0]) && (tapeColor[1] < g[1])) && ((tapeColor[2] > b[0]) && (tapeColor[2] < b[1])));
         }
         this.robot.lineParkSensor.enableLed(false);
-        this.robot.forward();
+        this.robot. backward();
         this.sleep(100);
         this.robot.stopMoving();
     }

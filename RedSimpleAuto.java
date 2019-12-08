@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name="Red Simple Auto")
+@Disabled
 public class RedSimpleAuto extends SPQRLinearOpMode {
 
-    private int[] tapeColor = {2970, 1890, 700};
+    private int[] tapeColor = {2600, 1660, 600};
     private Dir directionOne = Dir.RIGHT;
     private Dir directionTwo = Dir.LEFT;
 

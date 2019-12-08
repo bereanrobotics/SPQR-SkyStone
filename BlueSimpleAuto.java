@@ -2,15 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import java.lang.System.*;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import static java.lang.Math.pow;
 
 @Autonomous(name="Blue Simple Auto")
+@Disabled
 public class BlueSimpleAuto extends SPQRLinearOpMode {
 
     private int[] tapeColor = {846, 2137, 2515};
