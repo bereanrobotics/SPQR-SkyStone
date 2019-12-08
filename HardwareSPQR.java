@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -55,7 +54,8 @@ public class HardwareSPQR {
     private boolean robotIsInitialized = false;
 
     //Levels of blocks
-    public static int[] levels = {-1300, -1530, -1655, -1770};
+    public static final int[] levels = {-200, -1340, -1545, -1765, -1820};
+    public static final double[] servoLevels = {0, .84222222222222222, .89166666666666666, 1.0, 1.0};
 
     //Initializer
     public void init(HardwareMap ahwMap) {
@@ -119,7 +119,7 @@ public class HardwareSPQR {
         this.blockBeater.setPosition(1);
         this.rampDrop.setPosition(-1);
         this.blockGrabber.setPosition(1);
-        this.armBalancer.setPosition(-1);
+        this.armBalancer.setPosition(0);
         this.tow.setPosition(-1);
 
         /* Initialize sensors */
@@ -138,10 +138,11 @@ public class HardwareSPQR {
     //Strafe in a direction with a certain power
     public void strafe(Dir direction, double power){
         if (!robotIsInitialized) return;
+        power = power * 0.6;
         this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power : -power);
-        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power : -power);
-        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power  : power);
+        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power + (power * 0.275) : -power - (power * 0.275));
+        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power - (power * 0.2) : -power + (power * 0.2));
+        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
     }
 
     //Set all motors to certain power
@@ -172,6 +173,11 @@ public class HardwareSPQR {
         this.leftBackDrive.setPower(left);
         this.rightFrontDrive.setPower(right);
         this.rightBackDrive.setPower(right);
+    }
+
+    //Stop moving
+    public void stopMoving(){
+        this.setPowers(0);
     }
 
     /* Intake movement */
