@@ -12,6 +12,9 @@ import static java.lang.Math.pow;
 
 @Autonomous(name="Blue Simple Auto")
 public class BlueSimpleAuto extends SPQRLinearOpMode {
+
+    private int[] tapeColor = {846, 2137, 2515};
+
     @Override
     public void runOpMode() {
         this.hardwareInit();
@@ -67,9 +70,7 @@ public class BlueSimpleAuto extends SPQRLinearOpMode {
 
             this.driveForTime(speed, justSpeed(300, speed));
 
-            if (true) {
-                this.robot.setPowers(0);
+            this.stopAtTape(this.tapeColor, 500);
             }
         }
     }
-}
