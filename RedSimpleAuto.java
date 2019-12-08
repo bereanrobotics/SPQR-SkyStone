@@ -1,14 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import java.lang.System.*;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.Math.pow;
 
 @Autonomous(name="Red Simple Auto")
 public class RedSimpleAuto extends LinearOpMode {
@@ -33,6 +26,7 @@ public class RedSimpleAuto extends LinearOpMode {
             this.robot.turnTime("left",halfNinetyDegreeTime, -speed);
             this.robot.forwardTime(8000, speed);
             this.robot.turnTime("left",halfNinetyDegreeTime, speed);
+            this.robot.turnTime("right",halfNinetyDegreeTime, -speed);
             this.robot.tow.setPosition(1);
         }
     }

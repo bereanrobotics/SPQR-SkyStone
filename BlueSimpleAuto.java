@@ -14,7 +14,7 @@ import static java.lang.Math.pow;
 public class BlueSimpleAuto extends LinearOpMode {
     private boolean isInitialized = false;
     private HardwareSPQR robot = new HardwareSPQR();
-    public long ninetyDegreeTime = 750;
+    public long halfNinetyDegreeTime = 5000;
 
     private double speed = -0.5;
     @Override
@@ -28,10 +28,12 @@ public class BlueSimpleAuto extends LinearOpMode {
         waitForStart();
 
         if(opModeIsActive() && !isStopRequested()) {
-            this.robot.forwardTime(3000, speed);
-            this.robot.turnTime("left", ninetyDegreeTime, speed);
+            this.robot.forwardTime(500, speed);
+            this.robot.turnTime("left", halfNinetyDegreeTime, speed);
+            this.robot.turnTime("right",halfNinetyDegreeTime, -speed);
             this.robot.forwardTime(8000, speed);
-            this.robot.turnTime("right",ninetyDegreeTime , speed);
+            this.robot.turnTime("right",halfNinetyDegreeTime, speed);
+            this.robot.turnTime("left",halfNinetyDegreeTime, -speed);
             this.robot.tow.setPosition(1);
             }
         }
