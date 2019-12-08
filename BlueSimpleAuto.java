@@ -11,19 +11,18 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.Math.pow;
 
 @Autonomous(name="Blue Simple Auto")
-public class BlueSimpleAuto extends LinearOpMode {
+public class BlueSimpleAuto extends SPQRLinearOpMode {
     private boolean isInitialized = false;
     private HardwareSPQR robot = new HardwareSPQR();
     public long halfNinetyDegreeTime = 5000;
 
     private double speed = -0.5;
     private double turnSpeed = -1;
-
     @Override
     public void runOpMode() {
         if (!isInitialized) {
             isInitialized = true;
-            this.robot.init(hardwareMap);
+            this.hardwareInit();
 //            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 

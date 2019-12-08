@@ -25,5 +25,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         } else {
             this.robot.tank(-speed, speed);
         }
+        this.sleep(milliseconds);
+        this.robot.setPowers(0);
     }
 }
