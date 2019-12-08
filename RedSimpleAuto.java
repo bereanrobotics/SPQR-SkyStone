@@ -5,32 +5,34 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Red Simple Auto")
 public class RedSimpleAuto extends SPQRLinearOpMode {
-    private boolean isInitialized = false;
     private HardwareSPQR robot = new HardwareSPQR();
-    public long ninetyDegreeTime = 5000;
 
-    private double speed = -0.5;
-    private double turnSpeed = -1;
     @Override
     public void runOpMode() {
-        if (!isInitialized) {
-            isInitialized = true;
-            this.hardwareInit();
-//            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
+        this.hardwareInit();
 
         waitForStart();
 
         if(opModeIsActive() && !isStopRequested()) {
-            this.driveForTime(speed, 500);
-            this.turnForTime(Dir.RIGHT, turnSpeed, ninetyDegreeTime);
-            this.driveForTime(speed, 8000);
-            this.turnForTime(Dir.RIGHT,turnSpeed, ninetyDegreeTime);
+            this.driveForTime(this.speed, 500);
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, this.ninetyDegreeTime);
+            this.driveForTime(this.speed, 8000);
+            this.turnForTime(Dir.LEFT,this.turnSpeed, this.ninetyDegreeTime);
+            this.driveForTime(speed, 2000);
             this.robot.tow.setPosition(1);
-            this.driveForTime(-speed, 3000);
-            this.turnForTime(Dir.LEFT, turnSpeed, ninetyDegreeTime);
-
-            this.robot.setPowers(speed);
+            this.driveForTime(-this.speed, 3000);
+            this.robot.tow.setPosition(0);
+            this.turnForTime(Dir.LEFT, this.turnSpeed, this.ninetyDegreeTime);
+            this.driveForTime(speed, 2000);
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, this.ninetyDegreeTime);
+            this.driveForTime(speed, 500);
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, this.ninetyDegreeTime);
+            this.driveForTime(speed, 1000);
+            this.turnForTime(Dir.RIGHT, this.turnSpeed, this.ninetyDegreeTime);
+            this.driveForTime(this.speed, 1000);
+            this.driveForTime(-this.speed, 500);
+            this.turnForTime(Dir.RIGHT, this.turnSpeed,this.ninetyDegreeTime);
+            this.driveForTime(speed, 2000);
             if (true){
                 this.robot.setPowers(0);
             }

@@ -7,6 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
+    public long ninetyDegreeTime = 1000;
+
+    public double speed = -0.5;
+    public double turnSpeed = -1;
+
     public HardwareSPQR robot = new HardwareSPQR();
 
     public void hardwareInit(){
