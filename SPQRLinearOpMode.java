@@ -21,6 +21,17 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.init(hardwareMap);
     }
 
+    public void moveArm(int level, double speed){
+        this.robot.moveArm(level, speed);
+        }
+    public void grabBlock (){
+        this.robot.grabBlock();
+    }
+
+    public void releaseBlock (){
+        this.robot.releaseBlock();
+    }
+
     //Drive for a certain amount of time
     public void driveForTime(double speed, long milliseconds){
         this.robot.setPowers(speed);
