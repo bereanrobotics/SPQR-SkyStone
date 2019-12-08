@@ -35,7 +35,6 @@ import static java.lang.Thread.sleep;
  * @author Arkin Solomon
  */
 public class HardwareSPQR {
-
     //Declare hardware
     public DcMotor leftFrontDrive = null;
     public DcMotor leftBackDrive = null;
