@@ -10,7 +10,6 @@ import static java.lang.Math.pow;
 @Disabled
 public class BlueSimpleAuto extends SPQRLinearOpMode {
 
-    private int[] tapeColor = {846, 2137, 2515};
     private Dir directionOne = Dir.LEFT;
     private Dir directionTwo = Dir.RIGHT;
 
@@ -62,7 +61,7 @@ public class BlueSimpleAuto extends SPQRLinearOpMode {
 
             this.turnForTime90(directionOne, this.turnSpeed);
 
-            this.stopAtTape(this.tapeColor, 500);
+            this.stopAtTape(TapeColors.blue, 500);
         }
     }
 }
