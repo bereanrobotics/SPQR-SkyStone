@@ -9,7 +9,7 @@ import static java.lang.Math.abs;
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
-    public long ninetyDegreeTime = 1045;
+    public long ninetyDegreeTime = 1050;
 
 
 
@@ -23,7 +23,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     public long justSpeed (long miliRatio, double speed){
-        return ((long) abs(miliRatio / speed));
+        return ((long) abs(miliRatio/speed));
     }
 
     public void driveForTime(double speed, long milliseconds){
