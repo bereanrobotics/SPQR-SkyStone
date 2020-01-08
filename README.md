@@ -18,3 +18,4 @@ Code is built using the FTC Skystone Java SDK and Android Studio. Some code uses
 - Clean up files.
 - Clean up master.
 - Clean up branches.
+- *Teach Owen how to use github*
