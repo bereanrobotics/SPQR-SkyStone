@@ -34,14 +34,13 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     private boolean blockSwitch;
 
     //Values for the wheels
-    private double wheelRadius;
-    private double wheelCircumference;
+    private double wheelRadius = 1;
+    private double wheelCircumference = wheelRadius * 2 * Math.PI;
 
     //Intialize hardware
     public HardwareSPQR robot = new HardwareSPQR();
     public void hardwareInit(){
         this.robot.init(hardwareMap);
-        wheelCircumference = wheelRadius * 2 * Math.PI
     }
 
     //Makes these easier to type
