@@ -39,14 +39,26 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.setPowers(0);
     }
 
-    //Turn for a certain amount of time
+    //Turn for a time of 90 degrees?
     public void turnForTime90(Dir direction, double speed){
-        if (direction == Dir.RIGHT) {
+        if (direction == Dir.LEFT) {
             this.robot.tank(speed, -speed);
             this.sleep(ninetyDegreeRightTime);
         } else {
             this.robot.tank(-speed, speed);
             this.sleep(ninetyDegreeLeftTime);
+        }
+        this.robot.stopMoving();
+    }
+
+    //Turn for a set time
+    public void turnForTime(Dir direction, double speed, long milliseconds){
+        if (direction == Dir.LEFT) {
+            this.robot.tank(speed, -speed);
+            this.sleep(milliseconds);
+        } else {
+            this.robot.tank(-speed, speed);
+            this.sleep(milliseconds);
         }
         this.robot.stopMoving();
     }
