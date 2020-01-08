@@ -87,5 +87,76 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //Returns an array plus or minus a change given of a value given
     private int[] plusOrMinus(int value, int change){
         return new int[] {value - change, value + change};
+
+
     }
-}
+    public enum Color {
+        BLUE, RED;
+    }
+
+    public enum Position {
+        FRONT, BACK;
+    }
+
+    public enum Lane {
+        INSIDE, OUTSIDE;
+    }
+
+    public class SPQRAutonomous {
+
+        public class Modular {
+            //The switch on the robot that dictates what color it is. (red or blue)
+           boolean teamSwitch;
+            Color teamColor;
+            //The switch on the robot that determines the starting posistion (front or back)
+           boolean positionSwitch;
+            Position position;
+            //The switch on the robot that determines which lane it will primarily travel on (inside, outside)
+           boolean laneSwitch;
+            Lane lane;
+            //The switch on the robot that determines whether to try and pull the foundation into the area
+           boolean foundationSwitch;
+            //The switch on the robot that determines whether to try and pickup a block
+           boolean blockSwitch;
+
+            //Values for the wheels
+           double wheelRadius;
+           double wheelCircumference = wheelRadius * 2 * Math.PI;
+
+
+           public void initialize(){
+               hardwareInit();
+               if (teamSwitch){
+                   teamColor = Color.BLUE;
+               } else {
+                   teamColor = Color.RED;
+               }
+               if (positionSwitch){
+                   position = Position.FRONT;
+               } else {
+                   position = Position.BACK;
+               }
+               if (laneSwitch){
+                   lane = Lane.INSIDE;
+               } else {
+                   lane = Lane.OUTSIDE;
+               }
+           }
+           double encoder;
+           double fullCircle;
+           public double calculateDistance(){
+               double returnDistance = (encoder/fullCircle)*wheelCircumference;
+               return returnDistance;
+           }
+
+           public void runAutonomous(){
+
+           }
+
+
+            }
+
+
+
+            }
+    }
