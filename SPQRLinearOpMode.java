@@ -72,15 +72,25 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Calculates distance robot has traveled
     public double calculateDistance(){
-      double encoder = this.driveAverage()
-      return (encoder / fullCircle) * wheelCircumference
+      double encoder = this.driveAverage();
+      return (encoder / fullCircle) * wheelCircumference;
+    }
+
+    public double calculateDistance(double start){
+        return calculateDistance() - start;
     }
 
     //Returns an array plus or minus a change given of a value given
     private int[] plusOrMinus(int value, int change){
         return new int[] {value - change, value + change};
     }
-
+    private void driveFoward (double distance){
+        double tempDistanceStart = calculateDistance();
+        while(calculateDistance(tempDistanceStart) < distance){
+            this.robot.setPowers(1);
+        }
+        this.robot.stopMoving();
+    }
     //Get average distance traveled
     private double driveAverage(){
       int[] encoderPositions = {this.robot.leftFrontDrive.getPosition(), this.robot.rightFrontDrive.getPosition(), this.robot.leftBackDrive.getPosition(), this.robot.rightBackDrive.getPosition()};
@@ -88,6 +98,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
       for (int encoderPosition : encoderPositions){
         sum += encoderPosition;
       }
-      return sum / encoderPositions.length
+      return sum / encoderPositions.length;
     }
   }
