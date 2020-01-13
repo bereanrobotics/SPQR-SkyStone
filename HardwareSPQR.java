@@ -83,7 +83,7 @@ public class HardwareSPQR {
         this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
+
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -92,7 +92,7 @@ public class HardwareSPQR {
         this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
         this.rightIntake.setDirection(DcMotor.Direction.REVERSE);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
-       
+
         //Set all motor power to zero
         this.leftFrontDrive.setPower(0);
         this.leftBackDrive.setPower(0);
@@ -131,6 +131,11 @@ public class HardwareSPQR {
         this.lineParkSensor.enableLed(true);
 
         robotIsInitialized = true;
+    }
+
+    //Test function to get the ideal position of a square
+    public static double getServoPosition(int encoderPosition){
+      return -0.0006803 * encoderPosition + -0.1261
     }
 
     /* Movement abstractions */
