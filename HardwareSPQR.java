@@ -9,19 +9,13 @@ import com.qualcomm.robotcore.hardware.Servo;
  * This class defines all hardware on the robot. It also contains movement abstractions.
  *
  * Motor channel H1-0 (NeveRest 40 Gearmotor):           Left front drive motor:   "left_front_drive"
- * Motor channel H1-1 (NeveRest 40 Gearmotor):           Left back drive motor:    "left_back_drive"
- * Motor channel H1-2 (NeveRest 40 Gearmotor):           Right front drive motor:  "right_front_drive"
+ * Motor channel H1-1 (NeveRest 40 Gearmotor):           Right front drive motor:  "right_front_drive"
+ * Motor channel H1-2 (NeveRest 40 Gearmotor):           Left back drive motor:    "left_back_drive"
  * Motor channel H1-3 (NeveRest 40 Gearmotor):           Right back drive motor:   "right_back_drive"
- * Motor channel H2-0 (REV Robotics 20:1 HD Hex Motor):  Right intake motor:       "right_intake"
- * Motor channel H2-1 (REV Robotics 20:1 HD Hex Motor):  Left intake motor:        "left_intake"
- * Motor channel H2-2 (Tetrix Motor):                    Arm motor:                "arm_motor"
- * Servo channel H1-0 (Servo):                           Left intake drop servo:   "left_drop"
- * Servo channel H1-1 (Servo):                           Right intake drop servo:  "right_drop"
- * Servo channel H1-2 (Servo):                           Block hitter servo:       "block_beater"
- * Servo channel H1-3 (Servo):                           Block grabber servo:      "block_grabber"
- * Servo channel H1-4 (Servo):                           Arm balancer servo:       "arm_balancer"
- * Servo channel H1-5 (Servo):                           Ramp dropper servo:       "ramp_drop"
- * Servo channel H2-0 (Servo):                           Buildplate tow:           "tow"
+ * Motor channel H2-0 (Tetrix Motor):                    Arm motor:                "arm_motor"
+ * Servo channel H1-0 (Servo):                           Block grabber servo:      "block_grabber"
+ * Servo channel H1-1 (Servo):                           Arm balancer servo:       "arm_balancer"
+ * Servo channel H2-0 (Servo):                           Buildplate tow servo:     "tow"
  * I2C H1-0-0 (REV Expansion Hub IMU):                   Hub connector:            "imu"
  * I2C H2-0-0 (REV Expansion Hub IMU):                   Hub connector:            "imu 1"
  * I2C H2-1-0 (Rev Color Sensor v3):                     Line park sensor          "line_park_sensor"
@@ -35,15 +29,9 @@ public class HardwareSPQR {
     public DcMotor leftBackDrive = null;
     public DcMotor rightFrontDrive = null;
     public DcMotor rightBackDrive = null;
-    public DcMotor leftIntake = null;
-    public DcMotor rightIntake = null;
     public DcMotor armMotor = null;
-    public Servo leftDrop = null;
-    public Servo rightDrop = null;
-    public Servo blockBeater = null;
     public Servo blockGrabber = null;
     public Servo armBalancer = null;
-    public Servo rampDrop = null;
     public Servo tow = null;
     public ColorSensor lineParkSensor = null;
 
@@ -52,10 +40,6 @@ public class HardwareSPQR {
 
     //True if robot is initialized
     private boolean robotIsInitialized = false;
-
-    //Levels of blocks
-    public static final int[] levels = {-200, -1340, -1545, -1765, -1820};
-    public static final double[] servoLevels = {0, .84222222222222222, .89166666666666666, 1.0, 1.0};
 
     //Initializer
     public void init(HardwareMap ahwMap) {
@@ -70,8 +54,6 @@ public class HardwareSPQR {
         this.leftBackDrive = hwMap.get(DcMotor.class, "left_back_drive");
         this.rightFrontDrive = hwMap.get(DcMotor.class, "right_front_drive");
         this.rightBackDrive = hwMap.get(DcMotor.class, "right_back_drive");
-        this.leftIntake = hwMap.get(DcMotor.class, "left_intake");
-        this.rightIntake = hwMap.get(DcMotor.class, "right_intake");
         this.armMotor = hwMap.get(DcMotor.class, "arm_motor");
 
         //Set all motors to use or not use encoders
@@ -79,8 +61,6 @@ public class HardwareSPQR {
         this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -89,8 +69,6 @@ public class HardwareSPQR {
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
-        this.rightIntake.setDirection(DcMotor.Direction.REVERSE);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //Set all motor power to zero
@@ -98,26 +76,16 @@ public class HardwareSPQR {
         this.leftBackDrive.setPower(0);
         this.rightFrontDrive.setPower(0);
         this.rightBackDrive.setPower(0);
-        this.leftIntake.setPower(0);
-        this.rightIntake.setPower(0);
         this.armMotor.setPower(0);
 
         /* Initialize servos */
 
         //Define servos
-        this.leftDrop = hwMap.get(Servo.class, "left_drop");
-        this.rightDrop = hwMap.get(Servo.class, "right_drop");
-        this.blockBeater = hwMap.get(Servo.class, "block_beater");
         this.blockGrabber = hwMap.get(Servo.class, "block_grabber");
         this.armBalancer = hwMap.get(Servo.class, "arm_balancer");
-        this.rampDrop = hwMap.get(Servo.class, "ramp_drop");
         this.tow = hwMap.get(Servo.class, "tow");
 
         //Reset servo positions
-        this.leftDrop.setPosition(-1);
-        this.rightDrop.setPosition(1);
-        this.blockBeater.setPosition(1);
-        this.rampDrop.setPosition(-1);
         this.blockGrabber.setPosition(1);
         this.armBalancer.setPosition(0);
         this.tow.setPosition(-1);
@@ -133,7 +101,7 @@ public class HardwareSPQR {
         robotIsInitialized = true;
     }
 
-    //Test function to get the ideal position of a square
+    //Function to get the ideal position of a square
     public static double getServoPosition(int encoderPosition){
       return -0.0006803 * encoderPosition + -0.1261;
     }
@@ -191,39 +159,7 @@ public class HardwareSPQR {
     //Speed of the intake
     private double intakeSpeed = 0.30;
 
-    //Suck in blocks
-    public void intakeIn(){
-        if (!this.robotIsInitialized) return;
-        this.leftIntake.setPower(this.intakeSpeed);
-        this.rightIntake.setPower(this.intakeSpeed);
-    }
-
-    //Push out blocks
-    public void intakeOut(){
-        if (!this.robotIsInitialized) return;
-        this.leftIntake.setPower(-this.intakeSpeed);
-        this.rightIntake.setPower(-this.intakeSpeed);
-    }
-
-    //Stop intake
-    public void stopIntake(){
-        if (!this.robotIsInitialized) return;
-        this.leftIntake.setPower(0);
-        this.rightIntake.setPower(0);
-    }
-
     /* Arm movement */
-
-    //Drop the arm down to levels
-    public void moveArm(int level, double speed){
-        if (!this.robotIsInitialized) return;
-        this.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.armMotor.setTargetPosition(this.levels[level]);
-        this.armMotor.setPower(speed);
-        while (this.armMotor.isBusy()){
-            this.armMotor.setPower(0);
-        }
-    }
 
     //Grab a block
     public void grabBlock(){

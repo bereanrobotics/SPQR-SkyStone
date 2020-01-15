@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Dir;
 
 /**
  * This OpMode will mainly be used in the telemetry portions of competitions
+ *
  * @author Arkin Solomon
  */
 @TeleOp(name="Main OpMode")
@@ -19,15 +20,7 @@ public class MainOpMode extends OpMode {
     //Speed of the robot
     private double speed = 1.0;
 
-    //Level counter
-    private int levelCounter = 0;
-
-    //If we are locking to levels
-    private boolean isArmLocked = false;
-
     //Prevent detecting multiple clicks
-    private boolean dpad_upPressed = false;
-    private boolean dpad_downPressed = false;
     private boolean gamepad1_aPressed = false;
     private boolean gamepad1_bPressed = false;
 
@@ -82,29 +75,12 @@ public class MainOpMode extends OpMode {
             this.gamepad1_bPressed = false;
         }
 
-        /* Move block beater */
-        if (gamepad2.dpad_left) {
-            this.robot.blockBeater.setPosition(-1);
-        }
-        if (gamepad2.dpad_right){
-            this.robot.blockBeater.setPosition(1);
-        }
-
         /* Bring tow down */
         if (gamepad1.dpad_down){
             this.robot.tow.setPosition(-1);
         }
         if (gamepad1.dpad_up){
             this.robot.tow.setPosition(1);
-        }
-
-        /* Intake */
-        if (gamepad2.right_trigger > 0.1){
-            this.robot.intakeIn();
-        } else if (gamepad2.left_trigger > 0.1){
-            this.robot.intakeOut();
-        } else {
-            this.robot.stopIntake();
         }
 
         /* Grab blocks */
@@ -116,61 +92,17 @@ public class MainOpMode extends OpMode {
         }
 
         /* Arm movement */
+        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
+        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
 
         //Reset arm zero
         if (gamepad2.right_bumper){
-            DcMotor.RunMode previousMode = this.robot.armMotor.getMode();
             this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            this.robot.armMotor.setMode(previousMode);
-        }
-
-        //Toggle arm lock or unlock
-        if (gamepad2.x){
-            this.isArmLocked = false;
-        }
-        if (gamepad2.y){
-            this.isArmLocked = true;
-        }
-
-        //Change levels up or down
-        if (gamepad2.dpad_up){
-            if (this.dpad_upPressed) return;
-            this.dpad_upPressed = true;
-            this.levelCounter += (this.levelCounter < this.robot.levels.length - 1) ? 1 : 0;
-        }
-        if (gamepad2.dpad_down){
-            if (this.dpad_downPressed) return;
-            this.dpad_downPressed = true;
-            this.levelCounter -= (this.levelCounter > 0) ? 1 : 0;
-        }
-        if (!gamepad2.dpad_up){
-            this.dpad_upPressed = false;
-        }
-        if (!gamepad2.dpad_down){
-            this.dpad_downPressed = false;
-        }
-
-
-        //Move to level
-        if (this.isArmLocked){
-            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            this.robot.armMotor.setTargetPosition(this.robot.levels[this.levelCounter]);
-            this.robot.armBalancer.setPosition(this.robot.servoLevels[this.levelCounter]);
-            if (this.robot.armMotor.isBusy()){
-                this.robot.armMotor.setPower(0.35);
-            }else{
-                this.robot.armMotor.setPower(0);
-            }
-        }else{
-
-            //Adjust minutely
             this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
         }
 
         /* Telementry data */
         telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
-        telemetry.addData("Level", this.levelCounter);
         telemetry.addData("Servo", this.robot.armBalancer.getPosition());
         telemetry.addData("Red", this.robot.lineParkSensor.red());
         telemetry.addData("Green", this.robot.lineParkSensor.green());
