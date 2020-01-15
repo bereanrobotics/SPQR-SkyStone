@@ -55,9 +55,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     //Makes these easier to type
-    public void moveArm(int level, double speed){
-        this.robot.moveArm(level, speed);
-    }
     public void grabBlock(){
         this.robot.grabBlock();
     }
@@ -101,10 +98,12 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     public void turn (double angle, double speed){
+        resetEncoders();
 
     }
 
     public void drive (double distance, double speed){
+        resetEncoders();
         double tempDistanceStart = calculateDistance();
         while(calculateDistance(tempDistanceStart) < distance){
             this.robot.setPowers(speed);
@@ -189,6 +188,11 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        this.robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     //Get average distance traveled
     public double driveAverage(){

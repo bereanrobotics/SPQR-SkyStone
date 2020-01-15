@@ -57,10 +57,10 @@ public class HardwareSPQR {
         this.armMotor = hwMap.get(DcMotor.class, "arm_motor");
 
         //Set all motors to use or not use encoders
-        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
