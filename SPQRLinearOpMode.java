@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * Custom Linear OpMode class with extra functions.
@@ -40,6 +41,12 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //Values for the wheels
     private final double wheelRadius = 5;
     private final double wheelCircumference = wheelRadius * 2 * Math.PI;
+
+    private int leftFrontEncoder;
+    private int rightFrontEncoder;
+    private int leftBackEncoder;
+    private int rightBackEncoder;
+
 
     //Intialize hardware
     public HardwareSPQR robot = new HardwareSPQR();
@@ -105,7 +112,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         }
         this.robot.stopMoving();
     }
-
 
     public void checkRate (Orientation wheelsCompare){
         double frontLeft = this.robot.leftFrontDrive.getCurrentPosition();
@@ -173,8 +179,17 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             }
         }
     }
+    public void resetEncoders(){
+        this.leftFrontEncoder += this.robot.leftFrontDrive.getCurrentPosition();
+        this.rightFrontEncoder += this.robot.rightFrontDrive.getCurrentPosition();
+        this.leftBackEncoder += this.robot.leftBackDrive.getCurrentPosition();
+        this.rightBackEncoder += this.robot.rightBackDrive.getCurrentPosition();
 
-
+        this.robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
     //Get average distance traveled
     public double driveAverage(){
       int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(), this.robot.rightFrontDrive.getCurrentPosition(), this.robot.leftBackDrive.getCurrentPosition(), this.robot.rightBackDrive.getCurrentPosition()};
