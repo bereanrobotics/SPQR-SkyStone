@@ -18,6 +18,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //The switch on the robot that dictates what color it is. (red or blue)
 
     public final double ppr = 280;
+    public final double errorScalar = 5;
 
     private boolean teamSwitch;
     private Color teamColor;
@@ -79,7 +80,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
       return (encoder / 280) * wheelCircumference;
     }
 
-    public double calculateDistance(int encoder){
+    public double getDistance(int encoder){
         return (encoder / 280) * wheelCircumference;
     }
 
@@ -91,13 +92,89 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     public int[] plusOrMinus(int value, int change){
         return new int[] {value - change, value + change};
     }
-    public void drive(double distance, double speed){
+
+    public void turn (double angle, double speed){
+
+    }
+
+    public void drive (double distance, double speed){
         double tempDistanceStart = calculateDistance();
         while(calculateDistance(tempDistanceStart) < distance){
             this.robot.setPowers(speed);
+            checkRate(Orientation.HORIZONTAL);
         }
         this.robot.stopMoving();
     }
+
+
+    public void checkRate (Orientation wheelsCompare){
+        double frontLeft = this.robot.leftFrontDrive.getCurrentPosition();
+        double frontRight = this.robot.rightFrontDrive.getCurrentPosition();
+        double backLeft = this.robot.leftBackDrive.getCurrentPosition();
+        double backRight = this.robot.rightBackDrive.getCurrentPosition();
+        double error;
+        double power;
+        if (wheelsCompare == Orientation.HORIZONTAL){
+            if (frontLeft > frontRight){
+                error = frontLeft - frontRight;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.leftFrontDrive.setPower(power);
+            } else if (frontRight > frontLeft){
+                error = frontRight - frontLeft;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.rightFrontDrive.setPower(power);
+            }
+            if (backLeft > backRight){
+                error = backLeft - backRight;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.leftBackDrive.setPower(power);
+            } else if (backRight > backLeft){
+                error = backRight - backLeft;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.rightBackDrive.setPower(power);
+            }
+        } else if (wheelsCompare == Orientation.VERTICAL){
+            if (frontLeft > backLeft){
+                error = frontLeft - backLeft;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.leftFrontDrive.setPower(power);
+            } else if (backLeft > frontLeft){
+                error = backLeft - frontLeft;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.leftBackDrive.setPower(power);
+            }
+            if (frontRight > backRight){
+                error = frontRight - backRight;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.leftFrontDrive.setPower(power);
+                } else if (backRight > frontRight){
+                error = backRight - frontRight;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.rightBackDrive.setPower(power);
+            }
+        } else if (wheelsCompare == Orientation.DIAGONAL){
+            if (frontLeft > backRight){
+                error = frontLeft - backRight;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.leftFrontDrive.setPower(power);
+            } else if (backRight > frontLeft){
+                error = backRight - frontLeft;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.rightBackDrive.setPower(power);
+            }
+            if (frontRight > backLeft){
+                error = frontRight - backLeft;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.rightFrontDrive.setPower(power);
+            } else if (backLeft > frontRight){
+                error = backLeft - frontRight;
+                power = this.speed-(error/this.errorScalar);
+                this.robot.rightBackDrive.setPower(power);
+            }
+        }
+    }
+
+
     //Get average distance traveled
     public double driveAverage(){
       int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(), this.robot.rightFrontDrive.getCurrentPosition(), this.robot.leftBackDrive.getCurrentPosition(), this.robot.rightBackDrive.getCurrentPosition()};
