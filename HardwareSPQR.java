@@ -135,7 +135,7 @@ public class HardwareSPQR {
 
     //Test function to get the ideal position of a square
     public static double getServoPosition(int encoderPosition){
-      return -0.0006803 * encoderPosition + -0.1261
+      return -0.0006803 * encoderPosition + -0.1261;
     }
 
     /* Movement abstractions */

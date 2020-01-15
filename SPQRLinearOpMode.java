@@ -16,6 +16,9 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     public final long ninetyDegreeLeftTime = 970;
 
     //The switch on the robot that dictates what color it is. (red or blue)
+
+    public final double ppr = 280;
+
     private boolean teamSwitch;
     private Color teamColor;
 
@@ -34,7 +37,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     private boolean blockSwitch;
 
     //Values for the wheels
-    private final double wheelRadius = 1;
+    private final double wheelRadius = 5;
     private final double wheelCircumference = wheelRadius * 2 * Math.PI;
 
     //Intialize hardware
@@ -73,7 +76,11 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //Calculates distance robot has traveled
     public double calculateDistance(){
       double encoder = this.driveAverage();
-      return (encoder / fullCircle) * wheelCircumference;
+      return (encoder / 280) * wheelCircumference;
+    }
+
+    public double calculateDistance(int encoder){
+        return (encoder / 280) * wheelCircumference;
     }
 
     public double calculateDistance(double start){
@@ -81,19 +88,19 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     //Returns an array plus or minus a change given of a value given
-    private int[] plusOrMinus(int value, int change){
+    public int[] plusOrMinus(int value, int change){
         return new int[] {value - change, value + change};
     }
-    private void driveFoward (double distance){
+    public void drive(double distance, double speed){
         double tempDistanceStart = calculateDistance();
         while(calculateDistance(tempDistanceStart) < distance){
-            this.robot.setPowers(1);
+            this.robot.setPowers(speed);
         }
         this.robot.stopMoving();
     }
     //Get average distance traveled
-    private double driveAverage(){
-      int[] encoderPositions = {this.robot.leftFrontDrive.getPosition(), this.robot.rightFrontDrive.getPosition(), this.robot.leftBackDrive.getPosition(), this.robot.rightBackDrive.getPosition()};
+    public double driveAverage(){
+      int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(), this.robot.rightFrontDrive.getCurrentPosition(), this.robot.leftBackDrive.getCurrentPosition(), this.robot.rightBackDrive.getCurrentPosition()};
       int sum = 0;
       for (int encoderPosition : encoderPositions){
         sum += encoderPosition;
