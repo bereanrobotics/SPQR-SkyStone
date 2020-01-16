@@ -73,7 +73,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             isOnLine = (((tapeColor[0] > r[0]) && (tapeColor[0] < r[1])) && ((tapeColor[1] > g[0]) && (tapeColor[1] < g[1])) && ((tapeColor[2] > b[0]) && (tapeColor[2] < b[1])));
         }
         this.robot.lineParkSensor.enableLed(false);
-        this.robot. backward();
+        this.robot.backward();
         this.sleep(100);
         this.robot.stopMoving();
     }
@@ -99,14 +99,39 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     public void turn (double angle, double speed){
         resetEncoders();
+if (angle > 0) {
+this.robot.leftFrontDrive.setPower(speed);
+this.robot.leftBackDrive.setpower(speed);
+this.robot.rightFrontDrive.setPower(-speed);
+this.robot.rightBackDrive.setPower(-speed);
+} else if (angle < 0) {
 
+this.robot.leftFrontDrive.setPower(-speed);
+this.robot.leftBackDrive.setpower(-speed);
+this.robot.rightFrontDrive.setPower(speed);
+this.robot.rightBackDrive.setPower(speed);
+
+} else {
+break;
+}
+
+while (false){ //insert condition that is true while robot has not reached target
+
+checkRate(Orientation.VERTICAL)
+
+}
+
+this.robot.stopMoving();
     }
 
     public void drive (double distance, double speed){
         resetEncoders();
         double tempDistanceStart = calculateDistance();
+
+this.robot.setPowers(speed);
+
         while(calculateDistance(tempDistanceStart) < distance){
-            this.robot.setPowers(speed);
+        
             checkRate(Orientation.HORIZONTAL);
         }
         this.robot.stopMoving();
