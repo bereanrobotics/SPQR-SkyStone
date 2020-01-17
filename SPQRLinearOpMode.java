@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Custom Linear OpMode class with extra functions.
  *
  * @author Arkin Solomon
+ * @author Owen Peterson
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
