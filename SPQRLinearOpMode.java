@@ -39,7 +39,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     private boolean blockSwitch;
 
     //Values for the wheels
-    private final double wheelRadius = 5;
+    private final double wheelRadius = 5*25.4;
     private final double wheelCircumference = wheelRadius * 2 * Math.PI;
 
     private int leftFrontEncoder;
