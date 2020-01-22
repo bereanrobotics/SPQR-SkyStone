@@ -45,8 +45,8 @@ public class MainOpMode extends OpMode {
         }
 
         /* Tank movement */
-        double right = -gamepad1.right_stick_y * this.speed;
-        double left = -gamepad1.left_stick_y * this.speed;
+        double right = gamepad1.right_stick_y * this.speed;
+        double left = gamepad1.left_stick_y * this.speed;
         if (this.speed < 0){
             double l = left;
             left = right;
@@ -108,5 +108,6 @@ public class MainOpMode extends OpMode {
         telemetry.addData("Red", this.robot.lineParkSensor.red());
         telemetry.addData("Green", this.robot.lineParkSensor.green());
         telemetry.addData("Blue", this.robot.lineParkSensor.blue());
+        telemetry.addData("Right Stick 2 Y", gamepad2.right_stick_y);
     }
 }

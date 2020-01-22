@@ -68,7 +68,11 @@ public class HardwareSPQR {
         this.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        
+        //Set motors to brake
+        this.leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
