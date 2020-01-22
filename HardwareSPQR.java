@@ -109,7 +109,7 @@ public class HardwareSPQR {
         //Turn on servo LEDs
         this.lineParkSensor.enableLed(true);
 
-        robotIsInitialized = true;
+        this.robotIsInitialized = true;
     }
 
     //Function to get the ideal position of a square
@@ -163,11 +163,6 @@ public class HardwareSPQR {
         if (!this.robotIsInitialized) return;
         this.setPowers(0);
     }
-
-    /* Intake movement */
-
-    //Speed of the intake
-    private double intakeSpeed = 0.30;
 
     /* Arm movement */
 
