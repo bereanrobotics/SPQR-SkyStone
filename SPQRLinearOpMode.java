@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Custom Linear OpMode class with extra functions.
  *
  * @author Arkin Solomon
+ * @author Owen Peterson
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
@@ -39,7 +40,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     private boolean blockSwitch;
 
     //Values for the wheels
-    private final double wheelRadius = 5;
+    private final double wheelRadius = 5*25.4;
     private final double wheelCircumference = wheelRadius * 2 * Math.PI;
 
     private int leftFrontEncoder;
@@ -73,10 +74,11 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             isOnLine = (((tapeColor[0] > r[0]) && (tapeColor[0] < r[1])) && ((tapeColor[1] > g[0]) && (tapeColor[1] < g[1])) && ((tapeColor[2] > b[0]) && (tapeColor[2] < b[1])));
         }
         this.robot.lineParkSensor.enableLed(false);
-        this.robot. backward();
+        this.robot.backward();
         this.sleep(100);
         this.robot.stopMoving();
     }
+
 
     //Calculates distance robot has traveled
     public double calculateDistance(){
@@ -84,8 +86,13 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
       return (encoder / 280) * wheelCircumference;
     }
 
-    public double getDistance(int encoder){
-        return (encoder / 280) * wheelCircumference;
+    public double getAverageEncoder(){
+        int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(), this.robot.rightFrontDrive.getCurrentPosition(), this.robot.leftBackDrive.getCurrentPosition(), this.robot.rightBackDrive.getCurrentPosition()};
+        int sum = 0;
+        for (int encoderPosition : encoderPositions){
+            sum += Math.abs(encoderPosition);
+        }
+        return sum / encoderPositions.length;
     }
 
     public double calculateDistance(double start){
@@ -98,13 +105,31 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     public void turn (double angle, double speed){
+        resetEncoders();
+    if (angle > 0) {
+        this.robot.leftFrontDrive.setPower(speed);
+        this.robot.leftBackDrive.setPower(speed);
+        this.robot.rightFrontDrive.setPower(-speed);
+        this.robot.rightBackDrive.setPower(-speed);
+        } else if (angle < 0) {
+        this.robot.leftFrontDrive.setPower(-speed);
+        this.robot.leftBackDrive.setPower(-speed);
+        this.robot.rightFrontDrive.setPower(speed);
+        this.robot.rightBackDrive.setPower(speed);
 
+    }
+    while (1000<getAverageEncoder()){ //insert condition that is true while robot has not reached target
+        checkRate(Orientation.VERTICAL);
+    }
+        this.robot.stopMoving();
     }
 
     public void drive (double distance, double speed){
+        resetEncoders();
         double tempDistanceStart = calculateDistance();
+        this.robot.setPowers(speed);
         while(calculateDistance(tempDistanceStart) < distance){
-            this.robot.setPowers(speed);
+        
             checkRate(Orientation.HORIZONTAL);
         }
         this.robot.stopMoving();
@@ -186,6 +211,11 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        this.robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     //Get average distance traveled
     public double driveAverage(){
