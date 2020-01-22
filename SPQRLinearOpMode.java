@@ -144,60 +144,52 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         double error;
         double power;
         if (wheelsCompare == Orientation.HORIZONTAL){
+            error = Math.abs(frontLeft - frontRight);
+            power = this.speed/(error/this.errorScalar);
             if (frontLeft > frontRight){
-                error = frontLeft - frontRight;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.leftFrontDrive.setPower(power);
             } else if (frontRight > frontLeft){
-                error = frontRight - frontLeft;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.rightFrontDrive.setPower(power);
             }
+            error = Math.abs(backLeft - backRight);
+            power = this.speed/(error/this.errorScalar);
             if (backLeft > backRight){
-                error = backLeft - backRight;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.leftBackDrive.setPower(power);
             } else if (backRight > backLeft){
-                error = backRight - backLeft;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.rightBackDrive.setPower(power);
             }
         } else if (wheelsCompare == Orientation.VERTICAL){
+            error = Math.abs(frontLeft - backLeft);
+            power = this.speed/(error/this.errorScalar);
             if (frontLeft > backLeft){
-                error = frontLeft - backLeft;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backLeft > frontLeft){
-                error = backLeft - frontLeft;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.leftBackDrive.setPower(power);
             }
+            error = Math.abs(frontRight - backRight);
+            power = this.speed/(error/this.errorScalar);
             if (frontRight > backRight){
-                error = frontRight - backRight;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.leftFrontDrive.setPower(power);
                 } else if (backRight > frontRight){
-                error = backRight - frontRight;
-                power = this.speed-(error/this.errorScalar);
                 this.robot.rightBackDrive.setPower(power);
             }
         } else if (wheelsCompare == Orientation.DIAGONAL){
             if (frontLeft > backRight){
                 error = frontLeft - backRight;
-                power = this.speed-(error/this.errorScalar);
+                power = this.speed/(error/this.errorScalar);
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backRight > frontLeft){
                 error = backRight - frontLeft;
-                power = this.speed-(error/this.errorScalar);
+                power = this.speed/(error/this.errorScalar);
                 this.robot.rightBackDrive.setPower(power);
             }
             if (frontRight > backLeft){
                 error = frontRight - backLeft;
-                power = this.speed-(error/this.errorScalar);
+                power = this.speed/(error/this.errorScalar);
                 this.robot.rightFrontDrive.setPower(power);
             } else if (backLeft > frontRight){
                 error = backLeft - frontRight;
-                power = this.speed-(error/this.errorScalar);
+                power = this.speed/(error/this.errorScalar);
                 this.robot.rightBackDrive.setPower(power);
             }
         }
