@@ -56,19 +56,23 @@ public class HardwareSPQR {
         this.rightBackDrive = hwMap.get(DcMotor.class, "right_back_drive");
         this.armMotor = hwMap.get(DcMotor.class, "arm_motor");
 
-        //Set all motors to use or not use encoders
-        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
+        //Reset encoders
+        this.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Sets motor direction
-        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //Set all motor power to zero
@@ -111,10 +115,9 @@ public class HardwareSPQR {
     //Strafe in a direction with a certain power
     public void strafe(Dir direction, double power){
         if (!robotIsInitialized) return;
-        power = power * 0.6;
         this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power + (power * 0.275) : -power - (power * 0.275));
-        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power - (power * 0.2) : -power + (power * 0.2));
+        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power: -power);
+        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power: -power);
         this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
     }
 

@@ -55,9 +55,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     //Makes these easier to type
-    public void moveArm(int level, double speed){
-        this.robot.moveArm(level, speed);
-    }
     public void grabBlock(){
         this.robot.grabBlock();
     }

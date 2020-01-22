@@ -45,8 +45,8 @@ public class MainOpMode extends OpMode {
         }
 
         /* Tank movement */
-        double right = -gamepad1.left_stick_y * this.speed;
-        double left = -gamepad1.right_stick_y * this.speed;
+        double right = -gamepad1.right_stick_y * this.speed;
+        double left = -gamepad1.left_stick_y * this.speed;
         if (this.speed < 0){
             double l = left;
             left = right;
@@ -85,21 +85,22 @@ public class MainOpMode extends OpMode {
 
         /* Grab blocks */
         if (gamepad2.a){
-            this.robot.blockGrabber.setPosition(-1);
+            this.robot.grabBlock();
         }
         if (gamepad2.b){
-            this.robot.blockGrabber.setPosition(1);
+            this.robot.releaseBlock();
         }
 
         /* Arm movement */
-        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
-        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
 
         //Reset arm zero
         if (gamepad2.right_bumper){
             this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+
+        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
+        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
 
         /* Telementry data */
         telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
