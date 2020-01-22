@@ -108,6 +108,5 @@ public class MainOpMode extends OpMode {
         telemetry.addData("Red", this.robot.lineParkSensor.red());
         telemetry.addData("Green", this.robot.lineParkSensor.green());
         telemetry.addData("Blue", this.robot.lineParkSensor.blue());
-        telemetry.addData("Right Stick 2 Y", gamepad2.right_stick_y);
     }
 }
