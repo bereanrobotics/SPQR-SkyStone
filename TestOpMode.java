@@ -14,9 +14,7 @@ public class TestOpMode extends SPQRLinearOpMode {
         if (opModeIsActive() && !isStopRequested()) {
 
             //AUTO GENERATED CODE
-            drive(335.28000000000003, 1.0);
-            turn(270, 1.0);
-            drive(865.6320000000001, 1.0);
+            drive(15788.64, 1.0);
         }
     }
 }

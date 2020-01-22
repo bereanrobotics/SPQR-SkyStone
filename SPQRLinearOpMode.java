@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Variables
-    public final double speed = 0.25;
+    public final double speed = 0.75;
     public final double turnSpeed = 1;
     public final long ninetyDegreeRightTime = 990;
     public final long ninetyDegreeLeftTime = 970;
@@ -130,9 +130,10 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.setPowers(speed);
         while(calculateDistance() < distance && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
-            //checkRate(Orientation.HORIZONTAL);
+//            checkRate(Orientation.HORIZONTAL);
         }
         this.robot.stopMoving();
+        sleep(10000);
     }
 
     public void checkRate (Orientation wheelsCompare){
