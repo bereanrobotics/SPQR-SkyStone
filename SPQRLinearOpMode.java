@@ -74,8 +74,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             isOnLine = (((tapeColor[0] > r[0]) && (tapeColor[0] < r[1])) && ((tapeColor[1] > g[0]) && (tapeColor[1] < g[1])) && ((tapeColor[2] > b[0]) && (tapeColor[2] < b[1])));
         }
         this.robot.lineParkSensor.enableLed(false);
-        this.robot.backward();
-        this.sleep(100);
         this.robot.stopMoving();
     }
 
