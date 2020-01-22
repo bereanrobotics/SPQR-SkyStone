@@ -79,14 +79,20 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.stopMoving();
     }
 
+
     //Calculates distance robot has traveled
     public double calculateDistance(){
       double encoder = this.driveAverage();
       return (encoder / 280) * wheelCircumference;
     }
 
-    public double getDistance(int encoder){
-        return (encoder / 280) * wheelCircumference;
+    public double getAverageEncoder(){
+        int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(), this.robot.rightFrontDrive.getCurrentPosition(), this.robot.leftBackDrive.getCurrentPosition(), this.robot.rightBackDrive.getCurrentPosition()};
+        int sum = 0;
+        for (int encoderPosition : encoderPositions){
+            sum += Math.abs(encoderPosition);
+        }
+        return sum / encoderPositions.length;
     }
 
     public double calculateDistance(double start){
@@ -100,37 +106,28 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     public void turn (double angle, double speed){
         resetEncoders();
-if (angle > 0) {
-this.robot.leftFrontDrive.setPower(speed);
-this.robot.leftBackDrive.setpower(speed);
-this.robot.rightFrontDrive.setPower(-speed);
-this.robot.rightBackDrive.setPower(-speed);
-} else if (angle < 0) {
+    if (angle > 0) {
+        this.robot.leftFrontDrive.setPower(speed);
+        this.robot.leftBackDrive.setPower(speed);
+        this.robot.rightFrontDrive.setPower(-speed);
+        this.robot.rightBackDrive.setPower(-speed);
+        } else if (angle < 0) {
+        this.robot.leftFrontDrive.setPower(-speed);
+        this.robot.leftBackDrive.setPower(-speed);
+        this.robot.rightFrontDrive.setPower(speed);
+        this.robot.rightBackDrive.setPower(speed);
 
-this.robot.leftFrontDrive.setPower(-speed);
-this.robot.leftBackDrive.setpower(-speed);
-this.robot.rightFrontDrive.setPower(speed);
-this.robot.rightBackDrive.setPower(speed);
-
-} else {
-break;
-}
-
-while (false){ //insert condition that is true while robot has not reached target
-
-checkRate(Orientation.VERTICAL)
-
-}
-
-this.robot.stopMoving();
+    }
+    while (1000<getAverageEncoder()){ //insert condition that is true while robot has not reached target
+        checkRate(Orientation.VERTICAL);
+    }
+        this.robot.stopMoving();
     }
 
     public void drive (double distance, double speed){
         resetEncoders();
         double tempDistanceStart = calculateDistance();
-
-this.robot.setPowers(speed);
-
+        this.robot.setPowers(speed);
         while(calculateDistance(tempDistanceStart) < distance){
         
             checkRate(Orientation.HORIZONTAL);
