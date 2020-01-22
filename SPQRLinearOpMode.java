@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Variables
-    public final double speed = 0.75;
+    public final double speed = 0.25;
     public final double turnSpeed = 1;
     public final long ninetyDegreeRightTime = 990;
     public final long ninetyDegreeLeftTime = 970;
@@ -83,7 +83,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //Calculates distance robot has traveled
     public double calculateDistance(){
       double encoder = this.driveAverage();
-      return (encoder / 280) * wheelCircumference;
+      return (encoder / ppr) * wheelCircumference;
     }
 
     public double getAverageEncoder(){
@@ -118,7 +118,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.rightBackDrive.setPower(speed);
 
     }
-    while (1000<getAverageEncoder()){ //insert condition that is true while robot has not reached target
+    while (1000<getAverageEncoder()&&!isStopRequested() && opModeIsActive()){ //insert condition that is true while robot has not reached target
         checkRate(Orientation.VERTICAL);
     }
         this.robot.stopMoving();
@@ -126,11 +126,11 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     public void drive (double distance, double speed){
         resetEncoders();
-        double tempDistanceStart = calculateDistance();
+
         this.robot.setPowers(speed);
-        while(calculateDistance(tempDistanceStart) < distance){
-        
-            checkRate(Orientation.HORIZONTAL);
+        while(calculateDistance() < distance && !isStopRequested() && opModeIsActive()){
+            updateTelemetry();
+            //checkRate(Orientation.HORIZONTAL);
         }
         this.robot.stopMoving();
     }
@@ -226,4 +226,17 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
       }
       return sum / encoderPositions.length;
     }
+public void updateTelemetry(){
+    telemetry.addData("Distance", calculateDistance());
+    telemetry.addData("leftFrontTempEncoder", this.robot.leftFrontDrive.getCurrentPosition());
+    telemetry.addData("rightFrontTempEncoder", this.robot.rightFrontDrive.getCurrentPosition());
+    telemetry.addData("leftBackTempEncoder", this.robot.leftBackDrive.getCurrentPosition());
+    telemetry.addData("rightBackTempEncoder", this.robot.rightBackDrive.getCurrentPosition());
+    telemetry.addData("leftFrontEncoder", this.leftFrontEncoder);
+    telemetry.addData("rightFrontEncoder", this.rightFrontEncoder);
+    telemetry.addData("leftBackEncoder", this.leftBackEncoder);
+    telemetry.addData("rightBackEncoder", this.rightBackEncoder);
+    telemetry.update();
+}
+
   }

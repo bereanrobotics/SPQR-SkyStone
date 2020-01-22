@@ -6,6 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class TestAuto extends SPQRLinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        this.drive(100, this.speed);
+        this.hardwareInit();
+
+        waitForStart();
+
+        if(!isStopRequested() && opModeIsActive()) {
+            this.drive(3000, this.speed);
+            updateTelemetry();
+        } updateTelemetry();
     }
 }
