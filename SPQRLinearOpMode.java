@@ -20,6 +20,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //The switch on the robot that dictates what color it is. (red or blue)
 
     public final double ppr = 280;
+public final double degppr = 10000;
     public final double errorScalar = 5;
 
     private boolean teamSwitch;
@@ -116,7 +117,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.rightBackDrive.setPower(speed);
 
     }
-    while (10000<getAverageEncoder()&&!isStopRequested() && opModeIsActive()){ //insert condition that is true while robot has not reached target
+    while ((degppr > getAverageEncoder()) && !isStopRequested() && opModeIsActive()){
         //checkRate(Orientation.VERTICAL);
     }
         this.robot.stopMoving();
