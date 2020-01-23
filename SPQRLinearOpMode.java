@@ -21,7 +21,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     public final double ppr = 280;
 public final double degppr = 10000;
-    public final double errorScalar = 5;
+    public final double powerScalar = 1.5;
 
     private boolean teamSwitch;
     private Color teamColor;
@@ -159,14 +159,14 @@ public final double degppr = 10000;
             }
         } else if (wheelsCompare == Orientation.VERTICAL){
             error = Math.abs(frontLeft - backLeft);
-            power = this.speed/1.5;
+            power = this.speed/powerScalar;
             if (frontLeft > backLeft){
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backLeft > frontLeft){
                 this.robot.leftBackDrive.setPower(power);
             }
             error = Math.abs(frontRight - backRight);
-            power = this.speed/1.5;
+            power = this.speed/powerScalar;
             if (frontRight > backRight){
                 this.robot.leftFrontDrive.setPower(power);
                 } else if (backRight > frontRight){
@@ -181,7 +181,7 @@ public final double degppr = 10000;
                 this.robot.rightBackDrive.setPower(power);
             }
             error = Math.abs(frontRight - backLeft);
-            power = this.speed/2;
+            power = this.speed/powerScalar;
             if (frontRight > backLeft){
                 this.robot.rightFrontDrive.setPower(power);
             } else if (backLeft > frontRight){
