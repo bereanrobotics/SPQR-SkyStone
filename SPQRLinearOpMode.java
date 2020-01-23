@@ -118,7 +118,8 @@ public final double degppr = 10000;
 
     }
     while ((degppr > getAverageEncoder()) && !isStopRequested() && opModeIsActive()){
-        //checkRate(Orientation.VERTICAL);
+        updateTelemetry();
+//checkRate(Orientation.VERTICAL);
     }
         this.robot.stopMoving();
     }
