@@ -53,7 +53,7 @@ public class MainOpMode extends OpMode {
             right = l;
         }
 
-        this.robot.tank(left, right);
+        this.robot.tank(right, left);
 
         /* Reverse direction */
         if (gamepad1.a) {

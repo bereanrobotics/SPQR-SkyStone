@@ -175,7 +175,8 @@ public final double degppr = 10000;
             }
         } else if (wheelsCompare == Orientation.DIAGONAL){
             error = Math.abs(frontLeft - backRight);
-            power = this.speed/(error/this.errorScalar);
+//            power = this.speed/(error/this.errorScalar);
+            power = 1;
             if (frontLeft > backRight){
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backRight > frontLeft){
