@@ -177,4 +177,11 @@ public class HardwareSPQR {
         if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(1);
     }
+
+    public void setDrivesBehavior (DcMotor.ZeroPowerBehavior behavior){
+        this.leftFrontDrive.setZeroPowerBehavior(behavior);
+        this.rightFrontDrive.setZeroPowerBehavior(behavior);
+        this.leftBackDrive.setZeroPowerBehavior(behavior);
+        this.rightBackDrive.setZeroPowerBehavior(behavior);
+    }
 }

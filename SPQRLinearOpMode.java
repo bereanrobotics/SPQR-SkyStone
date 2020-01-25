@@ -13,14 +13,14 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     //Variables
     public final double speed = 0.75;
-    public final double turnSpeed = 1;
-    public final long ninetyDegreeRightTime = 990;
-    public final long ninetyDegreeLeftTime = 970;
+    //public final double turnSpeed = 1;
+    //public final long ninetyDegreeRightTime = 990;
+    //public final long ninetyDegreeLeftTime = 970;
 
     //The switch on the robot that dictates what color it is. (red or blue)
 
     public final double ppr = 280;
-public final double degppr = 10000;
+    public final double degppr = 10000;
     public final double powerScalar = 1.5;
 
     private boolean teamSwitch;
@@ -104,6 +104,7 @@ public final double degppr = 10000;
     }
 
     public void turn (double angle, double speed){
+        this.robot.setDrivesBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders();
     if (angle > 0) {
         this.robot.leftFrontDrive.setPower(speed);
@@ -125,6 +126,7 @@ public final double degppr = 10000;
     }
 
     public void drive (double distance, double speed){
+        this.robot.setDrivesBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders();
 
         this.robot.setPowers(speed);
@@ -175,8 +177,7 @@ public final double degppr = 10000;
             }
         } else if (wheelsCompare == Orientation.DIAGONAL){
             error = Math.abs(frontLeft - backRight);
-//            power = this.speed/(error/this.errorScalar);
-            power = 1;
+            power = this.speed/this.powerScalar;
             if (frontLeft > backRight){
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backRight > frontLeft){
@@ -227,6 +228,6 @@ public void updateTelemetry(){
     telemetry.addData("leftBackEncoder", this.leftBackEncoder);
     telemetry.addData("rightBackEncoder", this.rightBackEncoder);
     telemetry.update();
-}
+    }
 
-  }
+}
