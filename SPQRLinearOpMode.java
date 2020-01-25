@@ -118,7 +118,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.rightBackDrive.setPower(speed);
 
     }
-    while ((degppr > getAverageEncoder()) && !isStopRequested() && opModeIsActive()){
+    while ((degppr*angle > getAverageEncoder()) && !isStopRequested() && opModeIsActive()){
         updateTelemetry();
 //checkRate(Orientation.VERTICAL);
     }
