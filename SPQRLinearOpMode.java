@@ -20,8 +20,8 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //The switch on the robot that dictates what color it is. (red or blue)
 
     public final double ppr = 280;
-    public final double degppr = 10000;
-    public final double powerScalar = 1.5;
+    public final double degppr = 21.25;
+    public final double powerScalar = 1.25;
 
     private boolean teamSwitch;
     private Color teamColor;
@@ -77,8 +77,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.lineParkSensor.enableLed(false);
         this.robot.stopMoving();
     }
-
-
     //Calculates distance robot has traveled
     public double calculateDistance(){
       double encoder = this.driveAverage();
@@ -106,6 +104,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     public void turn (double angle, double speed){
         this.robot.setDrivesBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders();
+        double encoderLimit = Math.abs(degppr*angle);
     if (angle > 0) {
         this.robot.leftFrontDrive.setPower(speed);
         this.robot.leftBackDrive.setPower(speed);
@@ -116,29 +115,52 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.leftBackDrive.setPower(-speed);
         this.robot.rightFrontDrive.setPower(speed);
         this.robot.rightBackDrive.setPower(speed);
-
     }
-    while ((degppr*angle > getAverageEncoder()) && !isStopRequested() && opModeIsActive()){
+    while (encoderLimit > getAverageEncoder() && !isStopRequested() && opModeIsActive()){ //
         updateTelemetry();
-//checkRate(Orientation.VERTICAL);
+        checkRate(Orientation.VERTICAL, speed);
+        limitRate(encoderLimit);
     }
         this.robot.stopMoving();
+        this.sleep(10000);
     }
 
     public void drive (double distance, double speed){
         this.robot.setDrivesBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders();
-
+        double encoderLimit = (distance/wheelCircumference)*ppr;
         this.robot.setPowers(speed);
         while(calculateDistance() < distance && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
-            checkRate(Orientation.HORIZONTAL);
+            checkRate(Orientation.HORIZONTAL, speed);
+            limitRate(encoderLimit);
         }
         this.robot.stopMoving();
         sleep(10000);
     }
 
-    public void checkRate (Orientation wheelsCompare){
+
+    public void limitRate (double limit) {
+        int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(),
+                this.robot.rightFrontDrive.getCurrentPosition(),
+                this.robot.leftBackDrive.getCurrentPosition(),
+                this.robot.rightBackDrive.getCurrentPosition()};
+        for (int i = 0; i < encoderPositions.length; i++){
+            if (Math.abs(encoderPositions[i]) > limit){
+                if (i == 0) {
+                    this.robot.leftFrontDrive.setPower(0);
+                } else if (i == 1) {
+                    this.robot.rightFrontDrive.setPower(0);
+                } else if (i == 2) {
+                    this.robot.leftBackDrive.setPower(0);
+                } else if (i == 3) {
+                    this.robot.rightBackDrive.setPower(0);
+                }
+            }
+        }
+
+    }
+    public void checkRate (Orientation wheelsCompare, double speed){
         double frontLeft = this.robot.leftFrontDrive.getCurrentPosition();
         double frontRight = this.robot.rightFrontDrive.getCurrentPosition();
         double backLeft = this.robot.leftBackDrive.getCurrentPosition();
@@ -146,45 +168,39 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         double error;
         double power;
         if (wheelsCompare == Orientation.HORIZONTAL){
-            error = Math.abs(frontLeft - frontRight);
-            power = this.speed/1.5;
+            power = speed/powerScalar;
             if (frontLeft > frontRight){
                 this.robot.leftFrontDrive.setPower(power);
             } else if (frontRight > frontLeft){
                 this.robot.rightFrontDrive.setPower(power);
             }
-            error = Math.abs(backLeft - backRight);
-            power = this.speed/1.5;
+            power = speed/powerScalar;
             if (backLeft > backRight){
                 this.robot.leftBackDrive.setPower(power);
             } else if (backRight > backLeft){
                 this.robot.rightBackDrive.setPower(power);
             }
         } else if (wheelsCompare == Orientation.VERTICAL){
-            error = Math.abs(frontLeft - backLeft);
-            power = this.speed/powerScalar;
+            power = speed/powerScalar;
             if (frontLeft > backLeft){
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backLeft > frontLeft){
                 this.robot.leftBackDrive.setPower(power);
             }
-            error = Math.abs(frontRight - backRight);
-            power = this.speed/powerScalar;
+            power = speed/powerScalar;
             if (frontRight > backRight){
                 this.robot.leftFrontDrive.setPower(power);
                 } else if (backRight > frontRight){
                 this.robot.rightBackDrive.setPower(power);
             }
         } else if (wheelsCompare == Orientation.DIAGONAL){
-            error = Math.abs(frontLeft - backRight);
-            power = this.speed/this.powerScalar;
+            power = speed/this.powerScalar;
             if (frontLeft > backRight){
                 this.robot.leftFrontDrive.setPower(power);
             } else if (backRight > frontLeft){
                 this.robot.rightBackDrive.setPower(power);
             }
-            error = Math.abs(frontRight - backLeft);
-            power = this.speed/powerScalar;
+            power = speed/powerScalar;
             if (frontRight > backLeft){
                 this.robot.rightFrontDrive.setPower(power);
             } else if (backLeft > frontRight){
