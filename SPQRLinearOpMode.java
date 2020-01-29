@@ -189,7 +189,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             }
             power = speed/powerScalar;
             if (frontRight > backRight){
-                this.robot.leftFrontDrive.setPower(power);
+                this.robot.rightFrontDrive.setPower(power);
                 } else if (backRight > frontRight){
                 this.robot.rightBackDrive.setPower(power);
             }
@@ -204,7 +204,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             if (frontRight > backLeft){
                 this.robot.rightFrontDrive.setPower(power);
             } else if (backLeft > frontRight){
-                this.robot.rightBackDrive.setPower(power);
+                this.robot.leftBackDrive.setPower(power);
             }
         }
     }
