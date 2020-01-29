@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -76,10 +77,10 @@ public class HardwareSPQR {
         this.armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Sets motor direction
-        this.leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        this.rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //Set all motor power to zero
@@ -121,11 +122,12 @@ public class HardwareSPQR {
 
     //Strafe in a direction with a certain power
     public void strafe(Dir direction, double power){
-        if (!robotIsInitialized) return;
-        this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power: -power);
-        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power: -power);
-        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
+        return;
+//        if (!robotIsInitialized) return;
+//        this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
+//        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power: -power);
+//        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power: -power);
+//        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
     }
 
     //Set all motors to certain power

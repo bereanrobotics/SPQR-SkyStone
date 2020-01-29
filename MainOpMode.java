@@ -44,9 +44,9 @@ public class MainOpMode extends OpMode {
             this.robot.strafe(Dir.RIGHT, 1.0);
         }
 
-        /* Tank movement */
-        double right = gamepad1.right_stick_y * this.speed;
-        double left = gamepad1.left_stick_y * this.speed;
+        /* Tank movement */ 
+        double right = -gamepad1.right_stick_y * this.speed;
+        double left = -gamepad1.left_stick_y * this.speed;
         if (this.speed < 0){
             double l = left;
             left = right;
