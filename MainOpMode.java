@@ -37,11 +37,11 @@ public class MainOpMode extends OpMode {
         /* Left and right bumper movement */
         if (gamepad1.left_bumper){
             if (gamepad1.right_bumper) return;
-            this.robot.strafe(Dir.LEFT, 1.0);
+            this.robot.strafe(Dir.LEFT, this.speed);
         }
         if (gamepad1.right_bumper) {
             if (gamepad1.left_bumper) return;
-            this.robot.strafe(Dir.RIGHT, 1.0);
+            this.robot.strafe(Dir.RIGHT, this.speed);
         }
 
         /* Tank movement */ 
@@ -53,13 +53,15 @@ public class MainOpMode extends OpMode {
             right = l;
         }
 
-        this.robot.tank(right, left);
+        if (!gamepad1.left_bumper && !gamepad1.right_bumper){
+            this.robot.tank(right, left);
+        }
 
         /* Reverse direction */
         if (gamepad1.a) {
             if (this.gamepad1_aPressed) return;
             this.gamepad1_aPressed = true;
-            this.speed = -this.speed;
+            this.speed *= -1;
         }
         if (!gamepad1.a){
             this.gamepad1_aPressed = false;

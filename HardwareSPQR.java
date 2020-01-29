@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -76,6 +77,12 @@ public class HardwareSPQR {
         this.rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        //Set tolerance
+        ((DcMotorEx) this.leftFrontDrive).setTargetPositionTolerance(20);
+        ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(20);
+        ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(20);
+        ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(20);
+
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -122,12 +129,11 @@ public class HardwareSPQR {
 
     //Strafe in a direction with a certain power
     public void strafe(Dir direction, double power){
-        return;
-//        if (!robotIsInitialized) return;
-//        this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-//        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power: -power);
-//        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power: -power);
-//        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
+        if (!robotIsInitialized) return;
+        this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
+        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power: -power);
+        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power: -power);
+        this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
     }
 
     //Set all motors to certain power
