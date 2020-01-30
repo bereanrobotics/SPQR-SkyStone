@@ -5,16 +5,6 @@ Contact: solomonarkin21@bereanchristian.com<br>
 
 Team Supervisor: shollenbeck@bereanchristian.com
 
-This repository is split into 3 branches, master, arkin, and owen. arkin Solomon controls 'arkin' (and owns the repository). Owen Peterson is responsible for 'owen'. Master is a jointly contributed.
+This repository is split into 3 branches, 'master', 'arkin', and 'owen'. Arkin Solomon controls 'arkin' (and owns the repository). Owen Peterson controls for 'owen'. Master is a jointly contributed.
 
 Code is built using the FTC Skystone Java SDK and Android Studio. Some code uses elements from the FTC sample code.
-
-### Todo
-- Start using hardware file instead of doing it at the beginning of every file.
-- Fix Vuforia somehow.
-- Measure levels.
-- Implement arm movement (Preferably asynchronously).
-- Implement servo movement (Preferably asynchronously).
-- Clean up files.
-- Clean up master.
-- Clean up branches.
