@@ -134,7 +134,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     /**
      * This method takes a value and determines the two values equidistant from the given value with
-     * both having a distance of a given value.
+     * both having a given distance from the given initial value.
      *
      * @param value An integer to be used to calculate final points based on change.
      * @param change An integer which is the absolute distance from the value.
