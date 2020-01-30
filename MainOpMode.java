@@ -8,7 +8,25 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import org.firstinspires.ftc.teamcode.Dir;
 
 /**
- * This OpMode will mainly be used in the telemetry portions of competitions
+ * TeleOp: BOTH ALLIANCES
+ *
+ * Start anywhere.
+ *
+ * Driver controls:
+ *  - Right bumper: Strafe right.
+ *  - Left bumper: Strafe left.
+ *  - Right stick Y: Speed of the right drive motors of the robot.
+ *  - Left stick Y: Speed of the left drive motors of the robot.
+ *  - Button 'a': Reverse direction.
+ *  - Button 'b': Toggle sniper mode.
+ *  - Dpad down: Drop tow.
+ *  - Dpad up: Raise tow.
+ *
+ * Gunner controls:
+ *  - Button 'a': Grab block.
+ *  - Button 'b': Release block.
+ *  - Right bumper: Reset arm encoder position to zero.
+ *  - Right stick Y: Move arm.
  *
  * @author Arkin Solomon
  */
@@ -34,7 +52,7 @@ public class MainOpMode extends OpMode {
     @Override
     public void loop() {
 
-        /* Left and right bumper movement */
+        /* Left and right strafing movement */
         if (gamepad1.left_bumper){
             if (gamepad1.right_bumper) return;
             this.robot.strafe(Dir.LEFT, this.speed);
@@ -53,6 +71,7 @@ public class MainOpMode extends OpMode {
             right = l;
         }
 
+        //Only tank move if not strafing
         if (!gamepad1.left_bumper && !gamepad1.right_bumper){
             this.robot.tank(right, left);
         }
@@ -71,7 +90,19 @@ public class MainOpMode extends OpMode {
         if (gamepad1.b) {
             if (this.gamepad1_bPressed) return;
             this.gamepad1_bPressed = true;
-            this.speed = (this.speed > 0.5) ? 0.5 : 1.0;
+            if (this.speed > 0){
+                if (this.speed > 0.5){
+                    this.speed = 0.5;
+                }else{
+                    this.speed = 1.0;
+                }
+            }else{
+                if (this.speed < -0.5){
+                    this.speed = -0.5;
+                }else{
+                    this.speed = -1.0;
+                }
+            }
         }
         if (!gamepad1.b){
             this.gamepad1_bPressed = false;

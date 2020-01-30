@@ -2,6 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+/**
+ * Autonomous: RED ALLIANCE
+ *
+ * Start against the wall in such a way that the robot will cross under the audience-right bridge.
+ *
+ * Steps:
+ *  - Wait 10 seconds.
+ *  - Drive forward.
+ *  - Stop at blue line under the audience-right bridge.
+ *
+ * @author Arkin Solomon
+ */
 @Autonomous(name="Line Park Red")
 public class LineParkRed extends SPQRLinearOpMode {
 
