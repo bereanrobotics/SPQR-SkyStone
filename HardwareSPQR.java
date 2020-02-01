@@ -109,7 +109,7 @@ public class HardwareSPQR {
         //Reset servo positions
         this.blockGrabber.setPosition(1);
         this.armBalancer.setPosition(0);
-        this.tow.setPosition(-1);
+        this.tow.setPosition(  1);
 
         /* Initialize sensors */
 
