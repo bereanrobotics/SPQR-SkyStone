@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-
-import org.firstinspires.ftc.teamcode.Dir;
 
 /**
  * TeleOp: BOTH ALLIANCES
@@ -127,7 +124,7 @@ public class MainOpMode extends OpMode {
         /* Arm movement */
 
         //Reset arm zero
-        if (gamepad2.right_bumper){
+        if (gamepad2.right_bumper && gamepad2.left_bumper){
             this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
@@ -141,5 +138,6 @@ public class MainOpMode extends OpMode {
         telemetry.addData("Red", this.robot.lineParkSensor.red());
         telemetry.addData("Green", this.robot.lineParkSensor.green());
         telemetry.addData("Blue", this.robot.lineParkSensor.blue());
+        telemetry.update();
     }
 }
