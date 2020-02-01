@@ -249,6 +249,11 @@ public class HardwareSPQR {
         this.leftBackDrive.setZeroPowerBehavior(behavior);
         this.rightBackDrive.setZeroPowerBehavior(behavior);
     }
+
+    /**
+     *
+     * @param mode
+     */
     public void setDriveMode (DcMotor.RunMode mode){
         this.leftFrontDrive.setMode(mode);
         this.rightFrontDrive.setMode(mode);
@@ -256,6 +261,10 @@ public class HardwareSPQR {
         this.rightBackDrive.setMode(mode);
     }
 
+    /**
+     *
+     * @param target
+     */
     public void setDriveTargetPosition (int target) {
         this.leftFrontDrive.setTargetPosition(target);
         this.rightFrontDrive.setTargetPosition(target);

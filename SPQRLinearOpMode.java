@@ -16,7 +16,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     public final double speed = 0.75;
     public final double ppr = 280;
     public final double degppr = 21.30;
-    public final double circleRadius = 24.57768;
+    public final double circleRadius = 245.7768;
     public final double powerScalar = 1.25;
 
     //The switch on the robot that dictates what color it is. (red or blue)
@@ -161,17 +161,19 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
         this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
-        int encoderTarget = (int) (circleRadius*(java.lang.Math.toRadians(angle)));
+        int encoderTarget = (int) (((circleRadius*(Math.toRadians(Math.abs(angle))))*wheelCircumference*2)/ppr);
         if (angle > 0) {
             this.robot.leftFrontDrive.setTargetPosition(encoderTarget);
             this.robot.leftBackDrive.setTargetPosition(encoderTarget);
             this.robot.rightFrontDrive.setTargetPosition(-encoderTarget);
             this.robot.rightBackDrive.setTargetPosition(-encoderTarget);
+            this.robot.tank(speed, -speed);
         } else if (angle < 0) {
             this.robot.leftFrontDrive.setTargetPosition(-encoderTarget);
             this.robot.leftBackDrive.setTargetPosition(-encoderTarget);
             this.robot.rightFrontDrive.setTargetPosition(encoderTarget);
             this.robot.rightBackDrive.setTargetPosition(encoderTarget);
+            this.robot.tank(-speed, speed);
         }
         while (drivesBusy() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
@@ -217,8 +219,9 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         while(drivesBusy() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
         }
-        this.robot.stopMoving();
-        sleep(5000);
+        return;
+//        this.robot.stopMoving();
+//        sleep(5000);
     }
 
 
@@ -270,6 +273,10 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         telemetry.addData("Left Back Velocity", ((DcMotorEx) this.robot.leftBackDrive).getVelocity());
         telemetry.addData("Right Back Velocity", ((DcMotorEx) this.robot.leftFrontDrive).getVelocity());
 
+        telemetry.addData("Left Front Target", this.robot.leftFrontDrive.getTargetPosition());
+        telemetry.addData("Right Front Target", this.robot.rightFrontDrive.getTargetPosition());
+        telemetry.addData("Left Back Target", this.robot.leftBackDrive.getTargetPosition());
+        telemetry.addData("Right Back Target", this.robot.rightBackDrive.getTargetPosition());
 
         telemetry.addData("leftFrontTempEncoder", this.robot.leftFrontDrive.getCurrentPosition());
         telemetry.addData("rightFrontTempEncoder", this.robot.rightFrontDrive.getCurrentPosition());
