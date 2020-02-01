@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 /**
  * Custom Linear OpMode class with extra functions.
@@ -14,7 +15,8 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //Variables
     public final double speed = 0.75;
     public final double ppr = 280;
-    public final double degppr = 21.35;
+    public final double degppr = 21.30;
+    public final double circleRadius = 24.57768;
     public final double powerScalar = 1.25;
 
     //The switch on the robot that dictates what color it is. (red or blue)
@@ -155,22 +157,46 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
      * @param speed A double between -1.0 and 1.0 which is the speed at which the robot is to turn.
      *              This value will be assigned as the speed of the motors
      */
-    public void turn(double angle, double speed){
+    public void turn2 (double angle, double speed) {
         DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
-        this.robot.setDrivesBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        resetEncoders();
-        double encoderLimit = Math.abs(this.degppr*angle);
+        this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
+        int encoderTarget = (int) (circleRadius*(java.lang.Math.toRadians(angle)));
+        if (angle > 0) {
+            this.robot.leftFrontDrive.setTargetPosition(encoderTarget);
+            this.robot.leftBackDrive.setTargetPosition(encoderTarget);
+            this.robot.rightFrontDrive.setTargetPosition(-encoderTarget);
+            this.robot.rightBackDrive.setTargetPosition(-encoderTarget);
+        } else if (angle < 0) {
+            this.robot.leftFrontDrive.setTargetPosition(-encoderTarget);
+            this.robot.leftBackDrive.setTargetPosition(-encoderTarget);
+            this.robot.rightFrontDrive.setTargetPosition(encoderTarget);
+            this.robot.rightBackDrive.setTargetPosition(encoderTarget);
+        }
+        while (drivesBusy() && !isStopRequested() && opModeIsActive()){
+            updateTelemetry();
+        }
+        this.robot.stopMoving();
+        this.sleep(5000);
+        this.robot.setDriveZeroPowerBehavior(previousBehavior);
+    }
+
+    public void turn (double angle, double speed){
+        DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
+        this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        resetEncoders(DcMotor.RunMode.RUN_USING_ENCODER);
+        double encoderTarget = Math.abs(this.degppr*angle);
         if (angle > 0) {
             this.robot.tank(speed, -speed);
         } else if (angle < 0) {
             this.robot.tank(-speed, speed);
         }
-        while (encoderLimit > getAverageEncoder() && !isStopRequested() && opModeIsActive()){
+        while (encoderTarget > getAverageEncoder() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
         }
         this.robot.stopMoving();
-        this.sleep(10000);
-        this.robot.setDrivesBehavior(previousBehavior);
+        this.sleep(5000);
+        this.robot.setDriveZeroPowerBehavior(previousBehavior);
     }
 
     /**
@@ -183,16 +209,16 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
      * @param speed A double between -1.0 and 1.0 which is the speed at which the robot is to drive.
      */
     public void drive (double distance, double speed){
-        this.robot.setDrivesBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        resetEncoders();
-        double encoderLimit = (distance/wheelCircumference)*ppr;
+        this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
+        int encoderTarget = (int) ((distance/wheelCircumference)*ppr);
+        this.robot.setDriveTargetPosition(encoderTarget);
         this.robot.setPowers(speed);
-        while(calculateDistance() < distance && !isStopRequested() && opModeIsActive()){
+        while(drivesBusy() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
-            limitRate(encoderLimit);
         }
         this.robot.stopMoving();
-        sleep(10000);
+        sleep(5000);
     }
 
 
@@ -201,45 +227,20 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
      *
      * @param limit UNKNOWN
      */
-    public void limitRate (double limit) {
-        int[] encoderPositions = {this.robot.leftFrontDrive.getCurrentPosition(),
-                this.robot.rightFrontDrive.getCurrentPosition(),
-                this.robot.leftBackDrive.getCurrentPosition(),
-                this.robot.rightBackDrive.getCurrentPosition()};
-        for (int i = 0; i < encoderPositions.length; i++){
-            if (Math.abs(encoderPositions[i]) > limit){
-                if (i == 0) {
-                    this.robot.leftFrontDrive.setPower(0);
-                } else if (i == 1) {
-                    this.robot.rightFrontDrive.setPower(0);
-                } else if (i == 2) {
-                    this.robot.leftBackDrive.setPower(0);
-                } else if (i == 3) {
-                    this.robot.rightBackDrive.setPower(0);
-                }
-            }
-        }
-    }
+
 
     /**
      * This method resets the encoder positions of the drive motors to zero and adds the current
      * encoder position to the total encoder positions.
      */
-    public void resetEncoders(){
+    public void resetEncoders(DcMotor.RunMode runMode){
         this.leftFrontEncoder += this.robot.leftFrontDrive.getCurrentPosition();
         this.rightFrontEncoder += this.robot.rightFrontDrive.getCurrentPosition();
         this.leftBackEncoder += this.robot.leftBackDrive.getCurrentPosition();
         this.rightBackEncoder += this.robot.rightBackDrive.getCurrentPosition();
 
-        this.robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        this.robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.robot.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.robot.setDriveMode(runMode);
     }
 
     /**
@@ -263,6 +264,13 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
      */
     public void updateTelemetry(){
         telemetry.addData("Distance", calculateDistance());
+
+        telemetry.addData("Left Front Velocity", ((DcMotorEx) this.robot.leftFrontDrive).getVelocity());
+        telemetry.addData("Right Front Velocity", ((DcMotorEx) this.robot.rightFrontDrive).getVelocity());
+        telemetry.addData("Left Back Velocity", ((DcMotorEx) this.robot.leftBackDrive).getVelocity());
+        telemetry.addData("Right Back Velocity", ((DcMotorEx) this.robot.leftFrontDrive).getVelocity());
+
+
         telemetry.addData("leftFrontTempEncoder", this.robot.leftFrontDrive.getCurrentPosition());
         telemetry.addData("rightFrontTempEncoder", this.robot.rightFrontDrive.getCurrentPosition());
         telemetry.addData("leftBackTempEncoder", this.robot.leftBackDrive.getCurrentPosition());
@@ -272,5 +280,21 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         telemetry.addData("leftBackEncoder", this.leftBackEncoder);
         telemetry.addData("rightBackEncoder", this.rightBackEncoder);
         telemetry.update();
+    }
+
+    boolean drivesBusy() {
+        boolean busy;
+        if (this.robot.leftFrontDrive.isBusy()){
+            busy = true;
+        } else if (this.robot.rightFrontDrive.isBusy()){
+            busy = true;
+        } else if (this.robot.leftBackDrive.isBusy()){
+            busy = true;
+        } else if (this.robot.rightBackDrive.isBusy()){
+            busy = true;
+        } else {
+            busy = false;
+        }
+        return busy;
     }
 }

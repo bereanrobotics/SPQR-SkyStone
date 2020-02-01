@@ -70,29 +70,20 @@ public class HardwareSPQR {
         this.armMotor = hwMap.get(DcMotor.class, "arm_motor");
 
         //Reset encoders
-        this.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Set motors to brake
-        this.leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Set tolerance
-        ((DcMotorEx) this.leftFrontDrive).setTargetPositionTolerance(20);
-        ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(20);
-        ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(20);
-        ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(20);
+        ((DcMotorEx) this.leftFrontDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(10);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -252,10 +243,24 @@ public class HardwareSPQR {
      * @param behavior A ZeroPowerBehavior enumeration (Under DcMotor) which will be applied to all
      *                 of the drive motors of the robot.
      */
-    public void setDrivesBehavior (DcMotor.ZeroPowerBehavior behavior){
+    public void setDriveZeroPowerBehavior (DcMotor.ZeroPowerBehavior behavior){
         this.leftFrontDrive.setZeroPowerBehavior(behavior);
         this.rightFrontDrive.setZeroPowerBehavior(behavior);
         this.leftBackDrive.setZeroPowerBehavior(behavior);
         this.rightBackDrive.setZeroPowerBehavior(behavior);
     }
+    public void setDriveMode (DcMotor.RunMode mode){
+        this.leftFrontDrive.setMode(mode);
+        this.rightFrontDrive.setMode(mode);
+        this.leftBackDrive.setMode(mode);
+        this.rightBackDrive.setMode(mode);
+    }
+
+    public void setDriveTargetPosition (int target) {
+        this.leftFrontDrive.setTargetPosition(target);
+        this.rightFrontDrive.setTargetPosition(target);
+        this.leftBackDrive.setTargetPosition(target);
+        this.rightBackDrive.setTargetPosition(target);
+    }
 }
+

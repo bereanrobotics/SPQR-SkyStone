@@ -16,6 +16,13 @@ public class TestAuto extends SPQRLinearOpMode {
         waitForStart();
 
         if(!isStopRequested() && opModeIsActive()) {
+            this.turn2(90, 0.25);
+            this.turn2(-90, 0.25);
+            this.turn2(90, this.speed);
+            this.turn2(-90, this.speed);
+
+
+            
             this.turn(90, 0.25);
             this.turn(-90, 0.25);
             this.turn(90, this.speed);
