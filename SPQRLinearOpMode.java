@@ -151,25 +151,23 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
         this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
-        int encoderTarget = (int) (((circleRadius*(Math.toRadians(Math.abs(angle))))*wheelCircumference*2)/ppr);
+        int encoderTarget = (int) (((circleRadius * (Math.toRadians(angle))) * wheelCircumference * 2) / ppr);
         if (angle > 0) {
             this.robot.leftFrontDrive.setTargetPosition(encoderTarget);
             this.robot.leftBackDrive.setTargetPosition(encoderTarget);
             this.robot.rightFrontDrive.setTargetPosition(-encoderTarget);
             this.robot.rightBackDrive.setTargetPosition(-encoderTarget);
-            this.robot.tank(speed, -speed);
+            this.robot.tank(-speed, speed);
         } else if (angle < 0) {
             this.robot.leftFrontDrive.setTargetPosition(-encoderTarget);
             this.robot.leftBackDrive.setTargetPosition(-encoderTarget);
             this.robot.rightFrontDrive.setTargetPosition(encoderTarget);
             this.robot.rightBackDrive.setTargetPosition(encoderTarget);
-            this.robot.tank(-speed, speed);
+            this.robot.tank(speed, -speed);
         }
         while (drivesBusy() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
         }
-        this.robot.stopMoving();
-        this.sleep(5000);
         this.robot.setDriveZeroPowerBehavior(previousBehavior);
     }
 
@@ -189,15 +187,13 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         resetEncoders(DcMotor.RunMode.RUN_USING_ENCODER);
         double encoderTarget = Math.abs(this.degppr*angle);
         if (angle > 0) {
-            this.robot.tank(speed, -speed);
-        } else if (angle < 0) {
             this.robot.tank(-speed, speed);
+        } else if (angle < 0) {
+            this.robot.tank(speed, -speed);
         }
         while (encoderTarget > getAverageEncoder() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
         }
-        this.robot.stopMoving();
-        this.sleep(5000);
         this.robot.setDriveZeroPowerBehavior(previousBehavior);
     }
 
@@ -210,18 +206,18 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
      *                 (or millimeters, unsure)
      * @param speed A double between -1.0 and 1.0 which is the speed at which the robot is to drive.
      */
-    public void drive (double distance, double speed){
+    public void drive(double distance, double speed){
+        DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
         this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
         int encoderTarget = (int) ((distance/wheelCircumference)*ppr);
-        this.robot.setDriveTargetPosition(encoderTarget);
+        this.robot.setDriveTargetPosition(-encoderTarget);
         this.robot.setPowers(speed);
         while(drivesBusy() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
         }
+        this.robot.setDriveZeroPowerBehavior(previousBehavior);
         return;
-//        this.robot.stopMoving();
-//        sleep(5000);
     }
 
     /**
