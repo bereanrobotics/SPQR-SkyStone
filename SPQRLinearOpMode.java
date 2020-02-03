@@ -125,16 +125,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     }
 
     /**
-     * UNKNOWN
-     *
-     * @param start UNKNOWN
-     * @return UNKNOWN
-     */
-    public double calculateDistance(double start){
-        return calculateDistance() - start;
-    }
-
-    /**
      * This method takes a value and determines the two values equidistant from the given value with
      * both having a distance of a given value.
      *
@@ -151,7 +141,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 
     /**
      * This method synchronously turns the robot to a specified angle (in degrees) that is relative
-     * to the robot at a given speed.
+     * to the robot at a given speed. This uses calculations based off of the definition of radians.
      *
      * @param angle A double which is the relative angle (in degrees) to turn.
      * @param speed A double between -1.0 and 1.0 which is the speed at which the robot is to turn.
@@ -183,6 +173,16 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.setDriveZeroPowerBehavior(previousBehavior);
     }
 
+    /**
+     * This method synchronously turns the robot to a specified angle (in degrees) that is relative
+     * to the robot at a given speed. This uses a test based encoder with degrees per pulse per
+     * revolution and is relevant to the current SPQR robot only.
+     *
+     *
+     * @param angle A double which is the relative angle (in degrees) to turn.
+     * @param speed A double between -1.0 and 1.0 which is the speed at which the robot is to turn.
+     *              This value will be assigned as the speed of the motors
+     */
     public void turn (double angle, double speed){
         DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
         this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -223,14 +223,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
 //        this.robot.stopMoving();
 //        sleep(5000);
     }
-
-
-    /**
-     * UNKNOWN
-     *
-     * @param limit UNKNOWN
-     */
-
 
     /**
      * This method resets the encoder positions of the drive motors to zero and adds the current
@@ -278,30 +270,23 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         telemetry.addData("Left Back Target", this.robot.leftBackDrive.getTargetPosition());
         telemetry.addData("Right Back Target", this.robot.rightBackDrive.getTargetPosition());
 
-        telemetry.addData("leftFrontTempEncoder", this.robot.leftFrontDrive.getCurrentPosition());
-        telemetry.addData("rightFrontTempEncoder", this.robot.rightFrontDrive.getCurrentPosition());
-        telemetry.addData("leftBackTempEncoder", this.robot.leftBackDrive.getCurrentPosition());
-        telemetry.addData("rightBackTempEncoder", this.robot.rightBackDrive.getCurrentPosition());
-        telemetry.addData("leftFrontEncoder", this.leftFrontEncoder);
-        telemetry.addData("rightFrontEncoder", this.rightFrontEncoder);
-        telemetry.addData("leftBackEncoder", this.leftBackEncoder);
-        telemetry.addData("rightBackEncoder", this.rightBackEncoder);
+        telemetry.addData("left Front TempEncoder", this.robot.leftFrontDrive.getCurrentPosition());
+        telemetry.addData("right Front TempEncoder", this.robot.rightFrontDrive.getCurrentPosition());
+        telemetry.addData("left Back TempEncoder", this.robot.leftBackDrive.getCurrentPosition());
+        telemetry.addData("right Back TempEncoder", this.robot.rightBackDrive.getCurrentPosition());
+        telemetry.addData("left Front Encoder", this.leftFrontEncoder);
+        telemetry.addData("right Front Encoder", this.rightFrontEncoder);
+        telemetry.addData("left Back Encoder", this.leftBackEncoder);
+        telemetry.addData("right Back Encoder", this.rightBackEncoder);
         telemetry.update();
     }
 
+    /**
+     *  This method is an abstraction that returns true if at least one motor is running, false if
+     *  no motors are running.
+     * @return returns the boolean true if 1 or more drives are running, false otherwise.
+     */
     boolean drivesBusy() {
-        boolean busy;
-        if (this.robot.leftFrontDrive.isBusy()){
-            busy = true;
-        } else if (this.robot.rightFrontDrive.isBusy()){
-            busy = true;
-        } else if (this.robot.leftBackDrive.isBusy()){
-            busy = true;
-        } else if (this.robot.rightBackDrive.isBusy()){
-            busy = true;
-        } else {
-            busy = false;
-        }
-        return busy;
+        return (this.robot.leftFrontDrive.isBusy() || this.robot.rightFrontDrive.isBusy() || this.robot.leftBackDrive.isBusy() || this.robot.rightBackDrive.isBusy());
     }
 }
