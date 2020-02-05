@@ -252,7 +252,8 @@ public class HardwareSPQR {
 
     /**
      *
-     * @param mode
+     * @param mode a RunMode enumeration (Under DcMotor) which will be applied to all
+     *             of the drive motors of the robot.
      */
     public void setDriveMode (DcMotor.RunMode mode){
         this.leftFrontDrive.setMode(mode);
