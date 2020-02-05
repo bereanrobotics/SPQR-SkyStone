@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -38,6 +39,7 @@ public class MainOpMode extends OpMode {
     //Prevent detecting multiple clicks
     private boolean gamepad1_aPressed = false;
     private boolean gamepad1_bPressed = false;
+    private boolean gamepad1_xPressed = false;
 
     @Override
     public void init() {
@@ -131,6 +133,16 @@ public class MainOpMode extends OpMode {
 
         this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
         this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
+
+        //Play sound
+        if (gamepad1.x){
+            if (this.gamepad1_xPressed) return;
+            this.gamepad1_xPressed = true;
+            SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, this.robot.pacmanId);
+        }
+        if (!gamepad1.x){
+            this.gamepad1_xPressed = false;
+        }
 
         /* Telementry data */
         telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());

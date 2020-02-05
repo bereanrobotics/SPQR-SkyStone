@@ -29,10 +29,10 @@ public class ArmMeasurmentOpMode extends OpMode {
     public void loop(){
 
         /* Move arm */
-        this.robot.armMotor.setPower(-gamepad2.right_stick_y / 10);
+        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
 
         /* Move arm balancer */
-        this.robot.armBalancer.setPosition(this.robot.armBalancer.getPosition() + gamepad2.left_stick_y / 50);
+        this.robot.armBalancer.setPosition(this.robot.armBalancer.getPosition() - gamepad2.left_stick_y / 100);
 
         /* Update telemetry */
         telemetry.addData("Arm encoder position", this.robot.armMotor.getCurrentPosition());
