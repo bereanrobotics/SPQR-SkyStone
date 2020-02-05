@@ -197,7 +197,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
             updateTelemetry();
         }
         this.robot.stopMoving();
-        this.sleep(5000);
+        //this.sleep(5000);
         this.robot.setDriveZeroPowerBehavior(previousBehavior);
     }
 
@@ -214,7 +214,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
         int encoderTarget = (int) ((distance/wheelCircumference)*ppr);
-        this.robot.setDriveTargetPosition(encoderTarget);
+        this.robot.setDriveTargetPosition(-encoderTarget);
         this.robot.setPowers(speed);
         while(drivesBusy() && !isStopRequested() && opModeIsActive()){
             updateTelemetry();
@@ -222,6 +222,10 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
         return;
 //        this.robot.stopMoving();
 //        sleep(5000);
+    }
+
+    public void strafe(Dir direction, double distance, double speed){
+
     }
 
     /**
