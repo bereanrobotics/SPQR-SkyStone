@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Red -top (1) Foundation (2) Line")
+@Autonomous(name="Sunflower Red -top (1) Foundation (2) Line -in")
 public class AutoRedTopFoundationLine extends SPQRLinearOpMode {
 
     @Override
@@ -23,6 +23,7 @@ public class AutoRedTopFoundationLine extends SPQRLinearOpMode {
             this.drive(-8200, -0.5);
             this.robot.tow.setPosition(1);
             this.strafe(Dir.LEFT, 18000, 1.0);
+            this.robot.drive(-2000, -0.5);
         }
     }
 }
