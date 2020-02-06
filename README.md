@@ -5,6 +5,6 @@ Contact: solomonarkin21@bereanchristian.com<br>
 
 Team Supervisor: shollenbeck@bereanchristian.com
 
-This repository is split into 3 branches, 'master', 'arkin', and 'owen'. Arkin Solomon controls 'arkin' (and owns the repository). Owen Peterson controls for 'owen'. Master is a jointly contributed.
+This repository is split into 3 branches, 'master', 'arkin', and 'owen'. Arkin Solomon controls 'arkin' (and owns the repository). Owen Peterson controls for 'owen'. Master is a jointly contributed. But now for some reason we both use the branch 'owen' completly destroying the reason for branches.
 
 Code is built using the FTC Skystone Java SDK and Android Studio. Some code uses elements from the FTC sample code.
