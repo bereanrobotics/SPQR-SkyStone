@@ -9,4 +9,4 @@ This repository is split into 3 branches, 'master', 'arkin', and 'owen'. Arkin S
 
 Code is built using the FTC Skystone Java SDK and Android Studio. Some code uses elements from the FTC sample code.
 
-<font size="1">Also owen stupid haahaha</font>
+Also owen stupid haahaha
