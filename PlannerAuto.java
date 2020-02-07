@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Planner Auto 1")
+@Autonomous(name="Planner Auto",  group="Test")
 public class PlannerAuto extends SPQRLinearOpMode {
 
     @Override

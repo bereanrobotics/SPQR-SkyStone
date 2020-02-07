@@ -32,7 +32,7 @@ import static java.lang.Math.*;
  *
  * @author Owen Peterson
  */
-@Autonomous(name="Vuforia Test")
+@Autonomous(name="Vuforia Test", group="Test")
 public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:

@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Red -bot (1) Block (2) Foundation (3) Line")
-public class RedBotBlockFoundationLine extends SPQRLinearOpMode {
+@Autonomous(name="Red -bot (1) Block (2) Foundation (3) Line -out")
+public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
 
     @Override
     public void runOpMode() {

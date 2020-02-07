@@ -40,6 +40,7 @@ public class HardwareSPQR {
     public Servo armBalancer = null;
     public Servo tow = null;
     public ColorSensor lineParkSensor = null;
+    public int pacmanId;
 
     //Hardware map
     HardwareMap hwMap = null;
@@ -118,6 +119,9 @@ public class HardwareSPQR {
 
         //Turn on servo LEDs
         this.lineParkSensor.enableLed(true);
+
+        //Initialize sounds
+        pacmanId = hwMap.appContext.getResources().getIdentifier("pacman_chomp", "raw", hwMap.appContext.getPackageName());
 
         this.robotIsInitialized = true;
     }
