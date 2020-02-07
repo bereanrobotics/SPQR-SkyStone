@@ -15,7 +15,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     //Variables
     public final double speed = 0.75;
     public final double ppr = 280;
-    public final double degppr = 20.85;
+    public final double degppr = 21.1;
     public final double circleRadius = 245.7768;
     public final double powerScalar = 1.25;
 
