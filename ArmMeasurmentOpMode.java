@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  *
  * @author Arkin Solomon
  */
-@TeleOp(name="Arm Measurment")
+@TeleOp(name="Arm Measurment", group="Test")
 public class ArmMeasurmentOpMode extends OpMode {
 
     private HardwareSPQR robot = new HardwareSPQR();

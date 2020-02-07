@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Arkin Solomon
  */
-@Autonomous(name="Line Park Red")
+@Autonomous(name="Line Park Red", group="Red")
 public class LineParkRed extends SPQRLinearOpMode {
 
     @Override

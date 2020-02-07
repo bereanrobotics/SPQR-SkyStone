@@ -17,25 +17,6 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
     public final double ppr = 280;
     public final double degppr = 20.85;
     public final double circleRadius = 245.7768;
-    public final double powerScalar = 1.25;
-
-    //The switch on the robot that dictates what color it is. (red or blue)
-    private boolean teamSwitch;
-    private Color teamColor;
-
-    //The switch on the robot that determines the starting posistion (front or back)
-    private boolean positionSwitch;
-    private Position position;
-
-    //The switch on the robot that determines which lane it will primarily travel on (inside, outside)
-    private boolean laneSwitch;
-    private Lane lane;
-
-    //The switch on the robot that determines whether to try and pull the foundation into the area
-    private boolean foundationSwitch;
-
-    //The switch on the robot that determines whether to try and pickup a block
-    private boolean blockSwitch;
 
     //Values for the wheels
     private final double wheelRadius = 5*25.4;

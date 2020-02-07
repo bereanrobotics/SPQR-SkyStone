@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  * @author Arkin Solomon
  */
-@TeleOp(name="Main OpMode")
+@TeleOp(name="Main OpMode", group="Competition")
 public class MainOpMode extends OpMode {
 
     private HardwareSPQR robot = new HardwareSPQR();

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Sunflower Red -top (1) Foundation (2) Line -in")
+@Autonomous(name="Sunflower Red -top (1) Foundation (2) Line -in", group="Red")
 public class AutoRedTopFoundationLine extends SPQRLinearOpMode {
 
     @Override
