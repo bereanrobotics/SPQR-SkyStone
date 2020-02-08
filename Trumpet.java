@@ -1,10 +1,23 @@
-
 package org.firstinspires.ftc.teamcode;
 
-        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="'Andromeda' Blue -bot (1) Block (2) Block (3) Line -out", group="Blue")
-public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
+/**
+ * Autonomous: RED ALLIANCE
+ *
+ * Start against the wall in such a way that the left edge of the robot is next to the blue depot.
+ *
+ * Steps:
+ *  - Grab a block.
+ *  - Deliver the block.
+ *  - Grab another block.
+ *  - Deliver the block.
+ *  - Park in the outside lane on the line under the red bridge.
+ *
+ * @author Owen Peterson
+ */
+@Autonomous(name="'Trumpet' Red -bot (1) Block (2) Block (3) Line -out", group="Red")
+public class Trumpet extends SPQRLinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -30,25 +43,25 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.drive(-2500, -1);
 
             //turn right towards the top of the field
-            this.turn(90, 1.0);
+            this.turn(-90, 1.0);
 
             //drive across the line
             this.drive(12000, 1.0);
 
             //turn in preparation to release the block
-            this.turn(-90, 1.0);
+            this.turn(90, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            //set tow down0-
+            //set tow down
             this.sleep(100);
 
             this.drive(-1500, -1.0);
 
-            this.turn(-90, 1.0);
+            this.turn(90, 1.0);
 
             this.drive(10000, 1.0);
 
-            this.turn(90, 1.0);
+            this.turn(-90, 1.0);
             //strafe to the right, all the way to the top of the field
             this.drive(2700, 1.0);
 
@@ -61,13 +74,13 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.drive(-2500, -1);
 
             //turn right towards the top of the field
-            this.turn(90, 1.0);
+            this.turn(-90, 1.0);
 
             //drive across the line
             this.drive(8000, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            //set tow down0-
+            //set tow down
 
         }
     }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * Autonomous: BLUE ALLIANCE
@@ -14,7 +15,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Arkin Solomon
  */
-@Autonomous(name="Line Park Blue",group="Blue")
+@Autonomous(name="Line Park Blue", group="Blue")
+@Disabled
 public class LineParkBlue extends SPQRLinearOpMode {
 
     @Override

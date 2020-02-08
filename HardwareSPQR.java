@@ -72,27 +72,26 @@ public class HardwareSPQR {
         this.tow = hwMap.get(DcMotor.class, "tow");
 
 
-        //Reset encoders
+        //Reset encoders and set initial positions
         this.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.tow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.tow.setTargetPosition(0);
+        this.tow.setTargetPosition(-50);
         this.tow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        
+
         //Set motors to brake
         this.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.tow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //Set tolerance
-        this.setDriveTargetPosition(0);
+        //Set encoder tolerance of all of the motors on the robot
         ((DcMotorEx) this.leftFrontDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(10);
-        ((DcMotorEx) this.tow).setTargetPositionTolerance(0);
+        ((DcMotorEx) this.tow).setTargetPositionTolerance(10);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -108,7 +107,7 @@ public class HardwareSPQR {
         this.rightFrontDrive.setPower(0);
         this.rightBackDrive.setPower(0);
         this.armMotor.setPower(0);
-        this.tow.setPower(0);
+        this.tow.setPower(0.3);
 
         /* Initialize servos */
 
@@ -119,6 +118,7 @@ public class HardwareSPQR {
         //Reset servo positions
         this.blockGrabber.setPosition(1);
         this.armBalancer.setPosition(0);
+
         /* Initialize sensors */
 
         //Define sensors
@@ -141,14 +141,14 @@ public class HardwareSPQR {
      * @param encoderPosition The current position of the arm encoder.
      * @return A double between -1.0 and 1.0 which is the optimal position of the servo.
      */
-    public static double getServoPosition(int encoderPosition){
+    public static double getServoPosition(int encoderPosition) {
 
         //The equation of the line of best fit in the form y=mx+b
-        double optimalPosition =  -0.0006803 * encoderPosition + -0.1261;
-        if (optimalPosition > 1){
+        double optimalPosition = -0.0006803 * encoderPosition + -0.1261;
+        if (optimalPosition > 1) {
             optimalPosition = 1;
         }
-        if (optimalPosition < -1){
+        if (optimalPosition < -1) {
             optimalPosition = -1;
         }
         return optimalPosition;
@@ -161,14 +161,14 @@ public class HardwareSPQR {
      * direction.
      *
      * @param direction A Dir enumeration which states which direction the robot will strafe.
-     * @param power A double between -1.0 and 1.0 which represents the speed at which the robot
-     *              is to strafe.
+     * @param power     A double between -1.0 and 1.0 which represents the speed at which the robot
+     *                  is to strafe.
      */
-    public void strafe(Dir direction, double power){
+    public void strafe(Dir direction, double power) {
         if (!robotIsInitialized) return;
         this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power: -power);
-        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power: -power);
+        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power : -power);
+        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power : -power);
         this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
     }
 
@@ -178,7 +178,7 @@ public class HardwareSPQR {
      * @param power A double between -1.0 and 1.0 which represents the speed that the motors will
      *              be set to.
      */
-    public void setPowers(double power){
+    public void setPowers(double power) {
         if (!robotIsInitialized) return;
         this.leftFrontDrive.setPower(power);
         this.leftBackDrive.setPower(power);
@@ -190,7 +190,7 @@ public class HardwareSPQR {
      * This method makes the robot go at full speed backward by setting all of the motor powers to
      * -1.0.
      */
-    public void backward(){
+    public void backward() {
         if (!robotIsInitialized) return;
         this.setPowers(-1.0);
     }
@@ -199,7 +199,7 @@ public class HardwareSPQR {
      * This method makes the robot go at full speed forward by setting all of the motor powers to
      * 1.0.
      */
-    public void forward(){
+    public void forward() {
         if (!robotIsInitialized) return;
         this.setPowers(1.0);
     }
@@ -208,12 +208,12 @@ public class HardwareSPQR {
      * This method takes two powers and sets the left motors to a given power and a right motors to
      * a given power respectively.
      *
-     * @param left A double between -1.0 and 1.0 which determines the speed that the left motors
-     *             will be set to.
+     * @param left  A double between -1.0 and 1.0 which determines the speed that the left motors
+     *              will be set to.
      * @param right A double between -1.0 and 1.0 which determines the speed that the right motors
      *              will be set to.
      */
-    public void tank(double left, double right){
+    public void tank(double left, double right) {
         if (!robotIsInitialized) return;
         this.leftFrontDrive.setPower(left);
         this.leftBackDrive.setPower(left);
@@ -225,7 +225,7 @@ public class HardwareSPQR {
      * This method stops the movement of the drive motors. If the motors are set to brake on zero
      * power the robot will stop in place.
      */
-    public void stopMoving(){
+    public void stopMoving() {
         if (!this.robotIsInitialized) return;
         this.setPowers(0);
     }
@@ -235,7 +235,7 @@ public class HardwareSPQR {
     /**
      * This method closes the block-grabbing servo.
      */
-    public void grabBlock(){
+    public void grabBlock() {
         if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(-1);
     }
@@ -243,7 +243,7 @@ public class HardwareSPQR {
     /**
      * This method opens the block-grabbing servo.
      */
-    public void releaseBlock(){
+    public void releaseBlock() {
         if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(1);
     }
@@ -255,7 +255,7 @@ public class HardwareSPQR {
      * @param behavior A ZeroPowerBehavior enumeration (Under DcMotor) which will be applied to all
      *                 of the drive motors of the robot.
      */
-    public void setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior){
+    public void setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {
         this.leftFrontDrive.setZeroPowerBehavior(behavior);
         this.rightFrontDrive.setZeroPowerBehavior(behavior);
         this.leftBackDrive.setZeroPowerBehavior(behavior);
@@ -268,7 +268,7 @@ public class HardwareSPQR {
      * @param mode a RunMode enumeration (Under DcMotor) which will be applied to all
      *             of the drive motors of the robot.
      */
-    public void setDriveMode(DcMotor.RunMode mode){
+    public void setDriveMode(DcMotor.RunMode mode) {
         this.leftFrontDrive.setMode(mode);
         this.rightFrontDrive.setMode(mode);
         this.leftBackDrive.setMode(mode);
@@ -276,19 +276,33 @@ public class HardwareSPQR {
     }
 
     /**
+     * This method sets the same target position to all of the drive motors of the robot. The motors
+     * still need to be given power to move to the position.
      *
-     * @param target
+     * @param target An integer which is the target, in encoder units, for the robot to go to.
      */
-    public void setDriveTargetPosition(int target){
+    public void setDriveTargetPosition(int target) {
         this.leftFrontDrive.setTargetPosition(target);
         this.rightFrontDrive.setTargetPosition(target);
         this.leftBackDrive.setTargetPosition(target);
         this.rightBackDrive.setTargetPosition(target);
     }
 
-    public void moveTowFoundation(){
-        if (this.tow.getTargetPosition() > 100){
-
-        }
+    /**
+     * This method simply drops the tow position to be able to drag the foundation and/or raise the
+     * block.
+     */
+    public void dropTow(){
+        this.tow.setTargetPosition(-600);
+        this.tow.setPower(0.7);
     }
+
+    /**
+     * This method simply raises the tow to it's initial position.
+     */
+    public void raiseTow(){
+        this.tow.setTargetPosition(-50);
+        this.tow.setPower(0.7);
+    }
+}
 

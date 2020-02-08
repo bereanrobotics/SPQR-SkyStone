@@ -2,8 +2,20 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+/**
+ * Autonomous: RED ALLIANCE
+ *
+ * Start against the wall in such a way that the right edge of the robot is next to the red building
+ * zone.
+ *
+ * Steps:
+ *  - Move the blue foundation into the building zone.
+ *  - Park in the inside lane on the line under the red bridge.
+ *
+ * @author Owen Peterson
+ */
 @Autonomous(name="'Sunflower' Red -top (1) Foundation (2) Line -in", group="Red")
-public class AutoRedTopFoundationLine extends SPQRLinearOpMode {
+public class Sunflower extends SPQRLinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -12,9 +24,6 @@ public class AutoRedTopFoundationLine extends SPQRLinearOpMode {
         waitForStart();
 
         if (opModeIsActive() && !isStopRequested()) {
-
-            //AUTO GENERATED CODE
-            //TOKEN: QXV0b1JlZFRvcEZvdW5kYXRpb25MaW5lPD5SZWQgLXRvcCAoMSkgRm91bmRhdGlvbiAoMikgTGluZSM8JD4jNTYwL34/fi8xMzcvfj9+LzEjPCQ+IzQ2Ny9+P34vMTM4L34/fi8xIzwkPiM0NjUvfj9+LzQ0L34/fi8xIzwkPiM0MTQvfj9+LzQ0L34/fi8xIzwkPiM1NTAvfj9+LzQ0L34/fi8xIzwkPiM1NTIvfj9+LzMwNS9+P34vMQ==
 
             //drive forward, to near the foundation
             this.drive(5500, 1);

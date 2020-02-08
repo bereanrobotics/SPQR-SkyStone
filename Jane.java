@@ -2,8 +2,20 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+/**
+ * Autonomous: BLUE ALLIANCE
+ *
+ * Start against the wall in such a way that the left edge of the robot is next to the blue building
+ * zone.
+ *
+ * Steps:
+ *  - Move the blue foundation into the building zone.
+ *  - Park in the outside lane on the line under the blue bridge.
+ *
+ * @author Owen Peterson
+ */
 @Autonomous(name="'Jane' Blue -top (1) Foundation (2) Line -out", group="Blue")
-public class AutoBlueTopFoundationLine extends SPQRLinearOpMode {
+public class Jane extends SPQRLinearOpMode {
 
     @Override
     public void runOpMode() {

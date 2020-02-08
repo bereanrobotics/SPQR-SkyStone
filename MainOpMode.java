@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * TeleOp: BOTH ALLIANCES
@@ -109,16 +108,10 @@ public class MainOpMode extends OpMode {
 
         /* Bring tow down */
         if (gamepad1.dpad_down){
-//            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
-//            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            this.robot.tow.setPower(-0.5);
-//            this.robot.tow.setMode(previousRunMode);
+            this.robot.dropTow();
         }
         if (gamepad1.dpad_up){
-//            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
-//            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            this.robot.tow.setPower(0.5);
-//            this.robot.tow.setMode(previousRunMode);
+            this.robot.raiseTow();
         }
 
         /* Grab blocks */
@@ -152,7 +145,7 @@ public class MainOpMode extends OpMode {
 
         /* Telementry data */
         telemetry.addData("Tow", this.robot.tow.getCurrentPosition());
-//        telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
+        telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
         telemetry.addData("Servo", this.robot.armBalancer.getPosition());
         telemetry.addData("Red", this.robot.lineParkSensor.red());
         telemetry.addData("Green", this.robot.lineParkSensor.green());
