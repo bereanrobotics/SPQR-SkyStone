@@ -251,7 +251,7 @@ public class HardwareSPQR {
      * @param behavior A ZeroPowerBehavior enumeration (Under DcMotor) which will be applied to all
      *                 of the drive motors of the robot.
      */
-    public void setDriveZeroPowerBehavior (DcMotor.ZeroPowerBehavior behavior){
+    public void setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior){
         this.leftFrontDrive.setZeroPowerBehavior(behavior);
         this.rightFrontDrive.setZeroPowerBehavior(behavior);
         this.leftBackDrive.setZeroPowerBehavior(behavior);
@@ -263,7 +263,7 @@ public class HardwareSPQR {
      * @param mode a RunMode enumeration (Under DcMotor) which will be applied to all
      *             of the drive motors of the robot.
      */
-    public void setDriveMode (DcMotor.RunMode mode){
+    public void setDriveMode(DcMotor.RunMode mode){
         this.leftFrontDrive.setMode(mode);
         this.rightFrontDrive.setMode(mode);
         this.leftBackDrive.setMode(mode);
@@ -274,7 +274,7 @@ public class HardwareSPQR {
      *
      * @param target
      */
-    public void setDriveTargetPosition (int target) {
+    public void setDriveTargetPosition(int target){
         this.leftFrontDrive.setTargetPosition(target);
         this.rightFrontDrive.setTargetPosition(target);
         this.leftBackDrive.setTargetPosition(target);
@@ -282,7 +282,7 @@ public class HardwareSPQR {
     }
 
 
-    public void moveTowFoundation (){
+    public void moveTowFoundation(){
         if (this.tow.getTargetPosition() > 100){
 
         }
