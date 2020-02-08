@@ -293,7 +293,7 @@ public class HardwareSPQR {
      * block.
      */
     public void dropTow(){
-        this.tow.setTargetPosition(-625);
+        this.tow.setTargetPosition(-650);
         this.tow.setPower(0.4);
     }
 

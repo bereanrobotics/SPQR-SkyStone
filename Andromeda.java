@@ -45,7 +45,11 @@ public class Andromeda extends SPQRLinearOpMode {
             //releasing the block, with a slight pause to make sure it is clear of the tow
             this.robot.raiseTow();
             this.sleep(1000);
+
+            //reverse back to ensure line up.
             this.drive(-5000, -1);
+
+            //strafe down onto the line
             this.strafe(Dir.LEFT, 5000, 1);
 
 
