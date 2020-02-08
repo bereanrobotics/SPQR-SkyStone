@@ -27,9 +27,6 @@ public class Bear extends SPQRLinearOpMode {
 
         if (opModeIsActive() && !isStopRequested()) {
 
-            //AUTO GENERATED CODE
-            //TOKEN: UmVkQm90QmxvY2tGb3VuZGF0aW9uTGluZTw+UmVkIC1ib3QgKDEpIEJsb2NrICgyKSBGb3VuZGF0aW9uICgzKSBMaW5lIzwkPiM1NjAvfj9+LzQ2Ni9+P34vMSM8JD4jNDU2L34/fi80NjYvfj9+LzEjPCQ+IzQ1NC9+P34vNTEvfj9+LzEjPCQ+IzU2Mi9+P34vNTAvfj9+LzEjPCQ+IzU2Mi9+P34vMjk3L34/fi8x
-
             //Initial movement forward
             this.drive(7000, 1);
             //slow the robot down and move right up to the block

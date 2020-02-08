@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * TeleOp: BOTH ALLIANCES
@@ -22,6 +23,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Gunner controls:
  *  - Button 'a': Grab block.
  *  - Button 'b': Release block.
+ *  - Button 'x': Bring arm to capstone.
  *  - Right bumper: Reset arm encoder position to zero.
  *  - Right stick Y: Move arm.
  *
@@ -122,16 +124,25 @@ public class MainOpMode extends OpMode {
             this.robot.releaseBlock();
         }
 
+        /* Get capstone */
+        if (gamepad2.x){
+            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.robot.armMotor.setTargetPosition(-23);
+            this.robot.armMotor.setPower(0.4);
+        }
+
         /* Arm movement */
 
         //Reset arm zero
-        if (gamepad2.right_bumper && gamepad2.left_bumper){
-//            this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (gamepad2.right_bumper && gamepad2.left_bumper && !this.robot.armMotor.isBusy()){
+            this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
-//        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
-//        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
+        if (!this.robot.armMotor.isBusy()){
+            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
+        }
 
         //Play sound
         if (gamepad1.x){
@@ -142,6 +153,7 @@ public class MainOpMode extends OpMode {
         if (!gamepad1.x){
             this.gamepad1_xPressed = false;
         }
+        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
 
         /* Telementry data */
         telemetry.addData("Tow", this.robot.tow.getCurrentPosition());

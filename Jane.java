@@ -34,28 +34,26 @@ public class Jane extends SPQRLinearOpMode {
             //drive forward to the foundation
             this.drive(2600, 0.5);
 
-            //drop the tow on the foundation, wait until complete
             //set tow down
+            this.robot.dropTow();
             this.sleep(1000);
 
             //pull back the foundation to the building site
-            this.drive(-8200, -0.4);
+            this.drive(-7100, -0.4);
 
-            //retracting the tow
-            //set tow down
+            this.robot.raiseTow();
 
             //strafe to the line
-            this.strafe(Dir.RIGHT, 10000, 1.0);
+            this.strafe(Dir.RIGHT, 6450, 1.0);
 
-            this.drive(7000, 1.0);
+            this.drive(10300, 1.0);
 
             this.strafe(Dir.LEFT, 8000, 1.0);
+
             //drive backwards towards the outside
+            this.drive(-3700, -1.0);
 
-            this.drive(-3000, -1.0);
-
-            this.strafe(Dir.RIGHT, 12000, 1.0);
-            this.drive(-2000, -0.5);
+            this.strafe(Dir.RIGHT, 10400, 1.0);
         }
     }
 }

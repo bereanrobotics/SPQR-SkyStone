@@ -91,7 +91,7 @@ public class HardwareSPQR {
         ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(10);
-        ((DcMotorEx) this.tow).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.tow).setTargetPositionTolerance(25);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -144,7 +144,7 @@ public class HardwareSPQR {
     public static double getServoPosition(int encoderPosition) {
 
         //The equation of the line of best fit in the form y=mx+b
-        double optimalPosition = -0.0006803 * encoderPosition + -0.1261;
+        double optimalPosition = -0.0203 - 0.00091 * encoderPosition - 0.0000002 * Math.pow(encoderPosition, 2);
         if (optimalPosition > 1) {
             optimalPosition = 1;
         }
@@ -293,8 +293,8 @@ public class HardwareSPQR {
      * block.
      */
     public void dropTow(){
-        this.tow.setTargetPosition(-600);
-        this.tow.setPower(0.7);
+        this.tow.setTargetPosition(-625);
+        this.tow.setPower(0.4);
     }
 
     /**
@@ -302,7 +302,7 @@ public class HardwareSPQR {
      */
     public void raiseTow(){
         this.tow.setTargetPosition(-50);
-        this.tow.setPower(0.7);
+        this.tow.setPower(0.4);
     }
 }
 
