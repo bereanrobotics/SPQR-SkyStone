@@ -117,8 +117,9 @@ public class HardwareSPQR {
         //Define sensors
         this.lineParkSensor = hwMap.get(ColorSensor.class, "line_park_sensor");
 
-        //Turn on servo LEDs
+        //Turn on linePark LEDs
         this.lineParkSensor.enableLed(true);
+        this.lineParkSensor.enableLed(false);
 
         //Initialize sounds
         pacmanId = hwMap.appContext.getResources().getIdentifier("pacman_chomp", "raw", hwMap.appContext.getPackageName());

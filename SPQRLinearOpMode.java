@@ -63,6 +63,7 @@ public abstract class SPQRLinearOpMode extends LinearOpMode {
      *               color sensor.
      */
     public void stopAtTape(int[] tapeColor, int change){
+        this.robot.lineParkSensor.enableLed(true);
         this.robot.setPowers(.6);
         boolean isOnLine = false;
         while (!isOnLine && this.opModeIsActive()) {

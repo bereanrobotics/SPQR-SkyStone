@@ -1,9 +1,10 @@
+
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="'Bear' Red -bot (1) Block (2) Foundation (3) Line -out", group="Red")
-public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
+@Autonomous(name="'Trumpet' Red -bot (1) Block (2) Block (3) Line -out", group="Red")
+public class AutoRedBotBlockBlockLine extends SPQRLinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -32,7 +33,7 @@ public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
             this.turn(-90, 1.0);
 
             //drive across the line
-            this.drive(16000, 1.0);
+            this.drive(12000, 1.0);
 
             //turn in preparation to release the block
             this.turn(90, 1.0);
@@ -41,27 +42,33 @@ public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
             this.robot.tow.setPosition(1);
             this.sleep(100);
 
+            this.drive(-1500, -1.0);
+
+            this.turn(90, 1.0);
+
+            this.drive(10000, 1.0);
+
+            this.turn(-90, 1.0);
             //strafe to the right, all the way to the top of the field
-            this.strafe(Dir.RIGHT, 11000, 1);
+            this.drive(2700, 1.0);
 
-            //drive forward up to the foundation
-            this.drive(2700, 1);
+            this.drive(800, 0.5);
 
-            //grab the foundation and wait for it to settle
             this.robot.tow.setPosition(-1);
-            this.sleep(900);
+            this.sleep(1000);
 
-            //drive back slowly pulling the foundation into the building site
-            this.drive(-9250, -0.5);
+            //reverse away from the blocks
+            this.drive(-2500, -1);
 
-            //retract the tow
+            //turn right towards the top of the field
+            this.turn(-90, 1.0);
+
+            //drive across the line
+            this.drive(8000, 1.0);
+
+            //releasing the block, with a slight pause to make sure it is clear of the tow
             this.robot.tow.setPosition(1);
 
-            //strafe to the left all the way to the line
-            this.strafe(Dir.LEFT, 16750, 1.0);
-
-            //drive in until time runs out (usually does during this function)
-            this.drive(3000, 1.0);
         }
     }
 }
