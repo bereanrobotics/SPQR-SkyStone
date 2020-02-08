@@ -44,16 +44,16 @@ public class Sunflower extends SPQRLinearOpMode {
             this.robot.raiseTow();
 
             //strafe to the line
-            this.strafe(Dir.LEFT, 3225, 1.0);
+            this.strafe(Dir.LEFT, 4000, 1.0);
             this.drive(1500, 1);
-            this.strafe(Dir.LEFT, 3225, 1.0);
+            this.strafe(Dir.LEFT, 4000, 1.0);
 
             this.drive(10300, 1.0);
 
             this.strafe(Dir.RIGHT, 8000, 1.0);
 
             //drive backwards towards the outside
-            this.drive(-3700, -1.0);
+            this.drive(-5500, -1.0);
 
             this.strafe(Dir.LEFT, 10400, 1.0);
         }
