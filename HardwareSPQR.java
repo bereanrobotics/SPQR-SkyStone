@@ -36,9 +36,9 @@ public class HardwareSPQR {
     public DcMotor rightFrontDrive = null;
     public DcMotor rightBackDrive = null;
     public DcMotor armMotor = null;
+    public DcMotor tow = null;
     public Servo blockGrabber = null;
     public Servo armBalancer = null;
-    public Servo tow = null;
     public ColorSensor lineParkSensor = null;
     public int pacmanId;
 
@@ -69,12 +69,16 @@ public class HardwareSPQR {
         this.rightFrontDrive = hwMap.get(DcMotor.class, "right_front_drive");
         this.rightBackDrive = hwMap.get(DcMotor.class, "right_back_drive");
         this.armMotor = hwMap.get(DcMotor.class, "arm_motor");
+        this.tow = hwMap.get(DcMotor.class, "tow");
+
 
         //Reset encoders
         this.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.tow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.tow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Set motors to brake
         this.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -99,19 +103,17 @@ public class HardwareSPQR {
         this.rightFrontDrive.setPower(0);
         this.rightBackDrive.setPower(0);
         this.armMotor.setPower(0);
+        this.tow.setPower(0);
 
         /* Initialize servos */
 
         //Define servos
         this.blockGrabber = hwMap.get(Servo.class, "block_grabber");
         this.armBalancer = hwMap.get(Servo.class, "arm_balancer");
-        this.tow = hwMap.get(Servo.class, "tow");
 
         //Reset servo positions
         this.blockGrabber.setPosition(1);
         this.armBalancer.setPosition(0);
-        this.tow.setPosition(  1);
-
         /* Initialize sensors */
 
         //Define sensors
@@ -276,6 +278,13 @@ public class HardwareSPQR {
         this.rightFrontDrive.setTargetPosition(target);
         this.leftBackDrive.setTargetPosition(target);
         this.rightBackDrive.setTargetPosition(target);
+    }
+
+
+    public void moveTowFoundation (){
+        if (this.tow.getTargetPosistion() > towFoundation){
+
+        }
     }
 }
 

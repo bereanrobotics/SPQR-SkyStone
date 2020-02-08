@@ -26,14 +26,14 @@ public class AutoBlueTopFoundationLine extends SPQRLinearOpMode {
             this.drive(2600, 0.5);
 
             //drop the tow on the foundation, wait until complete
-            this.robot.tow.setPosition(-1);
+            //set tow down
             this.sleep(1000);
 
             //pull back the foundation to the building site
             this.drive(-8200, -0.4);
 
             //retracting the tow
-            this.robot.tow.setPosition(1);
+            //set tow down
 
             //strafe to the line
             this.strafe(Dir.RIGHT, 10000, 1.0);

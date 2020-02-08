@@ -22,7 +22,7 @@ public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
             this.drive(900,0.5);
 
             //grab the block using the tow, wait for the tow to come down before
-            this.robot.tow.setPosition(-1);
+            //set tow down
             this.sleep(1000);
 
             //reverse away from the blocks
@@ -38,7 +38,7 @@ public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
             this.turn(90, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            this.robot.tow.setPosition(1);
+            //set tow down
             this.sleep(100);
 
             //strafe to the right, all the way to the top of the field
@@ -48,14 +48,14 @@ public class AutoRedBotBlockFoundationLine extends SPQRLinearOpMode {
             this.drive(2700, 1);
 
             //grab the foundation and wait for it to settle
-            this.robot.tow.setPosition(-1);
+            //set tow down
             this.sleep(900);
 
             //drive back slowly pulling the foundation into the building site
             this.drive(-9250, -0.5);
 
             //retract the tow
-            this.robot.tow.setPosition(1);
+            //set tow down
 
             //strafe to the left all the way to the line
             this.strafe(Dir.LEFT, 16750, 1.0);

@@ -23,7 +23,7 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.drive(900,0.5);
 
             //grab the block using the tow, wait for the tow to come down before
-            this.robot.tow.setPosition(-1);
+            //set tow down
             this.sleep(1000);
 
             //reverse away from the blocks
@@ -39,7 +39,7 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.turn(-90, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            this.robot.tow.setPosition(1);
+            //set tow down
             this.sleep(100);
 
             this.drive(-1500, -1.0);
@@ -54,7 +54,7 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
 
             this.drive(800, 0.5);
 
-            this.robot.tow.setPosition(-1);
+            //set tow down
             this.sleep(1000);
 
             //reverse away from the blocks
@@ -67,7 +67,7 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.drive(8000, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            this.robot.tow.setPosition(1);
+            //set tow down
 
         }
     }

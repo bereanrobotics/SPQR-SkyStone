@@ -109,10 +109,10 @@ public class MainOpMode extends OpMode {
 
         /* Bring tow down */
         if (gamepad1.dpad_down){
-            this.robot.tow.setPosition(-1);
+            //this.robot.tow.setPosition(-1);
         }
         if (gamepad1.dpad_up){
-            this.robot.tow.setPosition(1);
+            //this.robot.tow.setPosition(1);
         }
 
         /* Grab blocks */

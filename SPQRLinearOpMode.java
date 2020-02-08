@@ -12,6 +12,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
  */
 public abstract class SPQRLinearOpMode extends LinearOpMode {
 
+    public final int towFoundation = 100;
+    public final int towBlock = 100;
+    public final int towDefault = 500;
+
     //Variables
     public final double speed = 0.75;
     public final double ppr = 280;
