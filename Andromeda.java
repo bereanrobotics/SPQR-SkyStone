@@ -28,13 +28,13 @@ public class Andromeda extends SPQRLinearOpMode {
 
             //Initial movement forward
             this.drive(7000, 1);
-
+            this.drive(500, 0.5);
             //grab the block using the tow, wait for the tow to come down before
             this.robot.dropTow();
             this.sleep(1000);
 
             //reverse away from the blocks
-            this.drive(-3750, -1);
+            this.drive(-4000, -1);
 
             //turn right towards the top of the fi
             // 30611eld
@@ -51,7 +51,7 @@ public class Andromeda extends SPQRLinearOpMode {
             this.drive(-5000, -1);
 
             //strafe down onto the line
-            this.strafe(Dir.LEFT, 5000, 1);
+            this.strafe(Dir.LEFT, 7000, 1);
 
 
         }

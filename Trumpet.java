@@ -28,6 +28,7 @@ public class Trumpet extends SPQRLinearOpMode {
             //Initial movement forward
             this.drive(7000, 1);
 
+            this.drive(1000, 0.5);
             //grab the block using the tow, wait for the tow to come down before
             this.robot.dropTow();
             this.sleep(1000);
