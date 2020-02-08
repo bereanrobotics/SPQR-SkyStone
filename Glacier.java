@@ -43,10 +43,10 @@ public class Glacier extends SPQRLinearOpMode {
             this.drive(-2500, -1);
 
             //turn right towards the top of the field
-            this.turn(90, 1.0);
+            this.turn(95, 1.0);
 
             //drive across the line
-            this.drive(16000, 1.0);
+            this.drive(14000, 1.0);
 
             //turn in preparation to release the block
             this.turn(-90, 1.0);
@@ -56,17 +56,17 @@ public class Glacier extends SPQRLinearOpMode {
             this.sleep(100);
 
             //strafe to the right, all the way to the top of the field
-            this.strafe(Dir.LEFT, 11000, 1);
+            this.strafe(Dir.LEFT, 12000, 1);
 
             //drive forward up to the foundation
-            this.drive(2850, 1);
+            this.drive(2000, 1);
 
             //grab the foundation and wait for it to settle
             this.robot.dropTow();
             this.sleep(900);
 
             //drive back slowly pulling the foundation into the building site
-            this.drive(-7100, -0.5);
+            this.drive(-8000, -0.5);
 
             //retract the tow
             this.robot.raiseTow();

@@ -36,7 +36,8 @@ public class Andromeda extends SPQRLinearOpMode {
             //reverse away from the blocks
             this.drive(-3750, -1);
 
-            //turn right towards the top of the field
+            //turn right towards the top of the fi
+            // 30611eld
             this.turn(90, 1.0);
 
             //drive across the line
