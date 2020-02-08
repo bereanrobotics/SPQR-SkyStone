@@ -28,20 +28,20 @@ public class AutoBlueBotBlockFoundationLine extends SPQRLinearOpMode {
             this.drive(-2500, -1);
 
             //turn right towards the top of the field
-            this.turn(-90, 1.0);
+            this.turn(90, 1.0);
 
             //drive across the line
             this.drive(16000, 1.0);
 
             //turn in preparation to release the block
-            this.turn(90, 1.0);
+            this.turn(-90, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
             this.robot.tow.setPosition(1);
             this.sleep(100);
 
             //strafe to the right, all the way to the top of the field
-            this.strafe(Dir.RIGHT, 11000, 1);
+            this.strafe(Dir.LEFT, 11000, 1);
 
             //drive forward up to the foundation
             this.drive(2700, 1);
@@ -57,7 +57,7 @@ public class AutoBlueBotBlockFoundationLine extends SPQRLinearOpMode {
             this.robot.tow.setPosition(1);
 
             //strafe to the left all the way to the line
-            this.strafe(Dir.LEFT, 16750, 1.0);
+            this.strafe(Dir.RIGHT, 16750, 1.0);
 
             //drive in until time runs out (usually does during this function)
             this.drive(3000, 1.0);
