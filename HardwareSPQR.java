@@ -96,6 +96,7 @@ public class HardwareSPQR {
         this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
+        this.tow.setDirection(DcMotor.Direction.FORWARD);
 
         //Set all motor power to zero
         this.leftFrontDrive.setPower(0);
@@ -282,7 +283,7 @@ public class HardwareSPQR {
 
 
     public void moveTowFoundation (){
-        if (this.tow.getTargetPosistion() > towFoundation){
+        if (this.tow.getTargetPosition() > 100){
 
         }
     }

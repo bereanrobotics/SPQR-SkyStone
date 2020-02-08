@@ -109,10 +109,16 @@ public class MainOpMode extends OpMode {
 
         /* Bring tow down */
         if (gamepad1.dpad_down){
-            //this.robot.tow.setPosition(-1);
+            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
+            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.tow.setPower(-0.5);
+            this.robot.tow.setMode(previousRunMode);
         }
         if (gamepad1.dpad_up){
-            //this.robot.tow.setPosition(1);
+            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
+            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.tow.setPower(0.5);
+            this.robot.tow.setMode(previousRunMode);
         }
 
         /* Grab blocks */
@@ -145,6 +151,7 @@ public class MainOpMode extends OpMode {
         }
 
         /* Telementry data */
+        telemetry.addData("Tow", this.robot.tow.getCurrentPosition());
         telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
         telemetry.addData("Servo", this.robot.armBalancer.getPosition());
         telemetry.addData("Red", this.robot.lineParkSensor.red());
