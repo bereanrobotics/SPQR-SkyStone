@@ -2,6 +2,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * Autonomous: BLUE ALLIANCE
@@ -15,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
+@Disabled
 @Autonomous(name="4 'York' Blue -bot -bot (1) Block (2) Line -out", group="Blue")
 public class York extends SPQRLinearOpMode {
 

@@ -26,8 +26,8 @@ public class LineParkRed extends SPQRLinearOpMode {
         waitForStart();
 
         if (opModeIsActive() && !isStopRequested()) {
-            this.sleep(10000);
-            this.stopAtTape(TapeColors.red, 500);
+//            this.sleep(10000);
+//            this.stopAtTape(TapeColors.red, 500);
         }
     }
 }

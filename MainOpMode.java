@@ -128,7 +128,7 @@ public class MainOpMode extends OpMode {
         if (gamepad2.x){
             this.robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             this.robot.armMotor.setTargetPosition(-23);
-            this.robot.armMotor.setPower(0.4);
+            this.robot.armMotor.setPower(0.15);
         }
 
         /* Arm movement */

@@ -63,7 +63,7 @@ public class Bear extends SPQRLinearOpMode {
             this.sleep(900);
 
             //drive back slowly pulling the foundation into the building site
-            this.drive(-9250, -0.5);
+            this.drive(-7100, -0.5);
 
             //retract the tow
             this.robot.raiseTow();
@@ -74,5 +74,6 @@ public class Bear extends SPQRLinearOpMode {
             //drive in until time runs out (usually does during this function)
             this.drive(3000, 1.0);
         }
+
     }
 }

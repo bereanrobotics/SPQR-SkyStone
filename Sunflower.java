@@ -39,7 +39,7 @@ public class Sunflower extends SPQRLinearOpMode {
             this.sleep(1000);
 
             //pull back the foundation to the building site
-            this.drive(-7100, -0.4);
+            this.drive(-6900, -0.4);
 
             this.robot.raiseTow();
 

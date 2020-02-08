@@ -66,7 +66,7 @@ public class Glacier extends SPQRLinearOpMode {
             this.sleep(900);
 
             //drive back slowly pulling the foundation into the building site
-            this.drive(-9250, -0.5);
+            this.drive(-7100, -0.5);
 
             //retract the tow
             this.robot.raiseTow();
