@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous (name="'Glacier' Blue -bot (1) Block (2) Foundation (3) Line -out", group="Red")
+@Autonomous (name="'Glacier' Blue -bot (1) Block (2) Foundation (3) Line -out", group="Blue")
 public class AutoBlueBotBlockFoundationLine extends SPQRLinearOpMode {
 
     @Override

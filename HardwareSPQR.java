@@ -78,17 +78,21 @@ public class HardwareSPQR {
         this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.tow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.tow.setTargetPosition(0);
         this.tow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        
         //Set motors to brake
         this.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.tow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Set tolerance
+        this.setDriveTargetPosition(0);
         ((DcMotorEx) this.leftFrontDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(10);
         ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.tow).setTargetPositionTolerance(0);
 
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -282,10 +286,9 @@ public class HardwareSPQR {
     }
 
 
-    public void moveTowFoundation(){
+    /*public void moveTowFoundation(){
         if (this.tow.getTargetPosition() > 100){
 
-        }
+        }*/
     }
-}
 

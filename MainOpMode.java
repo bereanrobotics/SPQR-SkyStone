@@ -109,16 +109,16 @@ public class MainOpMode extends OpMode {
 
         /* Bring tow down */
         if (gamepad1.dpad_down){
-            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
-            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            this.robot.tow.setPower(-0.5);
-            this.robot.tow.setMode(previousRunMode);
+//            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
+//            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            this.robot.tow.setPower(-0.5);
+//            this.robot.tow.setMode(previousRunMode);
         }
         if (gamepad1.dpad_up){
-            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
-            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            this.robot.tow.setPower(0.5);
-            this.robot.tow.setMode(previousRunMode);
+//            DcMotor.RunMode previousRunMode = this.robot.tow.getMode();
+//            this.robot.tow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            this.robot.tow.setPower(0.5);
+//            this.robot.tow.setMode(previousRunMode);
         }
 
         /* Grab blocks */
@@ -133,12 +133,12 @@ public class MainOpMode extends OpMode {
 
         //Reset arm zero
         if (gamepad2.right_bumper && gamepad2.left_bumper){
-            this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            this.robot.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            this.robot.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
-        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
-        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
+//        this.robot.armMotor.setPower(gamepad2.right_stick_y / 10);
+//        this.robot.armBalancer.setPosition(this.robot.getServoPosition(this.robot.armMotor.getCurrentPosition()));
 
         //Play sound
         if (gamepad1.x){
@@ -152,7 +152,7 @@ public class MainOpMode extends OpMode {
 
         /* Telementry data */
         telemetry.addData("Tow", this.robot.tow.getCurrentPosition());
-        telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
+//        telemetry.addData("Arm", this.robot.armMotor.getCurrentPosition());
         telemetry.addData("Servo", this.robot.armBalancer.getPosition());
         telemetry.addData("Red", this.robot.lineParkSensor.red());
         telemetry.addData("Green", this.robot.lineParkSensor.green());

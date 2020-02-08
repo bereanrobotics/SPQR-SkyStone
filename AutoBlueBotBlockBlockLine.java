@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="'Andromeda' Blue -bot (1) Block (2) Block (3) Line -out", group="Red")
+@Autonomous(name="'Andromeda' Blue -bot (1) Block (2) Block (3) Line -out", group="Blue")
 public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
 
     @Override
@@ -39,7 +39,7 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.turn(-90, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            //set tow down
+            //set tow down0-
             this.sleep(100);
 
             this.drive(-1500, -1.0);
@@ -67,7 +67,7 @@ public class AutoBlueBotBlockBlockLine extends SPQRLinearOpMode {
             this.drive(8000, 1.0);
 
             //releasing the block, with a slight pause to make sure it is clear of the tow
-            //set tow down
+            //set tow down0-
 
         }
     }
