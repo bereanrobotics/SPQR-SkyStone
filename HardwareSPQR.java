@@ -263,6 +263,7 @@ public class HardwareSPQR {
     }
 
     /**
+     * This method sets the drive mode of all of the drive motors.
      *
      * @param mode a RunMode enumeration (Under DcMotor) which will be applied to all
      *             of the drive motors of the robot.
@@ -285,10 +286,9 @@ public class HardwareSPQR {
         this.rightBackDrive.setTargetPosition(target);
     }
 
-
-    /*public void moveTowFoundation(){
+    public void moveTowFoundation(){
         if (this.tow.getTargetPosition() > 100){
 
-        }*/
+        }
     }
 
