@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
-@Autonomous(name="'Trumpet' Red -bot (1) Block (2) Block (3) Line -out", group="Red")
+@Autonomous(name="3 'Trumpet' Red -bot (1) Block (2) Line -out", group="Red")
 public class Trumpet extends SPQRLinearOpMode {
 
     @Override

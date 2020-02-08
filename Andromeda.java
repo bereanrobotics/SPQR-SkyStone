@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
-@Autonomous(name="'Andromeda' Blue -bot (1) Block (2) Block (3) Line -out", group="Blue")
+@Autonomous(name="3 'Andromeda' Blue -bot (1) Block (2) Line -out", group="Blue")
 public class Andromeda extends SPQRLinearOpMode {
 
     @Override

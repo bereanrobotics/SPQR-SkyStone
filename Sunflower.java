@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
-@Autonomous(name="'Sunflower' Red -top (1) Foundation (2) Line -in", group="Red")
+@Autonomous(name="1 'Sunflower' Red -top (1) Foundation (2) Line -in", group="Red")
 public class Sunflower extends SPQRLinearOpMode {
 
     @Override

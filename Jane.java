@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
-@Autonomous(name="'Jane' Blue -top (1) Foundation (2) Line -out", group="Blue")
+@Autonomous(name="1 'Jane' Blue -top (1) Foundation (2) Line -out", group="Blue")
 public class Jane extends SPQRLinearOpMode {
 
     @Override

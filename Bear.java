@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
-@Autonomous(name="'Bear' Red -bot (1) Block (2) Foundation (3) Line -out", group="Red")
+@Autonomous(name="2 'Bear' Red -bot (1) Block (2) Foundation (3) Line -out", group="Red")
 public class Bear extends SPQRLinearOpMode {
 
     @Override

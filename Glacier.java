@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *
  * @author Owen Peterson
  */
-@Autonomous (name="'Glacier' Blue -bot (1) Block (2) Foundation (3) Line -out", group="Blue")
+@Autonomous (name="2 'Glacier' Blue -bot (1) Block (2) Foundation (3) Line -out", group="Blue")
 public class Glacier extends SPQRLinearOpMode {
 
     @Override
