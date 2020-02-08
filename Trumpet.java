@@ -46,7 +46,6 @@ public class Trumpet extends SPQRLinearOpMode {
             this.sleep(1000);
 
             this.drive(-5000, -1);
-            this.strafe(Dir.RIGHT, 5000, 1);
 
         }
     }
