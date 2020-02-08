@@ -25,9 +25,6 @@ public class Jane extends SPQRLinearOpMode {
 
         if (opModeIsActive() && !isStopRequested()) {
 
-            //AUTO GENERATED CODE
-            //TOKEN: QXV0b1JlZFRvcEZvdW5kYXRpb25MaW5lPD5SZWQgLXRvcCAoMSkgRm91bmRhdGlvbiAoMikgTGluZSM8JD4jNTYwL34/fi8xMzcvfj9+LzEjPCQ+IzQ2Ny9+P34vMTM4L34/fi8xIzwkPiM0NjUvfj9+LzQ0L34/fi8xIzwkPiM0MTQvfj9+LzQ0L34/fi8xIzwkPiM1NTAvfj9+LzQ0L34/fi8xIzwkPiM1NTIvfj9+LzMwNS9+P34vMQ==
-
             //drive forward, to near the foundation
             this.drive(5500, 1);
 
