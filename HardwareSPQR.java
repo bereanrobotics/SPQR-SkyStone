@@ -1,30 +1,31 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * This class defines all hardware on the robot. It also contains movement abstractions.
+ * Hardware configurations
  *
- * Motor channel H1-0 (NeveRest 40 Gearmotor):           Left front drive motor:   "left_front_drive"
- * Motor channel H1-1 (NeveRest 40 Gearmotor):           Left back drive motor:    "left_back_drive"
- * Motor channel H1-2 (NeveRest 40 Gearmotor):           Right front drive motor:  "right_front_drive"
- * Motor channel H1-3 (NeveRest 40 Gearmotor):           Right back drive motor:   "right_back_drive"
- * Motor channel H2-0 (REV Robotics 20:1 HD Hex Motor):  Right intake motor:       "right_intake"
- * Motor channel H2-1 (REV Robotics 20:1 HD Hex Motor):  Left intake motor:        "left_intake"
- * Motor channel H2-2 (Tetrix Motor):                    Arm motor:                "arm_motor"
- * Servo channel H1-0 (Servo):                           Left intake drop servo:   "left_drop"
- * Servo channel H1-1 (Servo):                           Right intake drop servo:  "right_drop"
- * Servo channel H1-2 (Servo):                           Block hitter servo:       "block_beater"
- * Servo channel H1-3 (Servo):                           Block grabber servo:      "block_grabber"
- * Servo channel H1-4 (Servo):                           Arm balancer servo:       "arm_balancer"
- * Servo channel H1-5 (Servo):                           Ramp dropper servo:       "ramp_drop"
- * Servo channel H2-0 (Servo):                           Buildplate tow:           "tow"
- * I2C H1-0-0 (REV Expansion Hub IMU):                   Hub connector:            "imu"
- * I2C H2-0-0 (REV Expansion Hub IMU):                   Hub connector:            "imu 1"
- * I2C H2-1-0 (Rev Color Sensor v3):                     Line park sensor          "line_park_sensor"
+ * Motor channel H1-0 (NeveRest 40 Gearmotor):        Left front drive motor:   "left_front_drive"
+ * Motor channel H1-1 (NeveRest 40 Gearmotor):        Right front drive motor:  "right_front_drive"
+ * Motor channel H1-2 (NeveRest 40 Gearmotor):        Left back drive motor:    "left_back_drive"
+ * Motor channel H1-3 (NeveRest 40 Gearmotor):        Right back drive motor:   "right_back_drive"
+ * Motor channel H2-0 (Tetrix Motor):                 Arm motor:                "arm_motor"
+ * Servo channel H1-0 (Servo):                        Block grabber servo:      "block_grabber"
+ * Servo channel H1-1 (Servo):                        Arm balancer servo:       "arm_balancer"
+ * Servo channel H2-0 (Servo):                        Buildplate tow servo:     "tow"
+ * I2C H1-0-0 (REV Expansion Hub IMU):                Hub connector:            "imu"
+ * I2C H2-0-0 (REV Expansion Hub IMU):                Hub connector:            "imu 1"
+ * I2C H2-1-0 (Rev Color Sensor v3):                  Line park sensor          "line_park_sensor"
+ */
+
+/**
+ * This class defines all hardware on the robot. It also contains common abstractions to interact
+ * with hardware.
  *
  * @author Arkin Solomon
  */
@@ -35,17 +36,12 @@ public class HardwareSPQR {
     public DcMotor leftBackDrive = null;
     public DcMotor rightFrontDrive = null;
     public DcMotor rightBackDrive = null;
-    public DcMotor leftIntake = null;
-    public DcMotor rightIntake = null;
     public DcMotor armMotor = null;
-    public Servo leftDrop = null;
-    public Servo rightDrop = null;
-    public Servo blockBeater = null;
+    public DcMotor tow = null;
     public Servo blockGrabber = null;
     public Servo armBalancer = null;
-    public Servo rampDrop = null;
-    public Servo tow = null;
     public ColorSensor lineParkSensor = null;
+    public int pacmanId;
 
     //Hardware map
     HardwareMap hwMap = null;
@@ -53,11 +49,14 @@ public class HardwareSPQR {
     //True if robot is initialized
     private boolean robotIsInitialized = false;
 
-    //Levels of blocks
-    public static final int[] levels = {-200, -1340, -1545, -1765, -1820};
-    public static final double[] servoLevels = {0, .84222222222222222, .89166666666666666, 1.0, 1.0};
-
-    //Initializer
+    /**
+     * This method initializes the hardware on the robot including sensors, servos, and motors.
+     * This method should be updated whenever a hardware device is added or removed, or when a
+     * device's settings need to be modified. This method should be called once.
+     *
+     * @param ahwMap The hardware map of the class instance of the callee to be assigned to the
+     *               instance of hardware.
+     */
     public void init(HardwareMap ahwMap) {
 
         //Initialize hardware map
@@ -70,83 +69,117 @@ public class HardwareSPQR {
         this.leftBackDrive = hwMap.get(DcMotor.class, "left_back_drive");
         this.rightFrontDrive = hwMap.get(DcMotor.class, "right_front_drive");
         this.rightBackDrive = hwMap.get(DcMotor.class, "right_back_drive");
-        this.leftIntake = hwMap.get(DcMotor.class, "left_intake");
-        this.rightIntake = hwMap.get(DcMotor.class, "right_intake");
         this.armMotor = hwMap.get(DcMotor.class, "arm_motor");
+        this.tow = hwMap.get(DcMotor.class, "tow");
 
-        //Set all motors to use or not use encoders
-        this.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Reset encoder position to 0
+
+        //Reset encoders and set initial positions
+        this.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
+        this.tow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.tow.setTargetPosition(-50);
+        this.tow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //Set motors to brake
+        this.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.tow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Set encoder tolerance of all of the motors on the robot
+        ((DcMotorEx) this.leftFrontDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.leftBackDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.rightFrontDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.rightBackDrive).setTargetPositionTolerance(10);
+        ((DcMotorEx) this.tow).setTargetPositionTolerance(25);
+
         //Sets motor direction
         this.leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         this.leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         this.rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         this.rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        this.leftIntake.setDirection(DcMotor.Direction.FORWARD);
-        this.rightIntake.setDirection(DcMotor.Direction.REVERSE);
         this.armMotor.setDirection(DcMotor.Direction.FORWARD);
-       
+        this.tow.setDirection(DcMotor.Direction.FORWARD);
+
         //Set all motor power to zero
         this.leftFrontDrive.setPower(0);
         this.leftBackDrive.setPower(0);
         this.rightFrontDrive.setPower(0);
         this.rightBackDrive.setPower(0);
-        this.leftIntake.setPower(0);
-        this.rightIntake.setPower(0);
         this.armMotor.setPower(0);
+        this.tow.setPower(0.3);
 
         /* Initialize servos */
 
         //Define servos
-        this.leftDrop = hwMap.get(Servo.class, "left_drop");
-        this.rightDrop = hwMap.get(Servo.class, "right_drop");
-        this.blockBeater = hwMap.get(Servo.class, "block_beater");
         this.blockGrabber = hwMap.get(Servo.class, "block_grabber");
         this.armBalancer = hwMap.get(Servo.class, "arm_balancer");
-        this.rampDrop = hwMap.get(Servo.class, "ramp_drop");
-        this.tow = hwMap.get(Servo.class, "tow");
 
         //Reset servo positions
-        this.leftDrop.setPosition(-1);
-        this.rightDrop.setPosition(1);
-        this.blockBeater.setPosition(1);
-        this.rampDrop.setPosition(-1);
         this.blockGrabber.setPosition(1);
         this.armBalancer.setPosition(0);
-        this.tow.setPosition(-1);
 
         /* Initialize sensors */
 
         //Define sensors
         this.lineParkSensor = hwMap.get(ColorSensor.class, "line_park_sensor");
 
-        //Turn on servo LEDs
+        //Turn on linePark LEDs
         this.lineParkSensor.enableLed(true);
+        this.lineParkSensor.enableLed(false);
 
-        robotIsInitialized = true;
+        //Initialize sounds
+        pacmanId = hwMap.appContext.getResources().getIdentifier("pacman_chomp", "raw", hwMap.appContext.getPackageName());
+
+        this.robotIsInitialized = true;
+    }
+
+    /**
+     * This method returns the optimal position of the arm balancer servo based on the position of
+     * the motor.
+     *
+     * @param encoderPosition The current position of the arm encoder.
+     * @return A double between -1.0 and 1.0 which is the optimal position of the servo.
+     */
+    public static double getServoPosition(int encoderPosition) {
+
+        //The equation of the line of best fit in the form y=mx+b
+        double optimalPosition = -0.0203 - 0.00091 * encoderPosition - 0.0000002 * Math.pow(encoderPosition, 2);
+        if (optimalPosition > 1) {
+            optimalPosition = 1;
+        }
+        if (optimalPosition < -1) {
+            optimalPosition = -1;
+        }
+        return optimalPosition;
     }
 
     /* Movement abstractions */
 
-    //Strafe in a direction with a certain power
-    public void strafe(Dir direction, double power){
+    /**
+     * This method sets the powers of the motors in a way that will strafe the robot in a given
+     * direction.
+     *
+     * @param direction A Dir enumeration which states which direction the robot will strafe.
+     * @param power     A double between -1.0 and 1.0 which represents the speed at which the robot
+     *                  is to strafe.
+     */
+    public void strafe(Dir direction, double power) {
         if (!robotIsInitialized) return;
-        power = power * 0.6;
         this.leftFrontDrive.setPower((direction == Dir.LEFT) ? -power : power);
-        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power + (power * 0.275) : -power - (power * 0.275));
-        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power - (power * 0.2) : -power + (power * 0.2));
+        this.leftBackDrive.setPower((direction == Dir.LEFT) ? power : -power);
+        this.rightFrontDrive.setPower((direction == Dir.LEFT) ? power : -power);
         this.rightBackDrive.setPower((direction == Dir.LEFT) ? -power : power);
     }
 
-    //Set all motors to certain power
-    public void setPowers(double power){
+    /**
+     * This method sets all of the motors to specific given power.
+     *
+     * @param power A double between -1.0 and 1.0 which represents the speed that the motors will
+     *              be set to.
+     */
+    public void setPowers(double power) {
         if (!robotIsInitialized) return;
         this.leftFrontDrive.setPower(power);
         this.leftBackDrive.setPower(power);
@@ -154,20 +187,34 @@ public class HardwareSPQR {
         this.rightBackDrive.setPower(power);
     }
 
-    //Go backwards at full speed
-    public void backward(){
+    /**
+     * This method makes the robot go at full speed backward by setting all of the motor powers to
+     * -1.0.
+     */
+    public void backward() {
         if (!robotIsInitialized) return;
         this.setPowers(-1.0);
     }
 
-    //Go forward at full speed
-    public void forward(){
+    /**
+     * This method makes the robot go at full speed forward by setting all of the motor powers to
+     * 1.0.
+     */
+    public void forward() {
         if (!robotIsInitialized) return;
         this.setPowers(1.0);
     }
 
-    //Set left and right motors differently
-    public void tank(double left, double right){
+    /**
+     * This method takes two powers and sets the left motors to a given power and a right motors to
+     * a given power respectively.
+     *
+     * @param left  A double between -1.0 and 1.0 which determines the speed that the left motors
+     *              will be set to.
+     * @param right A double between -1.0 and 1.0 which determines the speed that the right motors
+     *              will be set to.
+     */
+    public void tank(double left, double right) {
         if (!robotIsInitialized) return;
         this.leftFrontDrive.setPower(left);
         this.leftBackDrive.setPower(left);
@@ -175,60 +222,88 @@ public class HardwareSPQR {
         this.rightBackDrive.setPower(right);
     }
 
-    //Stop moving
-    public void stopMoving(){
+    /**
+     * This method stops the movement of the drive motors. If the motors are set to brake on zero
+     * power the robot will stop in place.
+     */
+    public void stopMoving() {
         if (!this.robotIsInitialized) return;
         this.setPowers(0);
     }
 
-    /* Intake movement */
-
-    //Speed of the intake
-    private double intakeSpeed = 0.30;
-
-    //Suck in blocks
-    public void intakeIn(){
-        if (!this.robotIsInitialized) return;
-        this.leftIntake.setPower(this.intakeSpeed);
-        this.rightIntake.setPower(this.intakeSpeed);
-    }
-
-    //Push out blocks
-    public void intakeOut(){
-        if (!this.robotIsInitialized) return;
-        this.leftIntake.setPower(-this.intakeSpeed);
-        this.rightIntake.setPower(-this.intakeSpeed);
-    }
-
-    //Stop intake
-    public void stopIntake(){
-        if (!this.robotIsInitialized) return;
-        this.leftIntake.setPower(0);
-        this.rightIntake.setPower(0);
-    }
-
     /* Arm movement */
 
-    //Drop the arm down to levels
-    public void moveArm(int level, double speed){
-        if (!this.robotIsInitialized) return;
-        this.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.armMotor.setTargetPosition(this.levels[level]);
-        this.armMotor.setPower(speed);
-        while (this.armMotor.isBusy()){
-            this.armMotor.setPower(0);
-        }
-    }
-
-    //Grab a block
-    public void grabBlock(){
+    /**
+     * This method closes the block-grabbing servo.
+     */
+    public void grabBlock() {
         if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(-1);
     }
 
-    //Release a block
-    public void releaseBlock(){
+    /**
+     * This method opens the block-grabbing servo.
+     */
+    public void releaseBlock() {
         if (!this.robotIsInitialized) return;
         this.blockGrabber.setPosition(1);
     }
+
+    /**
+     * This method sets the drive behavior of what one of the drive motors of the robot are to do
+     * when its power is set to 0.
+     *
+     * @param behavior A ZeroPowerBehavior enumeration (Under DcMotor) which will be applied to all
+     *                 of the drive motors of the robot.
+     */
+    public void setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {
+        this.leftFrontDrive.setZeroPowerBehavior(behavior);
+        this.rightFrontDrive.setZeroPowerBehavior(behavior);
+        this.leftBackDrive.setZeroPowerBehavior(behavior);
+        this.rightBackDrive.setZeroPowerBehavior(behavior);
+    }
+
+    /**
+     * This method sets the drive mode of all of the drive motors.
+     *
+     * @param mode a RunMode enumeration (Under DcMotor) which will be applied to all
+     *             of the drive motors of the robot.
+     */
+    public void setDriveMode(DcMotor.RunMode mode) {
+        this.leftFrontDrive.setMode(mode);
+        this.rightFrontDrive.setMode(mode);
+        this.leftBackDrive.setMode(mode);
+        this.rightBackDrive.setMode(mode);
+    }
+
+    /**
+     * This method sets the same target position to all of the drive motors of the robot. The motors
+     * still need to be given power to move to the position.
+     *
+     * @param target An integer which is the target, in encoder units, for the robot to go to.
+     */
+    public void setDriveTargetPosition(int target) {
+        this.leftFrontDrive.setTargetPosition(target);
+        this.rightFrontDrive.setTargetPosition(target);
+        this.leftBackDrive.setTargetPosition(target);
+        this.rightBackDrive.setTargetPosition(target);
+    }
+
+    /**
+     * This method simply drops the tow position to be able to drag the foundation and/or raise the
+     * block.
+     */
+    public void dropTow(){
+        this.tow.setTargetPosition(-650);
+        this.tow.setPower(0.4);
+    }
+
+    /**
+     * This method simply raises the tow to it's initial position.
+     */
+    public void raiseTow(){
+        this.tow.setTargetPosition(-50);
+        this.tow.setPower(0.4);
+    }
 }
+

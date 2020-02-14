@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 /**
- * This class contains both tape colors for red and blue
+ * This class contains tape colors for both alliances in the format {RED, GREEN, BLUE} updated with
+ * data from the current color sensor on the underside of the robot.
  *
  * @author Arkin Solomon
  */

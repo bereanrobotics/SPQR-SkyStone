@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -27,12 +28,14 @@ import static java.lang.Math.*;
 
 /* see skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf */
 
-/* 
+/**
  * This file uses vuforia to move places.
  *
  * @author Owen Peterson
  */
-@Autonomous(name="Vuforia Test")
+
+@Disabled
+@Autonomous(name="Vuforia Test", group="Test")
 public class VuforiaSkyStoneNavigation extends LinearOpMode {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
