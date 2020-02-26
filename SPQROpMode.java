@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public abstract class SPQROpMode extends OpMode {
+    DcMotor.ZeroPowerBehavior previousBehavior;
+
     public State robotState = new State();
     public int autoInstruction = 0;
 
@@ -130,7 +132,7 @@ public abstract class SPQROpMode extends OpMode {
      *              This value will be assigned as the speed of the motors
      */
     public void turn2 (double angle, double speed, int instruction) {
-        DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
+        this.previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
         this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
         int encoderTarget = (int) (((circleRadius * (Math.toRadians(angle))) * wheelCircumference * 2) / ppr);
@@ -165,30 +167,34 @@ public abstract class SPQROpMode extends OpMode {
      */
     public void turn (double angle, double speed, int instruction){
 
-        DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
-        this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        int encoderTarget = (int) (Math.abs(this.degppr*angle));
-        if (angle > 0) {
-            this.robot.leftFrontDrive.setTargetPosition(encoderTarget);
-            this.robot.leftBackDrive.setTargetPosition(encoderTarget);
-            this.robot.rightFrontDrive.setTargetPosition(-encoderTarget);
-            this.robot.rightBackDrive.setTargetPosition(-encoderTarget);
-            resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
-            this.robot.tank(-speed, speed);
-        } else if (angle < 0) {
-            this.robot.leftFrontDrive.setTargetPosition(-encoderTarget);
-            this.robot.leftBackDrive.setTargetPosition(-encoderTarget);
-            this.robot.rightFrontDrive.setTargetPosition(encoderTarget);
-            this.robot.rightBackDrive.setTargetPosition(encoderTarget);
-            resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
-            this.robot.tank(speed, -speed);
+        if (instruction == robotState.getCurrentInstruction()){
+            if (robotState.currentState == RobotState.IDLE){
+                this.robotState.setCurrentState(RobotState.TURNING);
+                previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
+                this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                int encoderTarget = (int) (Math.abs(this.degppr*angle));
+                if (angle > 0) {
+                    this.robot.leftFrontDrive.setTargetPosition(encoderTarget);
+                    this.robot.leftBackDrive.setTargetPosition(encoderTarget);
+                    this.robot.rightFrontDrive.setTargetPosition(-encoderTarget);
+                    this.robot.rightBackDrive.setTargetPosition(-encoderTarget);
+                    resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
+                    this.robot.tank(-speed, speed);
+                } else if (angle < 0) {
+                    this.robot.leftFrontDrive.setTargetPosition(-encoderTarget);
+                    this.robot.leftBackDrive.setTargetPosition(-encoderTarget);
+                    this.robot.rightFrontDrive.setTargetPosition(encoderTarget);
+                    this.robot.rightBackDrive.setTargetPosition(encoderTarget);
+                    resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
+                    this.robot.tank(speed, -speed);
+                }
+            }
+            if (!drivesBusy()){
+                this.robotState.nextInstruction();
+                this.robot.setDriveZeroPowerBehavior(previousBehavior);
+                this.robotState.setCurrentState(RobotState.IDLE);
+            }
         }
-        while (drivesBusy()){
-            updateTelemetry();
-        }
-        this.robot.setDriveZeroPowerBehavior(previousBehavior);
-        this.robot.setDriveZeroPowerBehavior(previousBehavior);
     }
 
     /**
@@ -202,33 +208,43 @@ public abstract class SPQROpMode extends OpMode {
      */
 
     public void strafe (Dir direction, double distance, double speed, int instruction){
-        DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
-        this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        int encoderTarget = (int) ((distance/wheelCircumference)*ppr);
-        this.robot.leftFrontDrive.setTargetPosition((direction == Dir.LEFT) ? encoderTarget : -encoderTarget);
-        this.robot.leftBackDrive.setTargetPosition((direction == Dir.LEFT) ? -encoderTarget: encoderTarget);
-        this.robot.rightFrontDrive.setTargetPosition((direction == Dir.LEFT) ? -encoderTarget: encoderTarget);
-        this.robot.rightBackDrive.setTargetPosition((direction == Dir.LEFT) ? encoderTarget : -encoderTarget);
-        resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
-        this.robot.strafe(direction, speed);
-        while(drivesBusy()){
-            updateTelemetry();
+        if (instruction == robotState.getCurrentInstruction()) {
+            if (robotState.currentState == RobotState.IDLE) {
+                this.robotState.setCurrentState(RobotState.STRAFING);
+                previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
+                this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                int encoderTarget = (int) ((distance / wheelCircumference) * ppr);
+                this.robot.leftFrontDrive.setTargetPosition((direction == Dir.LEFT) ? encoderTarget : -encoderTarget);
+                this.robot.leftBackDrive.setTargetPosition((direction == Dir.LEFT) ? -encoderTarget : encoderTarget);
+                this.robot.rightFrontDrive.setTargetPosition((direction == Dir.LEFT) ? -encoderTarget : encoderTarget);
+                this.robot.rightBackDrive.setTargetPosition((direction == Dir.LEFT) ? encoderTarget : -encoderTarget);
+                resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
+                this.robot.strafe(direction, speed);
+            }
         }
-        this.robot.setDriveZeroPowerBehavior(previousBehavior);
-        return;
+        if (!drivesBusy()){
+            this.robotState.nextInstruction();
+            this.robot.setDriveZeroPowerBehavior(previousBehavior);
+            this.robotState.setCurrentState(RobotState.IDLE);
+        }
     }
     public void drive(double distance, double speed, int instruction){
-        DcMotor.ZeroPowerBehavior previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
-        this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        int encoderTarget = (int) ((distance/wheelCircumference)*ppr);
-        this.robot.setDriveTargetPosition(-encoderTarget);
-        resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
-        this.robot.setPowers(speed);
-        while(drivesBusy()){
-            updateTelemetry();
+        if (instruction == robotState.getCurrentInstruction()) {
+            if (robotState.currentState == RobotState.IDLE) {
+                this.robotState.setCurrentState(RobotState.DRIVING);
+                this.previousBehavior = this.robot.leftFrontDrive.getZeroPowerBehavior();
+                this.robot.setDriveZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                int encoderTarget = (int) ((distance/wheelCircumference)*ppr);
+                this.robot.setDriveTargetPosition(-encoderTarget);
+                resetEncoders(DcMotor.RunMode.RUN_TO_POSITION);
+                this.robot.setPowers(speed);
+            }
+            if (!drivesBusy()){
+                this.robotState.nextInstruction();
+                this.robot.setDriveZeroPowerBehavior(previousBehavior);
+                this.robotState.setCurrentState(RobotState.IDLE);
+            }
         }
-        this.robot.setDriveZeroPowerBehavior(previousBehavior);
-        return;
     }
 
     /**
@@ -265,8 +281,9 @@ public abstract class SPQROpMode extends OpMode {
      * with common debugging information.
      */
     public void updateTelemetry(){
-        telemetry.addData("Current instruction #: ", this.robotState.getAutoInstruction());
+        telemetry.addData("Current instruction #: ", this.robotState.getCurrentInstruction());
         telemetry.addData("The robot is currently: ", this.robotState.getCurrentState());
+        telemetry.addData("The opmode has been running for: ", getRuntime());
         telemetry.addLine();
 
         telemetry.addData("Distance", calculateDistance());
@@ -293,15 +310,29 @@ public abstract class SPQROpMode extends OpMode {
     }
 
     public void dropTow(int instruction){
-
+        if (instruction == this.robotState.getCurrentInstruction()){
+            this.robot.dropTow();
+            this.robotState.nextInstruction();
+        }
     }
 
     public void raiseTow (int instruction){
-
+        if (instruction == this.robotState.getCurrentInstruction()){
+            this.robot.raiseTow();
+        }
     }
 
     public void sleep (int time, int instruction){
+        if (instruction == this.robotState.getCurrentInstruction()){
+            if(this.robotState.getCurrentState() == RobotState.IDLE){
+                this.robotState.setCurrentState(RobotState.SLEEPING);
+                this.robotState.setSleepTime(getRuntime());
 
+            }
+            if (robotState.getSleepTime()+time<getRuntime()){
+                this.robotState.nextInstruction();
+            }
+        }
     }
 
     /**
