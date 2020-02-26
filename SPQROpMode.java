@@ -295,8 +295,7 @@ public abstract class SPQROpMode extends OpMode {
     public void updateTelemetry(){
         telemetry.addData("Current instruction", this.robotState.getCurrentInstruction());
         telemetry.addData("The robot is currently", this.robotState.getCurrentState());
-        telemetry.addData("The opmode has been initialized + running for", getRuntime());
-        telemetry.addData("The opmode has been running for", this.time);
+        telemetry.addData("The opmode has been running for", getRuntime());
         telemetry.addLine();
 
         telemetry.addData("Distance", calculateDistance());
@@ -354,6 +353,7 @@ public abstract class SPQROpMode extends OpMode {
      * @return returns the boolean true if 1 or more drives are running, false otherwise.
      */
     public boolean drivesBusy() {
-        return (this.robot.leftFrontDrive.isBusy() || this.robot.rightFrontDrive.isBusy() || this.robot.leftBackDrive.isBusy() || this.robot.rightBackDrive.isBusy());
+        boolean ret = this.robot.leftFrontDrive.isBusy() || this.robot.rightFrontDrive.isBusy() || this.robot.leftBackDrive.isBusy() || this.robot.rightBackDrive.isBusy();
+        return ret;
     }
 }
