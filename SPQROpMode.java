@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 public abstract class SPQROpMode extends OpMode {
     DcMotor.ZeroPowerBehavior previousBehavior;
 
@@ -30,6 +33,15 @@ public abstract class SPQROpMode extends OpMode {
     public int rightBackEncoder;
 
     public HardwareSPQR robot = new HardwareSPQR();
+
+    public boolean isInitialized = FALSE;
+
+    public void firstLoopInit(){
+        if (!isInitialized){
+            resetStartTime();
+            isInitialized = TRUE;
+        }
+    }
 
     /**
      * This method is an abstraction to initialize the hardware of the robot.
@@ -281,9 +293,10 @@ public abstract class SPQROpMode extends OpMode {
      * with common debugging information.
      */
     public void updateTelemetry(){
-        telemetry.addData("Current instruction #: ", this.robotState.getCurrentInstruction());
-        telemetry.addData("The robot is currently: ", this.robotState.getCurrentState());
-        telemetry.addData("The opmode has been running for: ", getRuntime());
+        telemetry.addData("Current instruction", this.robotState.getCurrentInstruction());
+        telemetry.addData("The robot is currently", this.robotState.getCurrentState());
+        telemetry.addData("The opmode has been initialized + running for", getRuntime());
+        telemetry.addData("The opmode has been running for", this.time);
         telemetry.addLine();
 
         telemetry.addData("Distance", calculateDistance());

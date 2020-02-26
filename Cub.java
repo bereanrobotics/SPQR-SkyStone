@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Disabled
 @Autonomous(name="Cub", group="redTest")
+
 public class Cub extends SPQROpMode {
     public void runCub (){
         int instruction = 0;
@@ -31,6 +31,7 @@ public class Cub extends SPQROpMode {
 
         //releasing the block, with a slight pause to make sure it is clear of the tow
         this.raiseTow(instruction++);
+
         this.sleep(100, instruction++);
 
         //strafe to the right, all the way to the top of the field
@@ -40,14 +41,14 @@ public class Cub extends SPQROpMode {
         this.drive(2850, 1, instruction++);
 
         //grab the foundation and wait for it to settle
-        this.robot.dropTow();
+        this.dropTow(instruction++);
         this.sleep(900, instruction++);
 
         //drive back slowly pulling the foundation into the building site
         this.drive(-7100, -0.5, instruction++);
 
         //retract the tow
-        this.robot.raiseTow();
+        this.raiseTow(instruction++);
 
         //strafe to the left all the` way to the line
         this.strafe(Dir.LEFT, 16750, 1.0, instruction++);
@@ -55,18 +56,20 @@ public class Cub extends SPQROpMode {
         //drive in until time runs out (usually does during this function)
         this.drive(3000, 1.0, instruction++);
     }
-
+    @Override
     public void init(){
         this.hardwareInit();
     }
-
+    @Override
     public void init_loop () {
-            telemetry.addLine("Autonomous OpMode 'Cub' has been initialized.");
+            telemetry.addData("Autonomous OpMode 'Cub' has been initialized for", getRuntime());
     }
-
+    @Override
     public void loop(){
-        if (time < 30){
+        firstLoopInit();
+        if (getRuntime() < 30){
             runCub();
         }
+    this.updateTelemetry();
     }
 }
